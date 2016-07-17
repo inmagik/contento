@@ -17,9 +17,9 @@ These are the principles **contento** is being built on.
 1. Content should never break your website.
 2. Content should be easy to serialize, store, and move around a website or even different websites. 
 3. Editing content should be performed with an interface suitable both for the content and for the editor. Our editing paradigm is WYSIWIM (what you see is what you mean) and not WYSIWIG (what you see is what you get). We aim at building **responsive editing** vs. rich editing interfaces.
-4. CMS should be just related to editing content on a website. It should not dictate the structure of the web site or become a constraint when it comes to adding other functionalities or keeping your web framework up to date.
-5. CMS should be able to fit within any webpage design.
-6. CMS should be extensible in order to handle different kind of content (think of texts, images, maps, image galleries). And it should be easy to implement such extensions.
+4. A CMS should be just related to editing content on a website. It should not dictate the structure of the web site or become a constraint when it comes to adding other functionalities or keeping your web framework up to date.
+5. A CMS should be able to fit within any webpage design.
+6. A CMS should be extensible in order to handle different kind of content (think of texts, images, maps, image galleries). And it should be easy to implement such extensions.
 
 
 ## WYSIWIM and responsive editing
