@@ -1,17 +1,18 @@
 # contento
-**contento** is a cms system. It comes in two parts:
-* a specification
+
+**contento** is an open source cms system for the web. It comes in two parts:
+
+* a features specification 
 * an implementation for the Django web framework
 
 ## Why another CMS
 There are a lot of CMS systems around there, some with lots of feature and production-ready quality, being used on first-class websites.
 
-We cannot say we're not happy with what's around, but our experience working with different CMS and our use cases led us to try and make a new
-
+We cannot say we're not happy with what's around, but our experience working with different CMS and our use cases led us to try and develop our solution to content editing for the web.
 
 ## Manifesto
 
-These are the principles contento is being built on. They're all opinionable. 
+These are the principles contento is being built on. They're all opinionable but we'll stick to them as long as we believe in them. 
 
 1. Content should never break your website.
 2. Content should be easy to serialize, store, and move around a website or even different websites. 
@@ -19,24 +20,6 @@ These are the principles contento is being built on. They're all opinionable.
 4. CMS should be just related to editing content on a website. It should not dictate the structure of the web site or become a constraint when it comes to adding other functionalities or keeping your web framework up to date.
 5. CMS should be able to fit within any webpage design.
 6. CMS should be extensible in order to handle different kind of content (think of texts, images, maps, image galleries).
-
-## Core concepts and features
-
-### Fragments
-
-### Pages
-
-### Trees
-
-### Progressive editing interfaces
-
-### Content relations
-
-### Versioning
-
-### i18n
-
-### Publishing workflows
 
 
 ## WYSIWIM and responsive editing
@@ -58,8 +41,32 @@ WYSIWIM does not mean "raw" editing, it focus on using the right tool for tuning
 
 3. ASSISTED INTERFACES
 
-
 ## Tech
-Our implementation is based on Django, the python based web framework. It will also leverage JSON as our preferred format for storing content and some javascript to provide rich editing interfaces. 
 
+Our implementation is based on tools and technologies we believe in and work with, such as:
 
+- Python programming language.
+- Django, the python based web framework. 
+- JSON for content storage and JSON schema for generating editing interfaces base. 
+- PostgreSQL JSON data type for even querying our JSON content.
+- Javascript for providing editing interfaces on web pages.
+
+## Core concepts and features
+
+TBW
+
+### Fragments
+
+### Pages
+
+### Trees
+
+### Progressive editing interfaces
+
+### Content relations
+
+### Versioning
+
+### i18n
+
+### Publishing workflows
