@@ -12,7 +12,7 @@ We cannot say we're not happy with what's around, but our experience working wit
 
 ## Manifesto
 
-These are the principles **contento** is being built on. They're all opinionable but we'll stick to them. 
+These are the principles **contento** is being built on.
 
 1. Content should never break your website.
 2. Content should be easy to serialize, store, and move around a website or even different websites. 
