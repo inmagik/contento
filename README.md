@@ -70,3 +70,13 @@ TBW
 ### i18n
 
 ### Publishing workflows
+
+
+## Development
+
+Development is lead by the INMAGIK team.
+
+## Contributors
+
+* [Mauro Bianchi](https://github.com/bianchimro)
+
