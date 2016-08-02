@@ -36,17 +36,13 @@ WYSIWIM does not mean "raw" editing, it focus on using the right tool for tuning
 
 ## Core concepts and features
 
-TBW
+### Pages
+
+### Contents
 
 ### Fragments
 
-### Pages
-
-### Trees
-
 ### Progressive editing interfaces
-
-### Content relations
 
 ### Versioning
 
