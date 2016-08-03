@@ -8,8 +8,12 @@ def render(content):
     pieces = klass_string.split(".")
     if len(pieces) < 2:
         klass_string = "contento.renderers." + klass_string
-    renderer = import_string(klass_string)()
-    return renderer.render(content.get("data"))
+    try:
+        renderer = import_string(klass_string)()
+        return renderer.render(content.get("data"))
+    except ImportError, e:
+        return render_error(content, str(e))
+
 
 
 def apply_text_processors(text):
@@ -21,3 +25,7 @@ def apply_text_processors(text):
         processor = import_string(processor_name)()
         text = processor.process(text)
     return text
+
+
+def render_error(content, msg):
+    return "<div class='alert alert-danger'>Error rendering content:<pre>%s</pre>Error:<pre>%s</pre></div>" % (content, msg)

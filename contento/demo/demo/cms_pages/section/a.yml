@@ -10,7 +10,16 @@ contents:
     data:
       region_one:
         - type: Text
-          data: "Hi. this is a page"
+          data: "<h2>Hi. this is a page</h2>"
+
+        - type: Image
+          data:
+            src: https://inmagik.it/static//techimg/django_square.png
+            wrapper_class: text-center
+            class: img-circle
+
+        - type: Text
+          data: "On with more data"
 
   - language: it
     key: Null
