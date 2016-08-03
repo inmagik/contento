@@ -1,0 +1,62 @@
+{% load contento %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <style media="screen">
+      .region-one{
+        padding: 20px;
+        background-color: deepskyblue;
+        color: white;
+      }
+      .region-two{
+        padding: 20px;
+        background-color: hotpink;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>
+      Simple page here. (this title is fixed)
+      </h2>
+      <div class="row">
+        <div class="col col-sm-6">
+          <h3>Region one</h3>
+          <div class="region-one">
+              {% region "region_one" %}
+          </div>
+        </div>
+
+        <div class="col col-sm-6">
+          <h3>Region two</h3>
+          <div class="region-two">
+              {% if region_two %}
+                {% region "region_two" %}
+              {% else %}
+                No data for this page in this region!
+              {% endif %}
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="row">
+        <div class="col col-sm-12">
+          <h1>Menu here</h1>
+          {% pages_tree "" "menu_template.html" %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+  </body>
+</html>

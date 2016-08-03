@@ -1,0 +1,12 @@
+page:
+  label: a
+  published: True
+  template: simple_page.html
+
+contents:
+  - language: Null
+    key: Null
+    data:
+      region_one:
+        - type: Text
+          data: "Hi. this is a page"

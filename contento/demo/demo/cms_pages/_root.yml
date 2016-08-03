@@ -1,0 +1,13 @@
+page:
+  label: index
+  published: True
+  template: simple_page.html
+
+contents:
+  - language: Null
+    key: Null
+    data:
+      region_one:
+        - type: Text
+          data: 'Hi. this is some text from the cms. We are in the index page.
+                Try and navigate to a section: <br/> <a href="contento://section">Section</a>'

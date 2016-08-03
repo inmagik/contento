@@ -1,0 +1,15 @@
+page:
+  label: section
+  published: True
+  template: simple_page.html
+
+contents:
+  - language: Null
+    key: Null
+    data:
+      region_one:
+        - type: Text
+          data: "Hi. this is a section page. it has some children, too."
+      region_two:
+        - type: Text
+          data: "Hello there from region two"

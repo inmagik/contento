@@ -1,0 +1,23 @@
+from django.conf.urls import url
+from .views import serve_page
+
+class CMSRouter(object):
+    """
+    Generates urls based on site pages.
+    Should handle (some ideas):
+    - drafts/public
+    - i18n
+    """
+
+    def __init__(self):
+        self.urls = []
+
+    def mount(self, base_url):
+        """
+        Register content management on a base_url
+        """
+        if(base_url):
+            base_url = base_url + "/"
+
+        slug_url = url(r'%s(?P<slug>.*)' % base_url, serve_page, name="contento-cms")
+        self.urls.append(slug_url)
