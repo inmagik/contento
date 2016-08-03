@@ -1,7 +1,8 @@
 page:
-  label: a
   published: True
   template: simple_page.html
+  data:
+    menu_title: A page
 
 contents:
   - language: Null
@@ -10,3 +11,12 @@ contents:
       region_one:
         - type: Text
           data: "Hi. this is a page"
+
+  - language: it
+    key: Null
+    page_data:
+      menu_title: Una pagina
+    data:
+      region_one:
+        - type: Text
+          data: "Ciao. questa è una pagina"

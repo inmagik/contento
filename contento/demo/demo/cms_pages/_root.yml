@@ -1,7 +1,8 @@
 page:
-  label: index
   published: True
   template: simple_page.html
+  data:
+    menu_title: "Home"
 
 contents:
   - language: Null

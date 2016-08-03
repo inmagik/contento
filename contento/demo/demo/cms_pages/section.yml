@@ -1,7 +1,8 @@
 page:
-  label: section
   published: True
   template: simple_page.html
+  data:
+    menu_title: Section
 
 contents:
   - language: Null

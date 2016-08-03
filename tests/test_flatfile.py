@@ -30,7 +30,7 @@ class FlatFilesBackendTestCase(TestCase):
         self.assertEquals(path, os.path.join(CONTENTO_FLATFILES_BASE, "section"))
 
         path = self.backend.get_path("")
-        self.assertEquals(path, CONTENTO_FLATFILES_BASE + "/_root")
+        self.assertEquals(path, CONTENTO_FLATFILES_BASE + "/")
 
     def test_get_page_path(self):
         path = self.backend.get_page_path("section")
@@ -38,3 +38,9 @@ class FlatFilesBackendTestCase(TestCase):
 
         path = self.backend.get_page_path("/")
         self.assertEquals(path, CONTENTO_FLATFILES_BASE + "/_root.yml")
+
+    def test_tree(self):
+        """
+        """
+        tree = self.backend.get_tree("/")
+        print tree.to_dict()
