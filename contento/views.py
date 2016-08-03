@@ -19,7 +19,8 @@ def serve_page(request, slug=None):
 
     cms_backend = import_string(CONTENTO_BACKEND)()
     page = cms_backend.get_page(slug)
-    props =  page.get("props")
+    page_data =  page.get("page")
     content =  page.get("content")
 
-    return render(request, props["template"], content.get("data"))
+    
+    return render(request, page_data["template"], content)

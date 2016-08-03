@@ -2,6 +2,7 @@ import os
 import yaml
 from contento.settings import CONTENTO_FLATFILES_BASE
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
+import re
 
 class PageNode(object):
     def __init__(self, slug, has_page=False):
@@ -59,21 +60,38 @@ class FlatFilesBackend(object):
 
     """
     YAML based file backend.
+    It builds pages as follows:
+    - slug, language and key are inferred from filename
+    - relations (parents) are inferred from filenames
     """
 
     def check_paths(self):
+        """
+        ensures that CONTENTO_FLATFILES_BASE is set
+        """
         if not CONTENTO_FLATFILES_BASE:
             raise FlatFilesBaseNotConfigured("CONTENTO_FLATFILES_BASE must be declared in order to use FlatFilesBackend")
 
     def get_path(self, slug, language=None, key=None ):
-        if slug == "/" or slug == "":
-            slug = ""
+        """
+        gets the file path for a slug
+        """
+        if slug == "/":
+            slug = "_root"
         if slug.endswith("/"):
             slug = slug[:-1]
+        if language:
+            slug = slug + "__%s" % language
+        if key:
+            slug = slug + "---%s" % key
         path = os.path.join(CONTENTO_FLATFILES_BASE, slug)
         return path
 
+    #TODO: SHOULD RETURN slug, lang, key
     def get_slug(self, path):
+        """
+        Reverse slug from path
+        """
         slug = path.replace(CONTENTO_FLATFILES_BASE, "")
         if slug == "_root":
             return "/"
@@ -82,9 +100,6 @@ class FlatFilesBackend(object):
 
     def get_page_path(self, slug, language=None, key=None ):
         path = self.get_path(slug, language=language, key=key)
-        if slug == "/" or slug == "":
-            path = path + "_root"
-
         out = path + ".yml"
         if os.path.isfile(out):
             return out
@@ -94,31 +109,18 @@ class FlatFilesBackend(object):
     def get_page(self, slug, language=None, key=None ):
         self.check_paths()
         path = self.get_page_path(slug, language=language, key=key)
-        #TODO:CHECK FILE VS DIR
-        #if os.path.isfile(path)
         if path is None:
             raise CmsPageNotFound("Page %s not found" % slug)
-
         try:
             with open(path) as stream:
                 data = yaml.load(stream)
         except IOError:
             raise CmsPageNotFound("Page %s not found" % slug)
 
-        out = { "props" : data.get("page") }
+        return data
 
-        contents = data.get("contents", [])
-        content = [x for x in contents if x["language"]==language and x["key"]==key]
-        if len(content):
-            out["content"] = content[0]
-        else:
-            out["content"] = None
-
-        return out
-
-
+    #TODO: probaby keys should not influence trees
     def get_tree(self, slug, language=None, key=None, max_depth=None):
-        print 100, slug
         self.check_paths()
         path = self.get_path(slug)
         page_path = self.get_page_path(slug)
@@ -141,4 +143,4 @@ class FlatFilesBackend(object):
 
 
 
-        return out
+        return out.to_dict()

@@ -4,13 +4,10 @@ page:
   data:
     menu_title: Section
 
-contents:
-  - language: Null
-    key: Null
-    data:
-      region_one:
-        - type: Text
-          data: "Hi. this is a section page. it has some children, too."
-      region_two:
-        - type: Text
-          data: "Hello there from region two"
+content:
+  region_one:
+    - type: Text
+      data: "Hi. this is a section page. it has some children, too. <a href='contento://section/a'>Page a</a>"
+  region_two:
+    - type: Text
+      data: "Hello there from region two"

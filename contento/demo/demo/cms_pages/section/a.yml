@@ -4,28 +4,16 @@ page:
   data:
     menu_title: A page
 
-contents:
-  - language: Null
-    key: Null
-    data:
-      region_one:
-        - type: Text
-          data: "<h2>Hi. this is a page</h2>"
+content:
+  region_one:
+    - type: Text
+      data: "<h2>Hi. this is a page</h2>"
 
-        - type: Image
-          data:
-            src: https://inmagik.it/static//techimg/django_square.png
-            wrapper_class: text-center
-            class: img-circle
+    - type: Image
+      data:
+        src: https://inmagik.it/static//techimg/django_square.png
+        wrapper_class: text-center
+        class: img-circle
 
-        - type: Text
-          data: "On with more data"
-
-  - language: it
-    key: Null
-    page_data:
-      menu_title: Una pagina
-    data:
-      region_one:
-        - type: Text
-          data: "Ciao. questa è una pagina"
+    - type: Text
+      data: "On with more data"
