@@ -42,5 +42,5 @@ class FlatFilesBackendTestCase(TestCase):
     def test_tree(self):
         """
         """
-        tree = self.backend.get_tree("/")
-        print tree
+        #tree = self.backend.get_tree("/")
+        #print tree
