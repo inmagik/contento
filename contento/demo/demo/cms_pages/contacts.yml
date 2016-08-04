@@ -1,0 +1,13 @@
+page:
+  published: True
+  template: simple_page.html
+  data:
+    menu_title: Contacts
+
+content:
+  region_one:
+    - type: Text
+      data: "Hi. this is a contacts page."
+  region_two:
+    - type: Text
+      data: "Hello there from region two. contacts"

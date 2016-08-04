@@ -29,25 +29,25 @@ class FlatFilesBackendTestCase(TestCase):
 
         path = self.backend.get_path("section/a.yml")
         slug, lang, key = self.backend.get_slug(path)
-        self.assertEquals(slug, "section/a")
+        self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it.yml")
         slug, lang, key = self.backend.get_slug(path)
-        self.assertEquals(slug, "section/a")
+        self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it---draft.yml")
         slug, lang, key = self.backend.get_slug(path)
-        self.assertEquals(slug, "section/a")
+        self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, "draft")
 
         path = self.backend.get_path("section/a---draft.yml")
         slug, lang, key = self.backend.get_slug(path)
-        self.assertEquals(slug, "section/a")
+        self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, "draft")
 

@@ -4,58 +4,6 @@ from contento.settings import CONTENTO_FLATFILES_BASE
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 import re
 
-class PageNode(object):
-    def __init__(self, slug, has_page=False):
-        self.slug = slug
-        self.has_page = has_page
-        self.children = []
-
-    def add_children(self, node):
-        if node not in self.children:
-            self.children.append(node)
-
-    def to_dict(self):
-        return {
-            "slug" : self.slug,
-            "has_page" : self.has_page,
-            "children" : [x.to_dict() for x in self.children ]
-        }
-
-
-class PageTree(object):
-    def __init__(self, root_path, is_page=False):
-        self.refs = {}
-        self.root = PageNode(root_path, is_page)
-        self.refs[root_path] = self.root
-
-    def add_page(self, slug):
-        if slug not in self.refs:
-            node = PageNode(slug, True)
-            self.refs[slug] = node
-        else:
-            self.refs[slug].has_page = True
-
-    def to_dict(self):
-        return self.root.to_dict()
-
-    def add_children(self, slug, child_slug, has_page):
-        if slug not in self.refs:
-            node = PageNode(slug)
-            self.refs[slug] = node
-        else:
-            node = self.refs[slug]
-
-        if child_slug not in self.refs:
-            child_node = PageNode(child_slug)
-            self.refs[child_slug] = child_node
-        else:
-            child_node = self.refs[child_slug]
-
-
-        node.add_children(child_node)
-
-
-
 FILE_REGEX = "(?P<slug>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
 file_regex = re.compile(FILE_REGEX)
 
@@ -81,6 +29,8 @@ class FlatFilesBackend(object):
         """
         if for_file and slug == "/":
             slug = "_root"
+        if slug.startswith("/"):
+            slug = slug[1:]
         if slug.endswith("/"):
             slug = slug[:-1]
         if language:
@@ -102,9 +52,7 @@ class FlatFilesBackend(object):
         key = search_result.group('key')
 
         slug = slug.replace("_root", "")
-
-        if slug.startswith("/"):
-            slug = slug[1:]
+        slug = slug or "/"
 
         return slug, lang, key
 
@@ -114,9 +62,7 @@ class FlatFilesBackend(object):
         """
         path = self.get_path(slug, language=language, key=key, for_file=True)
         out = path + ".yml"
-        if os.path.isfile(out):
-            return out
-        return None
+        return out
 
 
     def get_page(self, slug, language=None, key=None ):
@@ -140,13 +86,16 @@ class FlatFilesBackend(object):
     def get_tree(self, slug, language=None, key=None, max_depth=None):
         self.check_paths()
         path = self.get_path(slug, language=language, key=key)
-        print 1234, path
-
 
         #out = PageTree(slug, page_path is not None)
         depth = 0
+        nodes = []
+        out = {}
+        nodes_dict = {}
+
         for dirname, dirnames, filenames in os.walk(path):
             depth += 1
+
             if max_depth and depth == max_depth:
                 continue
 
@@ -154,14 +103,34 @@ class FlatFilesBackend(object):
             if not nodeslug.endswith("/"):
                 nodeslug += "/"
 
+            if not nodeslug.startswith("/"):
+                nodeslug = "/" + nodeslug
+
             for f in filenames:
                 slug, lang, key = self.get_slug(nodeslug + f)
-                print slug, lang, key
-                #filenodeslug = self.get_slug(f.replace(".yml", ""))
-                #if nodeslug != filenodeslug:
-                    #out.add_children(nodeslug, filenodeslug, True)
-                #out.add_page(filenodeslug)
+                page_data = self.get_page(slug, lang, key)
+                page = page_data["page"]
 
+                lang = page.get("language", lang)
+                if lang != language:
+                    continue
 
-        return {}
-        #return out.to_dict()
+                node = {
+                    "slug" : slug,
+                    "url" : page.get("url", None),
+                    "data" : page.get("data", {}),
+                    "language" : lang,
+                    "key" : page.get("key", key),
+                    "parent" : page.get("parent", nodeslug[:-1] or None),
+                    "children" : []
+                }
+
+                #nodes.append(node)
+                if not node["parent"]:
+                    out[node["slug"]] = node
+                else:
+                    nodes_dict[node["parent"]]["children"].append(node)
+
+                nodes_dict[node["slug"]] = node
+
+        return [out[x] for x in out]
