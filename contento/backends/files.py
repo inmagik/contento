@@ -122,8 +122,8 @@ class FlatFilesBackend(object):
     #TODO: probaby keys should not influence trees
     def get_tree(self, slug, language=None, key=None, max_depth=None):
         self.check_paths()
-        path = self.get_path(slug)
-        page_path = self.get_page_path(slug)
+        path = self.get_path(slug, language=language, key=key)
+        page_path = self.get_page_path(slug, language=language, key=key)
 
         out = PageTree(slug, page_path is not None)
 

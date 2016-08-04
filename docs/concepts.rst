@@ -19,7 +19,7 @@ A **page** is a logical grouping of contents with the following traits:
 A page may have a "parent" field pointing to another page and an "order" field (integer)
 that identifies the order within the parent
 
-A page also contains an optional data section useful for annotating the page
+A page also contains an optional data section useful for annotating the page.
 
 
 Page backends
