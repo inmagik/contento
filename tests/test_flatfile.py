@@ -25,6 +25,32 @@ class FlatFilesBackendTestCase(TestCase):
         self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
 
 
+    def test_get_slug(self):
+
+        path = self.backend.get_path("section/a.yml")
+        slug, lang, key = self.backend.get_slug(path)
+        self.assertEquals(slug, "section/a")
+        self.assertEquals(lang, None)
+        self.assertEquals(key, None)
+
+        path = self.backend.get_path("section/a__it.yml")
+        slug, lang, key = self.backend.get_slug(path)
+        self.assertEquals(slug, "section/a")
+        self.assertEquals(lang, "it")
+        self.assertEquals(key, None)
+
+        path = self.backend.get_path("section/a__it---draft.yml")
+        slug, lang, key = self.backend.get_slug(path)
+        self.assertEquals(slug, "section/a")
+        self.assertEquals(lang, "it")
+        self.assertEquals(key, "draft")
+
+        path = self.backend.get_path("section/a---draft.yml")
+        slug, lang, key = self.backend.get_slug(path)
+        self.assertEquals(slug, "section/a")
+        self.assertEquals(lang, None)
+        self.assertEquals(key, "draft")
+
     def test_get_path(self):
         path = self.backend.get_path("section")
         self.assertEquals(path, os.path.join(CONTENTO_FLATFILES_BASE, "section"))
@@ -42,5 +68,5 @@ class FlatFilesBackendTestCase(TestCase):
     def test_tree(self):
         """
         """
-        #tree = self.backend.get_tree("/")
-        #print tree
+        tree = self.backend.get_tree("")
+        print tree

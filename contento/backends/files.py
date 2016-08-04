@@ -56,6 +56,9 @@ class PageTree(object):
 
 
 
+FILE_REGEX = "(?P<slug>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
+file_regex = re.compile(FILE_REGEX)
+
 class FlatFilesBackend(object):
 
     """
@@ -72,11 +75,11 @@ class FlatFilesBackend(object):
         if not CONTENTO_FLATFILES_BASE:
             raise FlatFilesBaseNotConfigured("CONTENTO_FLATFILES_BASE must be declared in order to use FlatFilesBackend")
 
-    def get_path(self, slug, language=None, key=None ):
+    def get_path(self, slug, language=None, key=None, for_file=False ):
         """
         gets the file path for a slug
         """
-        if slug == "/":
+        if for_file and slug == "/":
             slug = "_root"
         if slug.endswith("/"):
             slug = slug[:-1]
@@ -87,19 +90,29 @@ class FlatFilesBackend(object):
         path = os.path.join(CONTENTO_FLATFILES_BASE, slug)
         return path
 
-    #TODO: SHOULD RETURN slug, lang, key
     def get_slug(self, path):
         """
         Reverse slug from path
         """
-        slug = path.replace(CONTENTO_FLATFILES_BASE, "")
-        if slug == "_root":
-            return "/"
-        return slug
+        path = path.replace(CONTENTO_FLATFILES_BASE, "")
+
+        search_result = file_regex.search(path)
+        slug = search_result.group('slug')
+        lang = search_result.group('lang')
+        key = search_result.group('key')
+
+        slug = slug.replace("_root", "")
+
+        if slug.startswith("/"):
+            slug = slug[1:]
+
+        return slug, lang, key
 
 
     def get_page_path(self, slug, language=None, key=None ):
-        path = self.get_path(slug, language=language, key=key)
+        """
+        """
+        path = self.get_path(slug, language=language, key=key, for_file=True)
         out = path + ".yml"
         if os.path.isfile(out):
             return out
@@ -107,6 +120,10 @@ class FlatFilesBackend(object):
 
 
     def get_page(self, slug, language=None, key=None ):
+        """
+        Load a page data given a slug, a language and a key.
+        From the filesystem
+        """
         self.check_paths()
         path = self.get_page_path(slug, language=language, key=key)
         if path is None:
@@ -123,10 +140,10 @@ class FlatFilesBackend(object):
     def get_tree(self, slug, language=None, key=None, max_depth=None):
         self.check_paths()
         path = self.get_path(slug, language=language, key=key)
-        page_path = self.get_page_path(slug, language=language, key=key)
+        print 1234, path
 
-        out = PageTree(slug, page_path is not None)
 
+        #out = PageTree(slug, page_path is not None)
         depth = 0
         for dirname, dirnames, filenames in os.walk(path):
             depth += 1
@@ -134,13 +151,17 @@ class FlatFilesBackend(object):
                 continue
 
             nodeslug =  dirname.replace(path, "")
-            nodeslug = nodeslug or "/"
+            if not nodeslug.endswith("/"):
+                nodeslug += "/"
+
             for f in filenames:
-                filenodeslug = self.get_slug(f.replace(".yml", ""))
-                if nodeslug != filenodeslug:
-                    out.add_children(nodeslug, filenodeslug, True)
-                out.add_page(filenodeslug)
+                slug, lang, key = self.get_slug(nodeslug + f)
+                print slug, lang, key
+                #filenodeslug = self.get_slug(f.replace(".yml", ""))
+                #if nodeslug != filenodeslug:
+                    #out.add_children(nodeslug, filenodeslug, True)
+                #out.add_page(filenodeslug)
 
 
-
-        return out.to_dict()
+        return {}
+        #return out.to_dict()
