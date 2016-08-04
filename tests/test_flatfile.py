@@ -19,10 +19,10 @@ class FlatFilesBackendTestCase(TestCase):
     def test_get_page(self):
         """
         """
-        page = self.backend.get_page("/")
-        self.assertTrue('props' in page)
-        self.assertTrue('content' in page)
-        self.assertEquals(page["content"]["data"]["region_one"][0]["type"], "Text")
+        page_data = self.backend.get_page("/")
+        self.assertTrue('page' in page_data)
+        self.assertTrue('content' in page_data)
+        self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
 
 
     def test_get_path(self):
@@ -43,4 +43,4 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         tree = self.backend.get_tree("/")
-        print tree.to_dict()
+        print tree
