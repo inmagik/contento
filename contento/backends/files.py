@@ -103,8 +103,6 @@ class FlatFilesBackend(object):
             if not nodeslug.endswith("/"):
                 nodeslug += "/"
 
-            if not nodeslug.startswith("/"):
-                nodeslug = "/" + nodeslug
 
             for f in filenames:
                 slug, lang, key = self.get_slug(nodeslug + f)
@@ -116,7 +114,7 @@ class FlatFilesBackend(object):
                     continue
 
                 node = {
-                    "slug" : slug,
+                    "slug" : slug[1:],
                     "url" : page.get("url", None),
                     "data" : page.get("data", {}),
                     "language" : lang,

@@ -1,5 +1,5 @@
 <ul class="list-group">
   {% for node in nodes %}
-  <li class="list-group-item"><a href="#">{{node.data.menu_title}}</a></li>
+  <li class="list-group-item"><a href="{% url "contento-cms" slug=node.slug %}">{{node.data.menu_title}}</a></li>
   {% endfor %}
 </ul>
