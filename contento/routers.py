@@ -17,7 +17,7 @@ class CMSRouter(object):
         """
         Register content management on a base_url
         """
-        if(base_url):
+        if not base_url or not base_url.endswith("/"):
             base_url = base_url + "/"
 
         tree = Tree(base_slug)
