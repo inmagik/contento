@@ -9,10 +9,10 @@ class RouterTestCase(TestCase):
     def test_mount(self):
         """
         """
-        self.router.mount("", "/")
-        pattern = self.router.urls[0].regex.pattern
-        self.assertEquals(pattern, "(?P<slug>.*)")
+        urls = self.router.mount("")
+        pattern = urls[0].regex.pattern
+        self.assertEquals(pattern, "(?P<page_url>.*)")
 
-        self.router.mount("/abc", "/")
-        pattern = self.router.urls[1].regex.pattern
-        self.assertEquals(pattern, "/abc/(?P<slug>.*)")
+        urls = self.router.mount("abc/")
+        pattern = urls[0].regex.pattern
+        self.assertEquals(pattern, "abc/(?P<page_url>.*)")

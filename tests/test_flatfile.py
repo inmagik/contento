@@ -25,28 +25,28 @@ class FlatFilesBackendTestCase(TestCase):
         self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
 
 
-    def test_get_slug(self):
+    def test_get_meta_from_path(self):
 
         path = self.backend.get_path("section/a.yml")
-        slug, lang, key = self.backend.get_slug(path)
+        slug, lang, key = self.backend.get_meta_from_path(path)
         self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it.yml")
-        slug, lang, key = self.backend.get_slug(path)
+        slug, lang, key = self.backend.get_meta_from_path(path)
         self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it---draft.yml")
-        slug, lang, key = self.backend.get_slug(path)
+        slug, lang, key = self.backend.get_meta_from_path(path)
         self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, "draft")
 
         path = self.backend.get_path("section/a---draft.yml")
-        slug, lang, key = self.backend.get_slug(path)
+        slug, lang, key = self.backend.get_meta_from_path(path)
         self.assertEquals(slug, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, "draft")
@@ -69,4 +69,4 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         tree = self.backend.get_tree("")
-        print tree
+        
