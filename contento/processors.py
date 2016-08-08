@@ -12,7 +12,7 @@ class InternalLinks(object):
             match = matchf.groups()
             slug = match[0] or "_root"
             try:
-                link = reverse('contento-cms', kwargs={"slug":slug})
+                link = reverse('contento-cms', kwargs={"page_url":slug})
                 return link
             except:
                 return "#cms:notfound"

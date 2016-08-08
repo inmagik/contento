@@ -10,17 +10,18 @@ class CMSRouter(object):
     - i18n
     """
 
-    def __init__(self):
-        self.urls = []
-
     def mount(self, base_url, base_slug):
         """
         Register content management on a base_url
         """
+
+        urls = []
+
         if(base_url):
             base_url = base_url + "/"
 
         tree = Tree(base_slug)
 
-        slug_url = url(r'%s(?P<slug>.*)' % base_url, serve_page, name="contento-cms")
-        self.urls.append(slug_url)
+        public_pages_url = url(r'%s(?P<page_url>.*)' % base_url, serve_page, name="contento-cms")
+        urls.append(public_pages_url)
+        return urls

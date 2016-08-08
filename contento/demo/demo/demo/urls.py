@@ -23,6 +23,6 @@ urlpatterns = [
 ]
 
 cms_router = CMSRouter()
-cms_router.mount(r'cms', '/')
+cms_urls = cms_router.mount(r'cms', '/')
 
-urlpatterns += cms_router.urls
+urlpatterns += cms_urls
