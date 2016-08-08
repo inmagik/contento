@@ -1,11 +1,7 @@
 Contento
 ========
 
-**Contento** is an open source cms system for the web. It comes in two
-parts:
-
--  a features specification
--  an implementation for the Django web framework
+**Contento** is an open source cms system for the Django web framework.
 
 Why another CMS
 ---------------
