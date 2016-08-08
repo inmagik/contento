@@ -7,15 +7,13 @@ page:
 
 content:
   region_one:
-    - type: Text
-      data: "<div>Custom renderers showcase</div>"
-
     - type: ModelInstanceTemplate
       data:
         model_name : "django.contrib.auth.models.User"
         template_name: "user_detail.html"
         model_pk: "{{ url_data.name }}"
 
+  region_two:
     - type: QuerysetTemplate
       data:
         model_name : "django.contrib.auth.models.User"
