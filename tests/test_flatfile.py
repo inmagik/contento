@@ -1,5 +1,6 @@
 from django.test import TestCase
 import os
+import contento
 from contento.backends.files import FlatFilesBackend
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 from contento.settings import CONTENTO_FLATFILES_BASE
@@ -69,4 +70,3 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         tree = self.backend.get_tree("")
-        
