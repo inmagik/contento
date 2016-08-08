@@ -1,5 +1,5 @@
 page:
-  slug: user/(?P<name>\w+)
+  slug: user/(?P<user_id>\w+)
   data:
     published: True
     template: simple_page.html
@@ -10,7 +10,7 @@ content:
       data:
         model_name : "django.contrib.auth.models.User"
         template_name: "user_detail.html"
-        model_pk: "{{ url_data.name }}"
+        model_pk: "{{ url_data.user_id }}"
 
   region_two:
     - type: QuerysetTemplate
