@@ -1,8 +1,9 @@
 page:
-  published: True
-  template: simple_page.html
+  slug: "a"
   data:
     menu_title: A page
+    published: True
+    template: simple_page.html
 
 content:
   region_one:

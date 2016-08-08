@@ -29,6 +29,5 @@ def pages_tree(context, slug, template_name, depth=None, current_page=None,
     template = get_template(template_name)
     cms_backend = import_string(CONTENTO_BACKEND)()
     tree = cms_backend.get_tree(slug)
-    print "tree", tree
 
     return template.render({"nodes":tree})

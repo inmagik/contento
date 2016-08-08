@@ -1,8 +1,10 @@
 page:
-  published: True
-  template: simple_page.html
+  slug: ""
+
   data:
     menu_title: "Home"
+    published: True
+    template: simple_page.html
 
 content:
   region_one:

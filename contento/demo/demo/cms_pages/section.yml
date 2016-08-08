@@ -1,8 +1,9 @@
 page:
-  published: True
-  template: simple_page.html
+  slug: "section"
   data:
     menu_title: Section
+    published: True
+    template: simple_page.html
 
 content:
   region_one:

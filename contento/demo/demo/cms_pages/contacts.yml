@@ -1,8 +1,9 @@
 page:
-  published: True
-  template: simple_page.html
+  slug: "contacts"
   data:
     menu_title: Contacts
+    published: True
+    template: simple_page.html
 
 content:
   region_one:

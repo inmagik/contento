@@ -1,5 +1,13 @@
-<ul class="list-group">
+<ul class="nav nav-pills nav-stacked" {% if sub %}style="padding-left:20px;"{% endif %}>
   {% for node in nodes %}
-  <li class="list-group-item"><a href="{% url "contento-cms" page_url=node.slug %}">{{node.data.menu_title}}</a></li>
+  <li class="">
+    <a href="{% url "contento-cms" page_url=node.page_url %}">{{node.data.menu_title}}</a>
+    {% if node.children %}
+    {% with nodes=node.children sub=True %}
+      {% include "menu_template.html" %}
+    {% endwith %}
+    {% endif %}
+
+  </li>
   {% endfor %}
 </ul>
