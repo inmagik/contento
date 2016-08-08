@@ -11,7 +11,7 @@ def render(content, page_context={}):
     try:
         renderer = import_string(klass_string)()
         return renderer.render(content.get("data", {}), context=page_context)
-    except ImportError, e:
+    except Exception, e:
         return render_error(content, str(e))
 
 

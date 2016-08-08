@@ -32,3 +32,6 @@ content:
   region_two:
     - type: Text
       data: "Hello there from region two. contacts"
+
+    - type: Text
+      data: "<p>And more content here </p>"

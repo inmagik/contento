@@ -1,7 +1,6 @@
 page:
   slug: user/(?P<name>\w+)
   data:
-    menu_title: B page
     published: True
     template: simple_page.html
 
