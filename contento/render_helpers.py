@@ -1,7 +1,7 @@
 from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS
 
-def render(content):
+def render(content, page_context={}):
     """
     """
     klass_string = content.get("type")
@@ -10,7 +10,7 @@ def render(content):
         klass_string = "contento.renderers." + klass_string
     try:
         renderer = import_string(klass_string)()
-        return renderer.render(content.get("data"))
+        return renderer.render(content.get("data"), context=page_context)
     except ImportError, e:
         return render_error(content, str(e))
 

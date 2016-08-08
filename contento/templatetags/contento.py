@@ -17,7 +17,7 @@ def region(context, region_name):
     region_data = context.get(region_name, [])
     out = ""
     for content in region_data:
-        out += render(content)
+        out += render(content, context)
 
     #TODO: this is too weak. should be delegated to renders
     return mark_safe(out)

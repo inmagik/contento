@@ -1,0 +1,14 @@
+page:
+  slug: users
+  data:
+    menu_title: Users
+    published: True
+    template: simple_page.html
+
+content:
+  region_one:
+    
+    - type: QuerysetTemplate
+      data:
+        model_name : "django.contrib.auth.models.User"
+        template_name: "users_list.html"

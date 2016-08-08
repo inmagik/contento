@@ -1,7 +1,7 @@
 from contento.render_helpers import apply_text_processors
 
 class Image(object):
-    def render(self, content):
+    def render(self, content, context={}):
         src = content.get("src")
         klass = content.get("class", "")
         wrapper_class = content.get("wrapper_class", "")
