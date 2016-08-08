@@ -1,5 +1,5 @@
 page:
-  slug: "a"
+  slug: a
   data:
     menu_title: A page
     published: True
