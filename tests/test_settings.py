@@ -2,8 +2,11 @@ import os
 
 SECRET_KEY = 'fake-key'
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
     'django_nose',
     "tests",
+    "sekizai",
     "contento"
 ]
 
@@ -27,6 +30,23 @@ DATABASES = {
 CURRENT_DIR = os.path.dirname(__file__)
 CONTENTO_FLATFILES_BASE =  os.path.abspath(os.path.join(CURRENT_DIR , "../contento/demo/demo/cms_pages"))
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [ os.path.join(CURRENT_DIR, "../contento/demo/demo/templates") ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai',
+            ],
+        },
+    },
+]
+
 # Use nose to run all tests
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
@@ -37,3 +57,5 @@ NOSE_ARGS = [
     '--nocapture',
 
 ]
+
+ROOT_URLCONF = 'tests.test_urls'

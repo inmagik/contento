@@ -9,12 +9,13 @@ class Registry(object):
     Content registry.
 
     """
-    def __init__(self, language=None):
+    def __init__(self, language=None, build=True):
         self.language = language
         self.backend = import_string(CONTENTO_BACKEND)()
         self.content_by_url = {}
         self.content_tree = []
-        self.build()
+        if build:
+            self.build()
 
     def process_node(self, node, base):
         out = {}
@@ -22,7 +23,7 @@ class Registry(object):
             base = base + "/"
         url = base + node["slug"]
         out[url] = { x:node[x] for x in node if x != "children"}
-        for c in node["children"]:
+        for c in node.get("children", []):
             out.update(self.process_node(c, url))
         return out
 
