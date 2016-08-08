@@ -13,7 +13,6 @@ content:
         template_name: "user_detail.html"
         model_pk: "{{ url_data.name }}"
 
-  region_two:
     - type: QuerysetTemplate
       data:
         model_name : "django.contrib.auth.models.User"

@@ -10,7 +10,7 @@ def render(content, page_context={}):
         klass_string = "contento.renderers." + klass_string
     try:
         renderer = import_string(klass_string)()
-        return renderer.render(content.get("data"), context=page_context)
+        return renderer.render(content.get("data", {}), context=page_context)
     except ImportError, e:
         return render_error(content, str(e))
 

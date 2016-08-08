@@ -9,7 +9,7 @@ content:
   region_one:
     - type: Text
       data: "Hi. this is a section page. it has some children,
-            too. <a href='contento://section/a'>Page a</a>"
+            too. <a href='contento://section/users'>Users page.</a>"
   region_two:
     - type: Text
       data: "Hello there from region two"

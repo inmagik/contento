@@ -9,6 +9,26 @@ content:
   region_one:
     - type: Text
       data: "Hi. this is a contacts page."
+
+    - type: LeafletMap
+      data:
+        lat: 45.00
+        lon: 8.12
+        wrapper_class: example-map
+
+    - type: LeafletMap
+      data:
+        lat: 45.00
+        lon: 10.12
+        wrapper_class: example-map
+        markers:
+          - lat: 45.00
+            lon: 10.00
+            popup: "Hi. This is a popup"
+          - lat: 45.10
+            lon: 10.20
+            popup: "Hi. This is another one!"
+
   region_two:
     - type: Text
       data: "Hello there from region two. contacts"

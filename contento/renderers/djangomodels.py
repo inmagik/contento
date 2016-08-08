@@ -1,6 +1,7 @@
 from contento.exceptions import RendererConfigError
 from django.utils.module_loading import import_string
 from django.template import Context, Template, loader
+from .base import BaseRenderer
 
 def render_param(param, context):
     if type(param) == str:
@@ -11,54 +12,38 @@ def render_param(param, context):
 
 
 
+class ModelInstanceTemplate(BaseRenderer):
 
+    required_fields = ['template_name', 'model_name', 'model_pk']
 
-class ModelInstanceTemplate(object):
     def render(self, content, context={}):
-        try:
-            template_name = content["template_name"]
-        except KeyError:
-            raise RendererConfigError("template name is required")
+        required_data = self.get_required_fields(content)
+        required_data = {x:render_param(required_data[x], context) for x in required_data}
+        template = loader.get_template(required_data["template_name"])
+        model_klass = import_string(required_data["model_name"])
+        obj = model_klass.objects.get(pk=int(required_data["model_pk"]))
 
-        template = loader.get_template(template_name)
-
-        try:
-            model_name = content["model_name"]
-        except KeyError:
-            raise RendererConfigError("model name is required")
-
-        try:
-            model_pk = render_param(content["model_pk"], context)
-        except KeyError:
-            raise RendererConfigError("model pk is required")
-
-        model_klass = import_string(model_name)
-        obj = model_klass.objects.get(pk=model_pk)
         ctx = Context(context)
         ctx["object"] = obj
 
         return template.render(ctx)
 
 
-class QuerysetTemplate(object):
+class QuerysetTemplate(BaseRenderer):
+
+    required_fields = ['template_name', 'model_name']
+
     def render(self, content, context={}):
-        try:
-            template_name = content["template_name"]
-        except KeyError:
-            raise RendererConfigError("template name is required")
-        template = loader.get_template(template_name)
 
-        try:
-            model_name = content["model_name"]
-        except KeyError:
-            raise RendererConfigError("model name is required")
-
+        required_data = self.get_required_fields(content)
+        required_data = {x:render_param(required_data[x], context) for x in required_data}
+        template = loader.get_template(required_data["template_name"])
         filters = content.get("filters", {})
 
         for f in filters:
             filters[f] = render_param(filters[f], context)
 
-        model_klass = import_string(model_name)
+        model_klass = import_string(required_data["model_name"])
         qset = model_klass.objects.filter(**filters)
 
         ctx = Context(context)
