@@ -19,8 +19,13 @@
     <div class="panel-body">
       {% fragment fragment.type fragment.data %}
     </div>
+  </div>
+
+  <div class="fragment-editor-inline">
+    {% fragment_editor fragment.type fragment.data %}
 
   </div>
+
 {% endfor %}
 {% endwith %}
 {% endfor %}

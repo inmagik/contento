@@ -14,7 +14,7 @@
     {% endblock head %}
 
     {% render_block "contento_css" %}
-    
+
     <!-- Bootstrap -->
     <link href="{% static "contento/dashboard/lib/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "contento/dashboard/css/dashboard.css" %}" rel="stylesheet">
@@ -52,9 +52,8 @@
           {% block content %}
           {% endblock content %}
         </div>
+      </div>
     </div>
-
-    {% render_block "contento_js" %}
 
     {% block body_bottom %}
     {% endblock body_bottom %}
@@ -63,5 +62,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{% static "contento/dashboard/lib/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/ace/1.2.4/min/ace.js">
+
+    </script>
+    <script src="{% static "contento/dashboard/lib/json-editor/dist/jsoneditor.min.js" %}"></script>
+    <script>
+      JSONEditor.defaults.options.theme = 'bootstrap3';
+    </script>
+
+    {% render_block "contento_js" %}
+
   </body>
 </html>

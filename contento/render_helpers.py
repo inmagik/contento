@@ -2,14 +2,20 @@ from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS
 import re
 
-def render(content_type, content_data, page_context={}):
-    """
-    """
+
+def load_renderer(content_type):
     pieces = content_type.split(".")
     if len(pieces) < 2:
         content_type = "contento.renderers." + content_type
+
+    return import_string(content_type)()
+
+
+def render(content_type, content_data, page_context={}):
+    """
+    """
     try:
-        renderer = import_string(content_type)()
+        renderer = load_renderer(content_type)
         return renderer.render(content_data, context=page_context)
     except Exception, e:
         return render_error(content_type, content_data, str(e))

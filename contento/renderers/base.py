@@ -4,6 +4,8 @@ class BaseRenderer(object):
 
     required_fields = []
 
+    json_schema = None
+
     def get_required_fields(self, content):
         out = {}
         for x in self.required_fields:

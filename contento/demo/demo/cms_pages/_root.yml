@@ -9,5 +9,6 @@ page:
 content:
   region_one:
     - type: Text
-      data: 'Hi. this is some text from the cms. We are in the index page.
-            Try and navigate to a section: <br/> <a href="contento://section">Section</a>'
+      data:
+        text: 'Hi. this is some text from the cms. We are in the index page.
+              Try and navigate to a section: <br/> <a href="contento://section">Section</a>'

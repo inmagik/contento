@@ -1,0 +1,23 @@
+{% load sekizai_tags %}
+
+{% addtoblock "contento_js" %}
+<script>
+  var editorSchemas = editorSchemas || {};
+  var editorId = "{{id}}";
+  editorSchemas[editorId] = {
+    schema : {{ schema|safe }},
+    disable_collapse : true,
+    disable_edit_json : true,
+    disable_properties : true,
+    form_name_root : "",
+    startval : {{ value|safe }},
+  }
+  editorSchemas[editorId].element = document.getElementById(editorId);
+  var editor = new JSONEditor(editorSchemas[editorId].element, editorSchemas[editorId]);
+
+</script>
+{% endaddtoblock %}
+
+<div class="" id="{{id}}">
+
+</div>

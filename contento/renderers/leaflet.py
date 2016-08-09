@@ -6,6 +6,24 @@ import uuid
 
 class LeafletMap(BaseRenderer):
     required_fields = ["lat", "lon"]
+    json_schema = {
+
+    	"properties": {
+    		"lat": {
+    			"type": "number",
+                "propertyOrder": 1
+            },
+            "lon": {
+    			"type": "number",
+                "propertyOrder": 2
+            },
+            "wrapper_class": {
+    			"type": "string",
+                "propertyOrder": 3
+            }
+    	},
+    	"required": ["lat", "lon"]
+    }
 
     def render(self, content, context={}):
         required_data = self.get_required_fields(content)

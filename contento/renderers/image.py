@@ -1,6 +1,8 @@
 from contento.render_helpers import apply_text_processors
+from .base import BaseRenderer
 
-class Image(object):
+
+class Image(BaseRenderer):
     def render(self, content, context={}):
         src = content.get("src")
         klass = content.get("class", "")

@@ -1,9 +1,13 @@
+import uuid
+import json
 from django import template
+from django.template import Context
 from django.utils.safestring import mark_safe
 from django.template.loader import get_template
 from django.utils.module_loading import import_string
-from ..render_helpers import render
+from ..render_helpers import render, load_renderer
 from ..settings import CONTENTO_BACKEND
+from sekizai.context import SekizaiContext
 
 
 register = template.Library()
@@ -40,6 +44,29 @@ def fragment(context, content_type, content_data):
     """
     out = render(content_type, content_data, context)
     return mark_safe(out)
+
+
+@register.simple_tag(takes_context=True)
+def fragment_editor(context, content_type, content_data):
+    """
+    renders a cms fragment
+    """
+    renderer_class = load_renderer(content_type)
+    if not renderer_class.json_schema:
+        return "<DIV>NO SCHEMA</DIV>"
+
+    out = {
+        "id" : "editor-"+str(uuid.uuid4()),
+        "schema" : json.dumps(renderer_class.json_schema),
+        "value" : json.dumps(content_data),
+        "content_type" : content_type
+    }
+
+    ctx = Context(context)
+    ctx.update(out)
+
+    template = get_template('contento/dashboard/json_form.html')
+    return template.render(ctx)
 
 
 @register.filter
