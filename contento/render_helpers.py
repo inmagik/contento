@@ -1,5 +1,6 @@
 from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS
+import re
 
 def render(content, page_context={}):
     """
@@ -29,3 +30,13 @@ def apply_text_processors(text):
 
 def render_error(content, msg):
     return "<div class='alert alert-danger'>Error rendering content:<pre>%s</pre>Error:<pre>%s</pre></div>" % (content, msg)
+
+
+def get_regions_from_template(template):
+    exp = '{%\s+region\s+"(?P<region_name>\w+)"\s%}'
+    reg = re.compile(exp)
+    out = []
+    for match in reg.finditer(template):
+        out.append(match.group('region_name'))
+    out = list(set(out))
+    return out

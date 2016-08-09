@@ -3,14 +3,19 @@
 {% block content %}
 <h1 class="page-header">
   Pages
-  <button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>
+  <a
+    href="#"
+    class="btn btn-sm btn-primary pull-right">Add new page</a>
 </h1>
 
 
-<div class="">
+{% for page in pages_tree %}
+{% include "contento/dashboard/page_for_list.html" %}
+{% endfor %}
+
+
+<pre>
   {{ pages_tree }}
+</pre>
 
-</div>
-
-<h2 class="sub-header">Section title</h2>
 {% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "contento/dashboard/base.html" %}
+
+{% block content %}
+<h3 class="page-header">
+  <span class="text-muted">Editing page</span>: {{label}}
+  <!--<button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>-->
+</h2>
+
+<pre>
+  {{page.page}}
+</pre>
+
+<pre>
+  {{page.content}}
+</pre>
+
+<pre>
+  {{region_names}}
+</pre>
+
+{% endblock content %}

@@ -1,0 +1,30 @@
+<div class="">
+    <div class="alert alert-info">
+      <div class="pull-left">
+        {{page.label}}<br>
+        <span class="text-muted">/{{page.slug}}</span>
+      </div>
+      <div class="pull-right">
+        <a
+          class="btn btn-sm btn-primary"
+          {% if page.key %}
+          href="{% url "dashboard-edit-page" label=page.label key=page.key %}"
+          {% else %}
+          href="{% url "dashboard-edit-page" label=page.label %}"
+          {% endif %}
+        >
+
+          Edit
+        </a>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+  {% if page.children %}
+  {% for page in page.children %}
+    <div style="margin-left:2em">
+    {% include "contento/dashboard/page_for_list.html" %}
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
