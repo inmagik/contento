@@ -1,21 +1,41 @@
 {% extends "contento/dashboard/base.html" %}
+{% load contento %}
 
 {% block content %}
 <h3 class="page-header">
   <span class="text-muted">Editing page</span>: {{label}}
   <!--<button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>-->
 </h2>
+<h4><span class="text-muted">Template:</span> {{page.page.data.template}}</h4>
+{% for region_name in region_names %}
+<h5>{{region_name}}</h5>
+{%  with content=page.content|get_item:region_name %}
+{% for fragment in content %}
+  <pre>{{fragment}}</pre>
+{% endfor %}
+{% endwith %}
+{% endfor %}
+<hr/>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Debug
+  </div>
+  <div class="panel-body">
+    page.page
+    <pre>
+      {{page.page}}
+    </pre>
+    page.content
+    <pre>
+      {{page.content}}
+    </pre>
+    region_names
+    <pre>
+      {{region_names}}
+    </pre>
 
-<pre>
-  {{page.page}}
-</pre>
+  </div>
 
-<pre>
-  {{page.content}}
-</pre>
-
-<pre>
-  {{region_names}}
-</pre>
+</div>
 
 {% endblock content %}

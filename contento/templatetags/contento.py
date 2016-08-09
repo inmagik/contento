@@ -31,3 +31,7 @@ def pages_tree(context, slug, template_name, depth=None, current_page=None,
     tree = cms_backend.get_tree(slug)
 
     return template.render({"nodes":tree})
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
