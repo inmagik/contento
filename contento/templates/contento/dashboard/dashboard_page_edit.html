@@ -12,6 +12,15 @@
 {%  with content=page.content|get_item:region_name %}
 {% for fragment in content %}
   <pre>{{fragment}}</pre>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <b>{{ fragment.type }}</b>
+    </div>
+    <div class="panel-body">
+      {% fragment fragment.type fragment.data %}
+    </div>
+
+  </div>
 {% endfor %}
 {% endwith %}
 {% endfor %}

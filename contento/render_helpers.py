@@ -2,18 +2,17 @@ from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS
 import re
 
-def render(content, page_context={}):
+def render(content_type, content_data, page_context={}):
     """
     """
-    klass_string = content.get("type")
-    pieces = klass_string.split(".")
+    pieces = content_type.split(".")
     if len(pieces) < 2:
-        klass_string = "contento.renderers." + klass_string
+        content_type = "contento.renderers." + content_type
     try:
-        renderer = import_string(klass_string)()
-        return renderer.render(content.get("data", {}), context=page_context)
+        renderer = import_string(content_type)()
+        return renderer.render(content_data, context=page_context)
     except Exception, e:
-        return render_error(content, str(e))
+        return render_error(content_type, content_data, str(e))
 
 
 
@@ -28,8 +27,8 @@ def apply_text_processors(text):
     return text
 
 
-def render_error(content, msg):
-    return "<div class='alert alert-danger'>Error rendering content:<pre>%s</pre>Error:<pre>%s</pre></div>" % (content, msg)
+def render_error(content_type, content_data, msg):
+    return "<div class='alert alert-danger'>Cannot render content <b>%s</b>:<pre>%s</pre>Error:<pre>%s</pre></div>" % (content_type, content_data, msg)
 
 
 def get_regions_from_template(template):

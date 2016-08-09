@@ -1,5 +1,7 @@
 {% load static %}
 {% load activelink_tags %}
+{% load sekizai_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,7 +13,8 @@
     {% block head %}
     {% endblock head %}
 
-
+    {% render_block "contento_css" %}
+    
     <!-- Bootstrap -->
     <link href="{% static "contento/dashboard/lib/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "contento/dashboard/css/dashboard.css" %}" rel="stylesheet">
@@ -50,6 +53,8 @@
           {% endblock content %}
         </div>
     </div>
+
+    {% render_block "contento_js" %}
 
     {% block body_bottom %}
     {% endblock body_bottom %}

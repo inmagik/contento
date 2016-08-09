@@ -17,7 +17,7 @@ def region(context, region_name):
     region_data = context.get(region_name, [])
     out = ""
     for content in region_data:
-        out += render(content, context)
+        out += render(content.get('type'), content.get('data'), context)
 
     #TODO: this is too weak. should be delegated to renders
     return mark_safe(out)
@@ -31,6 +31,16 @@ def pages_tree(context, slug, template_name, depth=None, current_page=None,
     tree = cms_backend.get_tree(slug)
 
     return template.render({"nodes":tree})
+
+
+@register.simple_tag(takes_context=True)
+def fragment(context, content_type, content_data):
+    """
+    renders a cms fragment
+    """
+    out = render(content_type, content_data, context)
+    return mark_safe(out)
+
 
 @register.filter
 def get_item(dictionary, key):
