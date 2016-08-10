@@ -3,9 +3,9 @@
     <div class="panel-heading">
       {{$ctrl.content.type}}
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="pointer-events:none;">
 
-      <iframe src="{{$ctrl.getPreviewUrl()}}" noborder style="border:none; width:100%"
+      <iframe src="{{$ctrl.getPreviewUrl()}}" noborder style="border:none; width:100%; "
         name="{{$ctrl.frameName}}")></iframe>
     </div>
   </div>
