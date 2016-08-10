@@ -1,7 +1,7 @@
 (function(){
 
   function guid(prefix) {
-  return prefix + s4() + s4() + '-' + s4() + '-' + s4();
+    return prefix||'' + s4() + s4() + '-' + s4() + '-' + s4();
   }
 
   function s4() {
@@ -9,10 +9,6 @@
       .toString(16)
       .substring(1);
   }
-
-
-
-
 
   const pageEditor = {
     templateUrl : djangoUrls.angularTemplatesBase + 'page-editor.html',
