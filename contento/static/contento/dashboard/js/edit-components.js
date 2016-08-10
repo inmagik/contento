@@ -42,9 +42,29 @@
     }
   };
 
+
+  const fragmentJsonEditor = {
+    templateUrl : djangoUrls.angularTemplatesBase + 'fragment-json-editor.html',
+    bindings : {
+      content : '=',
+      region : '<',
+      path : '<',
+      pageContext : '<'
+    },
+    controller: function () {
+      console.log(this.content)
+      this.contentJson = JSON.stringify(
+        {type:this.content.type, data:this.content.data}, null, '\t')
+    }
+  };
+
+
+
+
   angular.module("edit-app")
   .component('pageEditor', pageEditor)
-  .component('fragmentEditor', fragmentEditor);
+  .component('fragmentEditor', fragmentEditor)
+  .component('fragmentJsonEditor', fragmentJsonEditor);
 
 
 })();;;;
