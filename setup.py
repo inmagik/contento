@@ -28,6 +28,7 @@ INSTALL_REQUIREMENTS = [
     'PyYAML>=3.11',
     'django-sekizai==0.9.0',
     'jsonfield==1.0.3',
+    'djangorestframework==3.4.3',
 ]
 
 setup(
