@@ -1,0 +1,62 @@
+{% extends "contento/dashboard/base.html" %}
+{% load contento %}
+
+{% block content %}
+<h3 class="page-header">
+  <span class="text-muted">Editing page</span>: {{label}}
+  <!--<button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>-->
+</h2>
+<h3><span class="text-muted">Template:</span> {{page.page.data.template}}</h3>
+{% for region_name in region_names %}
+<h3><span class="text-muted">Region:</span> {{region_name}}</h3>
+{%  with content=page.content|get_item:region_name %}
+{% for fragment in content %}
+  <!--<pre>{{fragment}}</pre>-->
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <b>{{ fragment.type }}</b>
+    </div>
+    <div class="panel-body">
+      {% fragment fragment.type fragment.data %}
+    </div>
+  </div>
+  {% comment %}
+  <div class="fragment-editor-inline">
+    {% fragment_editor fragment.type fragment.data %}
+
+  </div>
+  {% endcomment %}
+
+{% endfor %}
+{% endwith %}
+{% endfor %}
+<hr/>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Debug
+  </div>
+  <div class="panel-body">
+    page.page
+    <pre>
+      {{page.page}}
+    </pre>
+    page.content
+    <pre>
+      {{page.content}}
+    </pre>
+    region_names
+    <pre>
+      {{region_names}}
+    </pre>
+
+  </div>
+
+</div>
+
+{% endblock content %}
+
+{% block body_bottom %}
+<script src="{% static "contento/dashboard/lib/angular/angular.min.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-app.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-components.js" %}"></script>
+{% endblock body_bottom %}

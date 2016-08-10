@@ -1,6 +1,7 @@
 """
-Admin views
+Dashboard views
 """
+import json
 from django.views.generic import TemplateView, View
 from django.http import HttpResponse
 from django.utils.module_loading import import_string
@@ -46,7 +47,7 @@ class DashboardEditPageView(View):
             region_names = []
 
 
-        context = {
+        page_context = {
             "page" : page,
             "label" : label,
             "language" : language,
@@ -54,6 +55,7 @@ class DashboardEditPageView(View):
             "region_names" : region_names
         }
 
+        context = { "page_context" : json.dumps(page_context) }
 
         return render(
             request,

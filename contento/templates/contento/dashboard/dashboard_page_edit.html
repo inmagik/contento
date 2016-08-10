@@ -1,55 +1,35 @@
 {% extends "contento/dashboard/base.html" %}
-{% load contento %}
+{% load static %}
 
 {% block content %}
-<h3 class="page-header">
-  <span class="text-muted">Editing page</span>: {{label}}
-  <!--<button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>-->
-</h2>
-<h4><span class="text-muted">Template:</span> {{page.page.data.template}}</h4>
-{% for region_name in region_names %}
-<h5>{{region_name}}</h5>
-{%  with content=page.content|get_item:region_name %}
-{% for fragment in content %}
-  <pre>{{fragment}}</pre>
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <b>{{ fragment.type }}</b>
-    </div>
-    <div class="panel-body">
-      {% fragment fragment.type fragment.data %}
-    </div>
-  </div>
 
-  <div class="fragment-editor-inline">
-    {% fragment_editor fragment.type fragment.data %}
-
-  </div>
-
-{% endfor %}
-{% endwith %}
-{% endfor %}
-<hr/>
-<div class="panel panel-default">
-  <div class="panel-heading">
-    Debug
-  </div>
-  <div class="panel-body">
-    page.page
-    <pre>
-      {{page.page}}
-    </pre>
-    page.content
-    <pre>
-      {{page.content}}
-    </pre>
-    region_names
-    <pre>
-      {{region_names}}
-    </pre>
-
-  </div>
-
+<!-- here starts angular -->
+{% verbatim %}
+<div ng-app="edit-app" ng-controller="AppController as AppController" ng-cloak>
+  <h3 class="page-header">
+    <span class="text-muted">Editing page</span>: {{AppController.pageContext.label}}
+    <!--<button type="button" class="btn btn-sm btn-primary pull-right">Add new page</button>-->
+  </h2>
+  <page-editor page-context="AppController.pageContext">
+  </page-editor>
 </div>
+{% endverbatim %}
 
 {% endblock content %}
+
+{% block body_bottom %}
+<script>
+  var djangoUrls = {
+    'staticBase' : '{% static "" %}',
+    'angularTemplatesBase' : '{% static "contento/dashboard/templates/" %}'
+  }
+  var pageContext = {{ page_context|safe }};
+  console.log(pageContext, djangoUrls);
+</script>
+
+<script src="{% static "contento/dashboard/lib/angular/angular.min.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-app.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-controllers.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-components.js" %}"></script>
+
+{% endblock body_bottom %}
