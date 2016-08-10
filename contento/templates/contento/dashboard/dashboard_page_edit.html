@@ -20,6 +20,7 @@
 {% block body_bottom %}
 <script>
   var djangoUrls = {
+    'token': '{{ csrf_token }}',
     'staticBase' : '{% static "" %}',
     'angularTemplatesBase' : '{% static "contento/dashboard/templates/" %}'
   }

@@ -10,12 +10,7 @@ from contento.settings import CONTENTO_BACKEND
 from contento.registry import Registry
 import re
 
-def serve_page(
-    request,
-    page_url="/",
-    fragment_path=None,
-    single_fragment_template="contento/dashboard/single_fragment.html"
-    ):
+def serve_page(request, page_url="/"):
     """
     Main view for serving cms pages.
     """
@@ -51,24 +46,45 @@ def serve_page(
 
     context = {}
     context.update({"url_data" : url_params })
-
-    if request.GET.get("fragment_path"):
-        region, order = request.GET.get("fragment_path").split(".")
-        fragment = page["content"][region][int(order)]
-        context.update({
-            "content_type" : fragment.get("type"),
-            "content_data" : fragment.get("data"),
-            "page" : page.get("page")
-        })
-        return render(
-            request,
-            single_fragment_template,
-            context
-        )
-
     context.update(page["content"])
     return render(
         request,
         page_meta["data"]["template"],
+        context
+    )
+
+
+from django.views.decorators.csrf import csrf_exempt
+def serve_single_fragment(
+    request,
+    label,
+    language=None,
+    key=None,
+    fragment_path=None,
+    single_fragment_template="contento/dashboard/single_fragment.html"
+    ):
+    """
+
+    """
+    cms_backend = import_string(CONTENTO_BACKEND)()
+    page = cms_backend.get_page(
+        label,
+        language=language,
+        key=key)
+
+    context = {}
+    url_params = request.GET.get("url_params", {})
+    context.update({"url_data" : url_params })
+    region, order = request.GET.get("fragment_path").split(".")
+    fragment = page["content"][region][int(order)]
+
+    context.update({
+        "content_type" : fragment.get("type"),
+        "content_data" : fragment.get("data"),
+        "page" : page.get("page")
+    })
+    return render(
+        request,
+        single_fragment_template,
         context
     )

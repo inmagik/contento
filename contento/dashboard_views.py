@@ -52,7 +52,7 @@ class DashboardEditPageView(View):
             "label" : label,
             "language" : language,
             "key" : key,
-            "region_names" : region_names
+            "region_names" : region_names,
         }
 
         context = { "page_context" : json.dumps(page_context) }

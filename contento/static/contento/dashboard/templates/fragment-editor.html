@@ -4,8 +4,9 @@
       {{$ctrl.content.type}}
     </div>
     <div class="panel-body">
-      <iframe noborder style="border:none; width:100%" ng-src="{{$ctrl.getPreviewUrl()}}")></iframe>
 
+      <iframe src="{{$ctrl.getPreviewUrl()}}" noborder style="border:none; width:100%"
+        name="{{$ctrl.frameName}}")></iframe>
     </div>
   </div>
 

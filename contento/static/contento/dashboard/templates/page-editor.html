@@ -1,7 +1,7 @@
 <div ng-repeat="region in $ctrl.pageContext.region_names">
   <h3>{{region}}</h3>
   <div ng-repeat="content in $ctrl.pageContext.page.content[region]" >
-    <fragment-editor content="content" region="region" page-context="$ctrl.pageContext">
+    <fragment-editor content="content" region="region" page-context="$ctrl.pageContext" path="$index">
     </fragment-editor>
     <pre>{{content}}</pre>
   </div>

@@ -4,7 +4,7 @@ from .dashboard_views import  (
     DashboardEditPageView
 )
 
-from .views import serve_page
+from .views import serve_single_fragment
 
 urlpatterns = [
     url(r'^$', DashboardIndexView.as_view(), name="dashboard-index"),
@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'edit/(?P<label>[/\w]+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
 
-    url(r'preview/(?P<page_url>.*)', serve_page, name="contento-cms-preview", )
+    url(r'preview/(?P<label>.*)', serve_single_fragment, name="contento-cms-preview", )
 
 ]
