@@ -1,7 +1,7 @@
 """
 Contento public views.
 """
-
+import json
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.utils.module_loading import import_string
@@ -55,6 +55,7 @@ def serve_page(request, page_url="/"):
 
 
 from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 def serve_single_fragment(
     request,
     label,
@@ -78,11 +79,19 @@ def serve_single_fragment(
     region, order = request.GET.get("fragment_path").split(".")
     fragment = page["content"][region][int(order)]
 
+    current_data = fragment.get("data")
+    override_data = None
+    if request.method == "POST" and request.POST.get("content_data"):
+        print "POSTED!"
+        override_data = json.loads(request.POST.get("content_data"))
+
+
     context.update({
         "content_type" : fragment.get("type"),
-        "content_data" : fragment.get("data"),
+        "content_data" : override_data or current_data,
         "page" : page.get("page")
     })
+
     return render(
         request,
         single_fragment_template,

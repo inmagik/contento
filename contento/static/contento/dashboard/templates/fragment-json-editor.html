@@ -1,3 +1,18 @@
-<div ui-ace="{ mode: 'json'}"  style="height:300px" ng-model="$ctrl.contentJson">
+<div class="">
+
+  <!-- json editor -->
+  <div ui-ace="{ mode: $ctrl.format, onChange: $ctrl.aceChanged, onLoad: $ctrl.aceLoaded }"
+    style="height:300px"
+    ng-model="$ctrl.contentFormatted"
+    >
+
+  </div>
+  <!-- preview -->
+  <!--<fragment-preview>
+  </fragment-preview>
+  -->
+
+  <!-- buttons -->
+
 
 </div>

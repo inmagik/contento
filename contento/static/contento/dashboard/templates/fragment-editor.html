@@ -3,10 +3,35 @@
     <div class="panel-heading">
       {{$ctrl.content.type}}
     </div>
-    <div class="panel-body" style="pointer-events:none;">
+    <div class="panel-body" xstyle="pointer-events:none;">
 
-      <iframe src="{{$ctrl.getPreviewUrl()}}" noborder style="border:none; width:100%; "
-        name="{{$ctrl.frameName}}")></iframe>
+      <fragment-preview
+        content="$ctrl.content"
+        region="$ctrl.region"
+        page-context="$ctrl.pageContext"
+        path="$ctrl.path"
+      >
+      </fragment-preview>
+
+      <fragment-json-editor
+        format="json"
+        content="$ctrl.content"
+        region="$ctrl.region"
+        page-context="$ctrl.pageContext"
+        path="$ctrl.path"
+        on-content-change="$ctrl.onContentChange(content)"
+      >
+      </fragment-json-editor>
+      <fragment-json-editor
+        format="yaml"
+        content="$ctrl.content"
+        region="$ctrl.region"
+        page-context="$ctrl.pageContext"
+        path="$ctrl.path"
+        on-content-change="$ctrl.onContentChange(content)"
+      >
+      </fragment-json-editor>
+
     </div>
   </div>
 

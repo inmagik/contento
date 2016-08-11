@@ -1,0 +1,15 @@
+<div class="">
+  <!-- for some reason this must be created in js or dynamic form target won't work -->
+  <!--<iframe src="{{$ctrl.getPreviewUrl()}}" noborder style="border:none; width:100%; "
+    id="{{$ctrl.frameName}}" name="{{$ctrl.frameName}}"></iframe>
+  -->
+
+  <form
+    id="{{$ctrl.formName}}" target="{{$ctrl.frameName}}"
+    action="{{$ctrl.getPreviewUrl()}}" style="display:none"
+    method="POST" name="$ctrl.updateForm" ng-submit="$ctrl.submit($event)">
+    <input type="text" name="content_data" ng-model="$ctrl.contentDataAsJson">
+    <button type="submit">Submit</button>
+  </form>
+
+</div>
