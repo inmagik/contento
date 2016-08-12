@@ -3,6 +3,9 @@ import os
 from contento.backends.files import FlatFilesBackend
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 from contento.settings import CONTENTO_FLATFILES_BASE
+from contento.helpers import get_current_backend
+import tempfile
+import shutil
 
 class FlatFilesBackendTestCase(TestCase):
     def setUp(self):
@@ -23,6 +26,20 @@ class FlatFilesBackendTestCase(TestCase):
         self.assertTrue('page' in page_data)
         self.assertTrue('content' in page_data)
         self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
+
+        page_data = self.backend.get_page("")
+        self.assertTrue('page' in page_data)
+        self.assertTrue('content' in page_data)
+        self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
+
+        page_data = self.backend.get_page("/contacts")
+        self.assertTrue('page' in page_data)
+        self.assertTrue('content' in page_data)
+
+        page_data = self.backend.get_page("contacts")
+        self.assertTrue('page' in page_data)
+        self.assertTrue('content' in page_data)
+
 
 
     def test_get_meta_from_path(self):
@@ -74,4 +91,18 @@ class FlatFilesBackendTestCase(TestCase):
     def test_move_page(self):
         """
         """
-        #self.backend.move_page("section/contacts", "")
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+        backend.move_page("contacts", "/section")
+        page = backend.get_page("/section/contacts")
+        def fun():
+            page = backend.get_page("contacts")
+        self.assertRaises(CmsPageNotFound, fun)
+
+        backend.move_page("/section/contacts", "/")
+        page = backend.get_page("/contacts")

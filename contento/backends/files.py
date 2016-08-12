@@ -1,6 +1,7 @@
 import os
 import yaml
-from contento.settings import CONTENTO_FLATFILES_BASE
+from contento import settings
+from django.conf import settings as django_settings
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 import re
 import shutil
@@ -17,17 +18,25 @@ class FlatFilesBackend(object):
     - relations (parents) are inferred from filenames
     """
 
+    def __init__(self, FLATFILES_BASE=None):
+        if not FLATFILES_BASE:
+            FLATFILES_BASE = getattr(django_settings, "CONTENTO_FLATFILES_BASE", getattr(settings, "CONTENTO_FLATFILES_BASE"))
+        self.FLATFILES_BASE = FLATFILES_BASE
+
     def check_paths(self):
         """
         ensures that CONTENTO_FLATFILES_BASE is set
         """
-        if not CONTENTO_FLATFILES_BASE:
+
+        if not self.FLATFILES_BASE:
             raise FlatFilesBaseNotConfigured("CONTENTO_FLATFILES_BASE must be declared in order to use FlatFilesBackend")
 
     def get_path(self, label, language=None, key=None, for_file=False ):
         """
         gets the file path for a slug
         """
+        if not label.startswith("/"):
+            label = "/" + label
         if for_file and label == "/":
             label = "_root"
         if label.startswith("/"):
@@ -38,14 +47,14 @@ class FlatFilesBackend(object):
             label = label + "__%s" % language
         if key:
             label = label + "---%s" % key
-        path = os.path.join(CONTENTO_FLATFILES_BASE, label)
+        path = os.path.join(self.FLATFILES_BASE, label)
         return path
 
     def get_meta_from_path(self, path):
         """
         Reverse label, lang and key from path
         """
-        path = path.replace(CONTENTO_FLATFILES_BASE, "")
+        path = path.replace(self.FLATFILES_BASE, "")
 
         search_result = file_regex.search(path)
         label = search_result.group('label')
@@ -61,6 +70,7 @@ class FlatFilesBackend(object):
     def get_page_path(self, label, language=None, key=None ):
         """
         """
+
         path = self.get_path(label, language=language, key=key, for_file=True)
         out = path + ".yml"
         return out
@@ -110,6 +120,8 @@ class FlatFilesBackend(object):
                 nodeslug += "/"
 
             for f in filenames:
+                if not f.endswith(".yml"):
+                    continue
                 label, lang, key = self.get_meta_from_path(nodeslug + f)
                 page_data = self.get_page(label, lang, key)
                 page = page_data["page"]
@@ -139,8 +151,9 @@ class FlatFilesBackend(object):
         return [out[x] for x in out]
 
 
-
-    # write api methods
+    """
+    WRITE api methods
+    """
 
     def add_page(self, label, page_data, page_content={}, language=None, key=None):
         raise NotImplementedError
@@ -157,8 +170,12 @@ class FlatFilesBackend(object):
         clean_label = label.replace(old_dir, "")
         if clean_label.endswith("/"):
             clean_label = clean_label[:-1]
+
         if not new_parent.endswith("/"):
             new_parent = new_parent + "/"
+
+        if not new_parent.startswith("/"):
+            new_parent =  "/" + new_parent
 
         new_label = new_parent + clean_label
         new_path = self.get_page_path(new_label)
