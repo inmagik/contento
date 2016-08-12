@@ -1,14 +1,15 @@
 """
 Contento public views.
 """
+import re
 import json
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from django.utils.module_loading import import_string
 from django.utils import translation
-from contento.settings import CONTENTO_BACKEND
 from contento.registry import Registry
-import re
+from contento.helpers import get_current_backend
+from django.views.decorators.csrf import csrf_exempt
+
 
 def serve_page(request, page_url="/"):
     """
@@ -21,8 +22,6 @@ def serve_page(request, page_url="/"):
     #TODO: we should load the global cached registry
     #we create a new one instead
     registry = Registry()
-
-    #
     available_urls = registry.content_by_url.keys()
 
     page_meta = None
@@ -37,7 +36,7 @@ def serve_page(request, page_url="/"):
         raise Http404
 
     cur_language = translation.get_language()
-    cms_backend = import_string(CONTENTO_BACKEND)()
+    cms_backend = get_current_backend()
 
     page = cms_backend.get_page(
         page_meta["label"],
@@ -54,7 +53,7 @@ def serve_page(request, page_url="/"):
     )
 
 
-from django.views.decorators.csrf import csrf_exempt
+#TODO:ALLOW POSTING ALSO CONTENT TYPE (FOR NEW FRAGMENTS PREVIEW)
 @csrf_exempt
 def serve_single_fragment(
     request,
@@ -67,7 +66,7 @@ def serve_single_fragment(
     """
 
     """
-    cms_backend = import_string(CONTENTO_BACKEND)()
+    cms_backend = get_current_backend()
     page = cms_backend.get_page(
         label,
         language=language,

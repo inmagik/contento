@@ -3,6 +3,7 @@ import yaml
 from contento.settings import CONTENTO_FLATFILES_BASE
 from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 import re
+import shutil
 
 FILE_REGEX = "(?P<label>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
 file_regex = re.compile(FILE_REGEX)
@@ -65,6 +66,10 @@ class FlatFilesBackend(object):
         return out
 
 
+    """
+    READ API METHODS
+    """
+
     def get_page(self, label, language=None, key=None ):
         """
         Load a page data given a label, a language and a key.
@@ -81,6 +86,7 @@ class FlatFilesBackend(object):
             raise CmsPageNotFound("Page %s not found" % label)
 
         return data
+
 
     #TODO: probaby keys should not influence trees
     def get_tree(self, slug, language=None, key=None, max_depth=None):
@@ -131,3 +137,67 @@ class FlatFilesBackend(object):
                 nodes_dict[node["slug"]] = node
 
         return [out[x] for x in out]
+
+
+
+    # write api methods
+
+    def add_page(self, label, page_data, page_content={}, language=None, key=None):
+        raise NotImplementedError
+
+
+    def modify_page(self, label, page_data, page_content, language=None, key=None):
+        raise NotImplementedError
+
+
+    def move_page(self, label, new_parent, language=None, key=None):
+        page = self.get_page(label, language=language, key=key)
+        old_path = self.get_page_path(label, language=language, key=key)
+        old_dir = self.get_path(label, language=language, key=key)
+        clean_label = label.replace(old_dir, "")
+        if clean_label.endswith("/"):
+            clean_label = clean_label[:-1]
+        if not new_parent.endswith("/"):
+            new_parent = new_parent + "/"
+
+        new_label = new_parent + clean_label
+        new_path = self.get_page_path(new_label)
+
+        shutil.move(old_path, new_path)
+
+
+
+    def drop_page(self, label, language=None, key=None):
+        raise NotImplementedError
+
+
+    def add_page_fragment(
+            self, label,
+            region, content_type, content_data,
+            language=None, key=None,
+            position=None
+        ):
+        raise NotImplementedError
+
+    def modify_page_fragment(
+            self, label,
+            region, position, content_data,
+            language=None, key=None
+        ):
+        raise NotImplementedError
+
+    def move_page_fragment(
+            self, label,
+            region, position,
+            new_region=None, new_position=None,
+            language=None, key=None
+        ):
+        raise NotImplementedError
+
+
+    def drop_page_fragment(
+            self, label,
+            region, position,
+            language=None, key=None
+        ):
+        raise NotImplementedError

@@ -69,3 +69,9 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         tree = self.backend.get_tree("")
+
+
+    def test_move_page(self):
+        """
+        """
+        #self.backend.move_page("section/contacts", "")
