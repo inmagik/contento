@@ -36,11 +36,10 @@
       var that = this;
 
       this.jsonData = JSON.stringify(this.content.data);
-      console.log("f", this.pageContext)
 
-      this.onContentChange = function(content){
-        console.log("cc", content);
-        that.content = content;
+      this.onContentChange = function(data){
+        console.log("onContentChange", data )
+        that.content.data = data;
       }
     }
   };
@@ -49,7 +48,8 @@
   const fragmentJsonEditor = {
     templateUrl : djangoUrls.angularTemplatesBase + 'fragment-json-editor.html',
     bindings : {
-      content : '<',
+      contentType : '<',
+      contentData : '<',
       region : '<',
       path : '<',
       pageContext : '<',
@@ -57,6 +57,7 @@
     },
     controller: function ($attrs) {
       var that = this;
+      this.randId = guid();
       let fmt = ($attrs.format || "").toLowerCase();
       this.format = ["json", "yaml"].indexOf(fmt) !== -1 ? fmt : "json";
 
@@ -74,36 +75,119 @@
         return JSON.parse(formattedContent)
       }
 
-      this.contentFormatted = formatContent(this.content.data, this.format)
+      this.contentFormatted = formatContent(this.contentData, this.format);
       this.$onChanges = function (changesObj) {
-        console.log("222", changesObj, that.editor)
-        if(!changesObj.content || !that.editor){
+        console.info("changesObj")
+
+        if(!changesObj.contentData || !that.editor) {
           return
         }
-        //if we are focused we should return
         if(that.editor.textInput.isFocused()){
-            return
+          return
         }
-
-        that.contentFormatted = formatContent(changesObj.content.currentValue.data, that.format)
+        //let d = angular.copy(changesObj.contentData.currentValue);
+        //delete d.editKey;
+        that.contentFormatted = formatContent(changesObj.contentData.currentValue, that.format)
       };
 
       this.aceLoaded = function(editor){
         that.editor = editor;
+        editor.$blockScrolling = Infinity;
       }
-
-
 
       this.aceChanged = function(value){
-        try {
-          that.content.data = parseContent(that.contentFormatted, that.format);
-        } catch(err){
-          console.log("pp")
+        if (!that.editor.textInput.isFocused()){
           return
         }
+
+        try {
+          that.contentData = parseContent(that.contentFormatted, that.format);
+          //that.contentData.editKey = that.randId;
+          that.onContentChange({content:that.contentData});
+        } catch(err){
+          console.error(err);
+        }
+
         //that.content = angular.copy(that.content);
-        that.onContentChange({content:angular.copy(that.content)});
+
       }
+    }
+  };
+
+
+  const fragmentJsonSchemaEditor = {
+    templateUrl : djangoUrls.angularTemplatesBase + 'fragment-jsonschema-editor.html',
+    bindings : {
+      contentType : '<',
+      contentData : '<',
+      region : '<',
+      path : '<',
+      pageContext : '<',
+      onContentChange : '&'
+    },
+    controller: function ($element, $attrs, DataService, $timeout) {
+      var that = this;
+      this.randId = guid();
+
+      this.$onChanges = function (changesObj) {
+        if(!changesObj.contentData || !that.editor){
+          return
+        }
+        if( angular.equals(changesObj.contentData.currentValue, that.editor.getValue() )){
+          return
+        }
+
+        that.editor.setValue(changesObj.contentData.currentValue)
+
+      };
+
+      var getFullType = function(t){
+        const p = t.split(".")
+        if(p.length < 2){
+          t = "contento.renderers." + t;
+        }
+        return t
+      }
+
+
+      //that.onContentChange({content:angular.copy(that.content)});
+
+      this.$postLink = function(){
+        var el = $($element);
+        var cont = $(".json-form-container", el)[0]
+
+        //#TODO: should load from  a service ...
+        DataService.renderersMeta.get()
+        .then(resp => {
+          that.renderersMeta = resp.plain();
+          var typeName = getFullType(that.contentType)
+          var m = that.renderersMeta[typeName];
+          console.log(1, m)
+          if(m){
+            that.editor = new JSONEditor(
+              cont,
+              {
+                schema:m,
+                startval:that.contentData,
+                disable_collapse:true,
+                disable_properties : true
+
+               }
+            );
+            that.editor.on('change',function() {
+              that.contentData = that.editor.getValue();
+              $timeout(()=>{
+                  that.onContentChange({content:that.contentData})
+              })
+
+            });
+          }
+        });
+
+
+      }
+
+
     }
   };
 
@@ -111,7 +195,8 @@
   const fragmentPreview = {
     templateUrl : djangoUrls.angularTemplatesBase + 'fragment-preview.html',
     bindings : {
-      content : '<',
+      contentType : '<',
+      contentData : '<',
       region : '<',
       path : '<',
       pageContext : '<'
@@ -141,7 +226,9 @@
       }
 
       this.$onChanges = function (changesObj) {
-        that.contentDataAsJson = JSON.stringify(that.content.data)
+        console.log(1, "changing")
+        let d = angular.copy(changesObj.contentData.currentValue);
+        that.contentDataAsJson = JSON.stringify(d)
         $timeout(()=>{
             this.submit();
         })
@@ -149,6 +236,7 @@
 
 
       this.submit = function () {
+        console.log(100, "submitting form..", this.randId, this.contentType, this.region, this.path)
           if(form){
             form[0].submit()
           }
@@ -169,7 +257,8 @@
   .component('pageEditor', pageEditor)
   .component('fragmentPreview', fragmentPreview)
   .component('fragmentEditor', fragmentEditor)
-  .component('fragmentJsonEditor', fragmentJsonEditor);
+  .component('fragmentJsonEditor', fragmentJsonEditor)
+  .component('fragmentJsonSchemaEditor', fragmentJsonSchemaEditor);
 
 
 })();;;;

@@ -22,7 +22,8 @@
   var djangoUrls = {
     'token': '{{ csrf_token }}',
     'staticBase' : '{% static "" %}',
-    'angularTemplatesBase' : '{% static "contento/dashboard/templates/" %}'
+    'angularTemplatesBase' : '{% static "contento/dashboard/templates/" %}',
+    'dashboardBase' : '{% url "dashboard-index" %}'
   }
   var pageContext = {{ page_context|safe }};
   console.log(pageContext, djangoUrls);
@@ -31,6 +32,7 @@
 
 <script src="{% static "contento/dashboard/js/edit-app.js" %}"></script>
 <script src="{% static "contento/dashboard/js/edit-controllers.js" %}"></script>
+<script src="{% static "contento/dashboard/js/edit-services.js" %}"></script>
 <script src="{% static "contento/dashboard/js/edit-components.js" %}"></script>
 
 {% endblock body_bottom %}

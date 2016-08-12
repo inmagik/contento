@@ -6,31 +6,47 @@
     <div class="panel-body" xstyle="pointer-events:none;">
 
       <fragment-preview
-        content="$ctrl.content"
+        content-type="$ctrl.content.type"
+        content-data="$ctrl.content.data"
         region="$ctrl.region"
         page-context="$ctrl.pageContext"
         path="$ctrl.path"
       >
       </fragment-preview>
-
+      <!--
       <fragment-json-editor
         format="json"
-        content="$ctrl.content"
+        content-type="$ctrl.content.type"
+        content-data="$ctrl.content.data"
         region="$ctrl.region"
         page-context="$ctrl.pageContext"
         path="$ctrl.path"
         on-content-change="$ctrl.onContentChange(content)"
       >
       </fragment-json-editor>
+
       <fragment-json-editor
         format="yaml"
-        content="$ctrl.content"
+        content-type="$ctrl.content.type"
+        content-data="$ctrl.content.data"
         region="$ctrl.region"
         page-context="$ctrl.pageContext"
         path="$ctrl.path"
         on-content-change="$ctrl.onContentChange(content)"
       >
       </fragment-json-editor>
+      -->
+      <fragment-json-schema-editor
+        content-type="$ctrl.content.type"
+        content-data="$ctrl.content.data"
+        region="$ctrl.region"
+        page-context="$ctrl.pageContext"
+        path="$ctrl.path"
+        on-content-change="$ctrl.onContentChange(content)"
+      >
+      </fragment-json-schema-editor>
+
+
 
     </div>
   </div>

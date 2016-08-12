@@ -123,3 +123,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
+}
