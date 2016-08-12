@@ -5,7 +5,7 @@ class Text(BaseRenderer):
     required_fields = ["text"]
     json_schema = {
 
-        #"title": "Example Schema",
+        "title": "Text",
     	#"type": "object",
     	"properties": {
     		"text": {

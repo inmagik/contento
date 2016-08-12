@@ -7,7 +7,7 @@ import uuid
 class LeafletMap(BaseRenderer):
     required_fields = ["lat", "lon"]
     json_schema = {
-
+        "title": "LeafletMap",
     	"properties": {
     		"lat": {
     			"type": "number",

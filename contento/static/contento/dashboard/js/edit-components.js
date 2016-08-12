@@ -168,6 +168,7 @@
               cont,
               {
                 schema:m,
+                theme:'bootstrap3',
                 startval:that.contentData,
                 disable_collapse:true,
                 disable_properties : true

@@ -16,6 +16,25 @@ class ModelInstanceTemplate(BaseRenderer):
 
     required_fields = ['template_name', 'model_name', 'model_pk']
 
+    json_schema = {
+        "title": "ModelInstanceTemplate",
+    	"properties": {
+    		"template_name": {
+    			"type": "string",
+                "propertyOrder": 1
+            },
+            "model_name": {
+    			"type": "string",
+                "propertyOrder": 2
+            },
+            "model_pk": {
+    			"type": "string",
+                "propertyOrder": 3
+            },
+    	},
+    	"required": ["template_name", "model_name", "model_pk"]
+    }
+
     def render(self, content, context={}):
         required_data = self.get_required_fields(content)
         required_data = {x:render_param(required_data[x], context) for x in required_data}
@@ -32,6 +51,24 @@ class ModelInstanceTemplate(BaseRenderer):
 class QuerysetTemplate(BaseRenderer):
 
     required_fields = ['template_name', 'model_name']
+    json_schema = {
+        "title": "QuerysetTemplate",
+    	"properties": {
+    		"template_name": {
+    			"type": "string",
+                "propertyOrder": 1
+            },
+            "model_name": {
+    			"type": "string",
+                "propertyOrder": 2
+            },
+            "filters": {
+    			"type": "object",
+                "propertyOrder": 3
+            },
+    	},
+    	"required": ["template_name", "model_name"]
+    }
 
     def render(self, content, context={}):
 
