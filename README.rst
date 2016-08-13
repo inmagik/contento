@@ -6,12 +6,14 @@ Contento
 Why another CMS
 ---------------
 
-There are a lot of CMS systems around there, some with lots of feature
-and production-ready quality, being used on first-class websites.
+There are quite a lot of CMS systems around there, some with lots of feature
+and production-ready quality.
 
 We cannot say we're not happy with what's around, but our experience
 working with different CMS and our use cases led us to try and develop
-our solution to content editing for the web.
+our solution to content editing for the web, based on the Django Web Framework
+and the PostgreSQL database server.
+
 
 Manifesto
 ---------
@@ -112,10 +114,6 @@ and work with, such as:
 -  PostgreSQL JSON data type for even querying our JSON content.
 -  Javascript for providing editing interfaces on web pages.
 
-Development
------------
-
-Development is lead by the `INMAGIK <https://www.inmagik.com>`__ team.
 
 Contributors
 ------------
