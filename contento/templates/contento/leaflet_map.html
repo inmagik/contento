@@ -1,7 +1,7 @@
 {% load sekizai_tags %}
 
 {% addtoblock "contento_css" %}
-<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 {% endaddtoblock %}
 {% addtoblock "contento_css" %}
 <style>
@@ -11,7 +11,7 @@
 
 
 {% addtoblock "contento_js" %}
-<script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 <script>
   var lfmaps = lfmaps || {};
   lfmaps['{{map_context.wrapper_id}}'] = L.map('{{map_context.wrapper_id}}').setView([{{map_context.lat}}, {{map_context.lon}}], 8);
