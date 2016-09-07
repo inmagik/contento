@@ -4,7 +4,7 @@ from .base import BaseRenderer
 
 class Image(BaseRenderer):
     json_schema = {
-        "title": "QuerysetTemplate",
+        "title": "Image",
     	"properties": {
     		"src": {
     			"type": "string",
@@ -15,7 +15,7 @@ class Image(BaseRenderer):
                 "propertyOrder": 2
             },
             "wrapper_class": {
-    			"type": "object",
+    			"type": "string",
                 "propertyOrder": 3
             },
     	},

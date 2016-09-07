@@ -35,6 +35,11 @@ content:
       data:
         text: "Hello there from region two. contacts"
 
+    - type: Image
+      data:
+        src: "https://amat-mi.it/static/amatstatic/img/logo.png"
+        wrapper_class: "text-center"
+
     - type: Text
       data:
         text: "<p>And more content here </p>"

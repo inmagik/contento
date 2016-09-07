@@ -1,6 +1,7 @@
+import re
+import json
 from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS
-import re
 
 
 def load_renderer(content_type):
@@ -45,3 +46,42 @@ def get_regions_from_template(template):
         out.append(match.group('region_name'))
     out = list(set(out))
     return out
+
+
+def get_inline_renderer_config(inline_definition):
+    """
+    This method can be used to extract a renderer configuration from an inline definition
+    such as:
+
+    some_plugin|{ "some" : 'arg' }
+
+    """
+    pieces = inline_definition.split("|")
+    #TODO: test length of splitted pieces
+    renderer_klass = pieces[0].strip()
+    string_args = pieces[1]
+    args = json.loads(string_args)
+    return renderer_klass, args
+
+
+def render_inlines(text, page_context={}):
+    """
+    Replaces all inline renderers definitions with the renderer config.
+    Example:
+
+    Some text here (: Text|{ "text" : "hello" }  :) with a plugin in the middle.
+    And one at the end (: Text|{ "text" : "bye!" } :)
+    """
+    inline_definitions = []
+    inline_configurations = []
+    regex_exp = re.compile("\(:(?P<inline_def>.+?):\)")
+    def replacer(match):
+        definition = match.group('inline_def')
+        renderer_klass, args = get_inline_renderer_config(definition)
+        rendered_content = render(renderer_klass, args, page_context)
+        return rendered_content
+
+    new_text = regex_exp.sub(replacer, text)
+
+
+    return new_text
