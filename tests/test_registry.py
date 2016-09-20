@@ -7,29 +7,27 @@ class RegistryTestCase(TestCase):
     def setUp(self):
         self.registry = Registry()
 
-    def test_process_node(self):
-        """
-        """
-        node = PageNode("Test", "test", {}, None)
-        child_node = PageNode("Test", "test", {}, None)
-
-        out = self.registry.process_node(node, "")
-
-        #self.assertTrue("/test" in out)
-        #self.assertTrue("/test/b" in out)
-
-
+    # def test_process_node(self):
+    #     """
+    #     """
+    #     node = PageNode("Test", "test", {}, None)
+    #     child_node = PageNode("Child", "child", {}, node)
+    #
+    #     out = self.registry.process_node(node, "")
+    #     print out
+    #     out = self.registry.process_node(child_node, "")
+    #     print out
+    #
+    #     #self.assertTrue("/test" in out)
+    #     #self.assertTrue("/test/b" in out)
+    #
+    #
     # def test_build(self):
     #     """
     #     """
-    #     node = {
-    #         "url" : "test",
-    #         "children" : [
-    #             {
-    #                 "url" : "b"
-    #             }
-    #         ]
-    #     }
+    #     node = PageNode("Test", "test", {}, None)
+    #     child_node = PageNode("Child", "child", {}, node)
+    #
     #     reg = Registry(build=False)
     #
     #     #TODO: COMPLETE TEST
