@@ -73,8 +73,10 @@ Core concepts and features
 
 Pages
 ~~~~~
+
 A **page** is the unit of content that gets displayed given a **url** of the site.
 Given a BASE_CMS_URL, a set of pages can be mounted on it, creating a **pages tree**.
+
 
 - A page can have a **parent** and an **order** of displaying within its parent. If two pages have the same order
 within their parent, they will be sorted lexycographically using the label attribute.
@@ -88,9 +90,11 @@ of the page.
 
 To recap:
 
-page.parial_url = f(page.url, page.key)
-page.path = page.parent.PATH + page.parial_url
-final_url = BASE_CMS_URL + page.path
+
+- page.parial_url = f(page.url, page.key)
+- page.path = page.parent.PATH + page.parial_url
+- final_url = BASE_CMS_URL + page.path
+
 
 A page may also have a **language** set.
 The language should be determined by django itself via session/url prefix.
