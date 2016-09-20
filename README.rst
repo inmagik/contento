@@ -78,14 +78,10 @@ A **page** is the unit of content that gets displayed given a **url** of the sit
 Given a BASE_CMS_URL, a set of pages can be mounted on it, creating a **pages tree**.
 
 
-- A page can have a **parent** and an **order** of displaying within its parent. If two pages have the same order
-within their parent, they will be sorted lexycographically using the label attribute.
-- The **path** of a page is calculated by concatenating the path of the parent page, if any,
-and the **partial_url** of the page.
-- The final url to which a page responds is calculated by concatenating the BASE_CMS_URL and the **path**
-of the page.
-- A page has also a **label** that it's used to identify the page by a human. This field should be unique
-(#TODO:we could relax this by making unique the tuple (parent, label))
+- A page can have a **parent** and an **order** of displaying within its parent. If two pages have the same order within their parent, they will be sorted lexycographically using the label attribute.
+- The **path** of a page is calculated by concatenating the path of the parent page, if any, and the **partial_url** of the page.
+- The final url to which a page responds is calculated by concatenating the BASE_CMS_URL and the **path** of the page.
+- A page has also a **label** that it's used to identify the page by a human. This field should be unique (#TODO:we could relax this by making unique the tuple (parent, label))
 
 
 To recap:
