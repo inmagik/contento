@@ -28,11 +28,11 @@ def region(context, region_name):
 
 
 @register.simple_tag(takes_context=True)
-def pages_tree(context, slug, template_name, depth=None, current_page=None,
+def pages_tree(context, base_path, template_name, depth=None, current_page=None,
     language=None):
     template = get_template(template_name)
     cms_backend = import_string(CONTENTO_BACKEND)()
-    tree = cms_backend.get_tree(slug)
+    tree = cms_backend.get_tree(base_path)
 
     return template.render({"nodes":tree})
 

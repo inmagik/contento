@@ -8,10 +8,10 @@ Content of a website is naturally structured into **pages**.
 
 A **page** is a logical grouping of contents with the following traits:
 
-- has an "label" used to identify the label
+- has an "label" used to identify the page
 - an optional language
 - an optional key used for versioning and publishing workflows
-- has its own **slug** that contributes at building the page_url and for passing
+- has its own **url** that contributes at building the partial_url and for passing
   parameters to its own renderers
 - a page has one or more **regions** where pieces of content can be added.
   Available regions are defined by the **page_template**

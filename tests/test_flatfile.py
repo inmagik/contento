@@ -45,26 +45,26 @@ class FlatFilesBackendTestCase(TestCase):
     def test_get_meta_from_path(self):
 
         path = self.backend.get_path("section/a.yml")
-        slug, lang, key = self.backend.get_meta_from_path(path)
-        self.assertEquals(slug, "/section/a")
+        label, lang, key = self.backend.get_meta_from_path(path)
+        self.assertEquals(label, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it.yml")
-        slug, lang, key = self.backend.get_meta_from_path(path)
-        self.assertEquals(slug, "/section/a")
+        label, lang, key = self.backend.get_meta_from_path(path)
+        self.assertEquals(label, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, None)
 
         path = self.backend.get_path("section/a__it---draft.yml")
-        slug, lang, key = self.backend.get_meta_from_path(path)
-        self.assertEquals(slug, "/section/a")
+        label, lang, key = self.backend.get_meta_from_path(path)
+        self.assertEquals(label, "/section/a")
         self.assertEquals(lang, "it")
         self.assertEquals(key, "draft")
 
         path = self.backend.get_path("section/a---draft.yml")
-        slug, lang, key = self.backend.get_meta_from_path(path)
-        self.assertEquals(slug, "/section/a")
+        label, lang, key = self.backend.get_meta_from_path(path)
+        self.assertEquals(label, "/section/a")
         self.assertEquals(lang, None)
         self.assertEquals(key, "draft")
 
@@ -88,21 +88,21 @@ class FlatFilesBackendTestCase(TestCase):
         tree = self.backend.get_tree("")
 
 
-    def test_move_page(self):
-        """
-        """
-        temp_dir = tempfile.gettempdir()
-        try:
-            shutil.rmtree(temp_dir+"/cms_pages")
-        except:
-            pass
-        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
-        backend = FlatFilesBackend(temp_dir+"/cms_pages")
-        backend.move_page("contacts", "/section")
-        page = backend.get_page("/section/contacts")
-        def fun():
-            page = backend.get_page("contacts")
-        self.assertRaises(CmsPageNotFound, fun)
-
-        backend.move_page("/section/contacts", "/")
-        page = backend.get_page("/contacts")
+    # def test_move_page(self):
+    #     """
+    #     """
+    #     temp_dir = tempfile.gettempdir()
+    #     try:
+    #         shutil.rmtree(temp_dir+"/cms_pages")
+    #     except:
+    #         pass
+    #     shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+    #     backend = FlatFilesBackend(temp_dir+"/cms_pages")
+    #     backend.move_page("contacts", "/section")
+    #     page = backend.get_page("/section/contacts")
+    #     def fun():
+    #         page = backend.get_page("contacts")
+    #     self.assertRaises(CmsPageNotFound, fun)
+    #
+    #     backend.move_page("/section/contacts", "/")
+    #     page = backend.get_page("/contacts")

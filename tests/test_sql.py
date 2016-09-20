@@ -8,7 +8,7 @@ class SQLTest(TestCase):
     def setUp(self):
         self.index_page = Page.objects.create(
             label="index",
-            slug=""
+            url=""
         )
 
         self.backend = SQLBackend()

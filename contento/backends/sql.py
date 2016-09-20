@@ -12,7 +12,7 @@ class SQLBackend(object):
             "label" : label,
             "language" : language,
             "key" : key,
-            "slug" : page.slug,
+            "url" : page.url,
             "parent" : page.parent,
             "data" : {
                 "published" : True,
@@ -22,5 +22,5 @@ class SQLBackend(object):
         }
         return out
 
-    def get_tree(self, slug, language=None, key=None):
+    def get_tree(self, base_path, language=None, key=None):
         raise NotImplementedError

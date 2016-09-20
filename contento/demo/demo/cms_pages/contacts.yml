@@ -1,5 +1,5 @@
 page:
-  slug: "contacts"
+  url: "contacts"
   data:
     menu_title: Contacts
     published: True

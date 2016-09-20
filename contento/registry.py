@@ -1,6 +1,7 @@
 from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_BACKEND
 from django.core.urlresolvers import reverse_lazy
+from contento.helpers import get_current_backend
 
 
 
@@ -11,7 +12,7 @@ class Registry(object):
     """
     def __init__(self, language=None, build=True):
         self.language = language
-        self.backend = import_string(CONTENTO_BACKEND)()
+        self.backend = get_current_backend()
         self.content_by_url = {}
         self.content_tree = []
         if build:
@@ -19,18 +20,21 @@ class Registry(object):
 
     def process_node(self, node, base):
         out = {}
+#        print dir(node)
         if not base.endswith("/"):
             base = base + "/"
-        url = base + node["slug"]
-        out[url] = { x:node[x] for x in node if x != "children"}
-        for c in node.get("children", []):
-            out.update(self.process_node(c, url))
+        print node
+        print node.get_path()
+        url = base + node.get_path()
+        out[url] = node#{ x:node[x] for x in node if x != "children"}
+        #for c in node.children:
+        #    out.update(self.process_node(c, base))
         return out
 
     def build(self):
         tree = self.backend.get_tree("/", language=self.language)
         self.content_tree = tree
-
+        print tree
         urls = {}
         for node in tree:
             o = self.process_node(node, "/")

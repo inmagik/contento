@@ -1,10 +1,13 @@
 import os
 import yaml
-from contento import settings
-from django.conf import settings as django_settings
-from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
 import re
 import shutil
+
+from contento import settings
+from contento.page_node import PageNode
+from django.conf import settings as django_settings
+from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
+
 
 FILE_REGEX = "(?P<label>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
 file_regex = re.compile(FILE_REGEX)
@@ -14,7 +17,7 @@ class FlatFilesBackend(object):
     """
     YAML based file backend.
     It builds pages as follows:
-    - slug, language and key are inferred from filename
+    - label, language and key are inferred from filename
     - relations (parents) are inferred from filenames
     """
 
@@ -33,7 +36,7 @@ class FlatFilesBackend(object):
 
     def get_path(self, label, language=None, key=None, for_file=False ):
         """
-        gets the file path for a slug
+        gets the file path for an url
         """
         if not label.startswith("/"):
             label = "/" + label
@@ -98,16 +101,22 @@ class FlatFilesBackend(object):
         return data
 
 
-    #TODO: probaby keys should not influence trees
-    def get_tree(self, slug, language=None, key=None, max_depth=None):
+    def get_tree(self, base_path, language=None, key=None, max_depth=None):
+        """
+        Gets a tree of pages, starting from a given PATH
+        """
         self.check_paths()
-        path = self.get_path(slug, language=language, key=key)
+        path = self.get_path(base_path, language=language, key=key)
 
         #out = PageTree(slug, page_path is not None)
         depth = 0
         nodes = []
-        out = {}
+        #topmost nodes will be the output.
+        #the tree can be reconstructed by traversing these nodes via the .children attribute
+        out = []
         nodes_dict = {}
+
+        current_parent = None
 
         for dirname, dirnames, filenames in os.walk(path):
             depth += 1
@@ -115,40 +124,32 @@ class FlatFilesBackend(object):
             if max_depth and depth == max_depth:
                 continue
 
-            nodeslug =  dirname.replace(path, "")
-            if not nodeslug.endswith("/"):
-                nodeslug += "/"
+            nodepath =  dirname.replace(path, "")
+            if not nodepath.endswith("/"):
+                nodepath += "/"
 
             for f in filenames:
                 if not f.endswith(".yml"):
                     continue
-                label, lang, key = self.get_meta_from_path(nodeslug + f)
+                label, lang, key = self.get_meta_from_path(nodepath + f)
                 page_data = self.get_page(label, lang, key)
                 page = page_data["page"]
                 #lang = page.get("language", lang)
                 if lang != language:
                     continue
 
-                node = {
-                    "label" : label,
-                    "slug" : page.get("slug"),
-                    "data" : page.get("data", {}),
-                    "language" : lang,
-                    "key" : page.get("key", key),
-                    "parent" : page.get("parent", nodeslug[:-1] or None),
-                    "children" : []
-                }
+                node = PageNode(
+                    label,
+                    page.get('url'),
+                    page.get("data", {}),
+                    parent=current_parent
+                )
 
-                if not node["parent"]:
-                    node["page_url"] = node["slug"]
-                    out[node["slug"]] = node
-                else:
-                    node["page_url"] = nodes_dict[node["parent"]]["page_url"] + "/" + node["slug"]
-                    nodes_dict[node["parent"]]["children"].append(node)
-
-                nodes_dict[node["slug"]] = node
-
-        return [out[x] for x in out]
+                nodes_dict[node.get_path()] = node
+                if depth == 1:
+                    out.append(node)
+        return out
+        #return [out[x] for x in out]
 
 
     """

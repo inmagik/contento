@@ -1,5 +1,5 @@
 page:
-  slug: users
+  url: "users"
   data:
     menu_title: Users
     published: True
@@ -7,7 +7,7 @@ page:
 
 content:
   region_one:
-    
+
     - type: QuerysetTemplate
       data:
         model_name : "django.contrib.auth.models.User"

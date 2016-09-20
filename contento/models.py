@@ -12,7 +12,7 @@ class Page(models.Model):
     language = models.CharField(max_length=200, null=True, blank=True)
     key = models.CharField(max_length=200, null=True, blank=True)
     template = models.CharField(max_length=200)
-    slug = models.CharField(max_length=200, default="")
+    url = models.CharField(max_length=200, default="")
     data = JSONField(default={})
     #relationships modelling:parent is a weak reference
     parent = models.CharField(max_length=200, null=True)

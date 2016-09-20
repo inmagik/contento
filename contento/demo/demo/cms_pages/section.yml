@@ -1,5 +1,5 @@
 page:
-  slug: "section"
+  url: "section"
   data:
     menu_title: Section
     published: True

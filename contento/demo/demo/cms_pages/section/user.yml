@@ -1,5 +1,5 @@
 page:
-  slug: user/(?P<user_id>\w+)
+  url: user/(?P<user_id>\w+)
   data:
     published: True
     template: simple_page.html

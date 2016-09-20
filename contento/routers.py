@@ -9,6 +9,7 @@ class CMSRouter(object):
     - i18n
     """
 
+    #TODO: the name should be parametrized or omitted. Right now we can mount just one tree...
     def mount(self, base_url):
         """
         Register content management on a base_url
