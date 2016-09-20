@@ -86,23 +86,23 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         tree = self.backend.get_tree("/")
-        print [x for x in tree]
+        #print [x for x in tree]
 
-    # def test_move_page(self):
-    #     """
-    #     """
-    #     temp_dir = tempfile.gettempdir()
-    #     try:
-    #         shutil.rmtree(temp_dir+"/cms_pages")
-    #     except:
-    #         pass
-    #     shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
-    #     backend = FlatFilesBackend(temp_dir+"/cms_pages")
-    #     backend.move_page("contacts", "/section")
-    #     page = backend.get_page("/section/contacts")
-    #     def fun():
-    #         page = backend.get_page("contacts")
-    #     self.assertRaises(CmsPageNotFound, fun)
-    #
-    #     backend.move_page("/section/contacts", "/")
-    #     page = backend.get_page("/contacts")
+    def test_move_page(self):
+        """
+        """
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+        backend.move_page("contacts", "/section")
+        page = backend.get_page("/section/contacts")
+        def fun():
+            page = backend.get_page("contacts")
+        self.assertRaises(CmsPageNotFound, fun)
+
+        backend.move_page("section/contacts", "/")
+        page = backend.get_page("contacts")

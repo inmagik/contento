@@ -151,43 +151,6 @@ class FlatFilesBackend(object):
         out = self.process_folder(path, None, language=language, key=key)
         return out
 
-
-
-
-        for dirname, dirnames, filenames in os.walk(path):
-            depth += 1
-
-            if max_depth and depth == max_depth:
-                continue
-
-            nodepath =  dirname.replace(path, "")
-            if not nodepath.endswith("/"):
-                nodepath += "/"
-
-            for f in filenames:
-                if not f.endswith(".yml"):
-                    continue
-                label, lang, key = self.get_meta_from_path(nodepath + f)
-                page_data = self.get_page(label, lang, key)
-                page = page_data["page"]
-                #lang = page.get("language", lang)
-                if lang != language:
-                    continue
-
-                node = PageNode(
-                    label,
-                    page.get('url'),
-                    page.get("data", {}),
-                    parent=current_parent
-                )
-
-                nodes_dict[node.get_path()] = node
-                if depth == 1:
-                    out.append(node)
-        return out
-        #return [out[x] for x in out]
-
-
     """
     WRITE api methods
     """
@@ -204,9 +167,6 @@ class FlatFilesBackend(object):
         page = self.get_page(label, language=language, key=key)
         old_path = self.get_page_path(label, language=language, key=key)
         old_dir = self.get_path(label, language=language, key=key)
-        clean_label = label.replace(old_dir, "")
-        if clean_label.endswith("/"):
-            clean_label = clean_label[:-1]
 
         if not new_parent.endswith("/"):
             new_parent = new_parent + "/"
@@ -214,8 +174,11 @@ class FlatFilesBackend(object):
         if not new_parent.startswith("/"):
             new_parent =  "/" + new_parent
 
-        new_label = new_parent + clean_label
-        new_path = self.get_page_path(new_label)
+        new_path = self.get_path(new_parent)
+
+        container = self.get_path(new_parent)
+        if not os.path.isdir(container):
+            os.mkdir(container)
 
         shutil.move(old_path, new_path)
 

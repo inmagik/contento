@@ -20,11 +20,10 @@ class Registry(object):
 
     def process_node(self, node, base):
         out = {}
-#        print dir(node)
         if not base.endswith("/"):
             base = base + "/"
         url = base + node.get_path()
-        out[url] = node    
+        out[url] = node
         for c in node.children:
             out.update(self.process_node(c, base))
         return out

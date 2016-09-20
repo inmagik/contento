@@ -6,7 +6,6 @@ contento_link_re = re.compile(contento_link)
 
 class InternalLinks(object):
     def process(self, text):
-        #print "processing internal links..", text
         def f(matchf):
             match = matchf.groups()
             url = match[0] or "_root"
