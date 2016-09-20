@@ -85,8 +85,8 @@ class FlatFilesBackendTestCase(TestCase):
     def test_tree(self):
         """
         """
-        tree = self.backend.get_tree("")
-        
+        tree = self.backend.get_tree("/")
+        print [x for x in tree]
 
     # def test_move_page(self):
     #     """

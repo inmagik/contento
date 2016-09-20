@@ -6,12 +6,12 @@ class SimpleTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-    # def test_details(self):
-    #     # Create an instance of a GET request.
-    #     response = self.client.get('/cms/')
-    #     self.assertEqual(response.status_code, 200)
-    #
-    #     #def f():
-    #     #   response = self.client.get('/cms/sss')
-    #
-    #     #self.assertRaises(Http404, f)
+    def test_details(self):
+        # Create an instance of a GET request.
+        response = self.client.get('/cms/')
+        self.assertEqual(response.status_code, 200)
+
+        #def f():
+        #   response = self.client.get('/cms/sss')
+
+        #self.assertRaises(Http404, f)

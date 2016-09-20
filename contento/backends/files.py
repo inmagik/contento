@@ -101,22 +101,58 @@ class FlatFilesBackend(object):
         return data
 
 
-    def get_tree(self, base_path, language=None, key=None, max_depth=None):
+    def process_folder(self, folder, parent_node, language=None, key=None):
+        out = []
+        for f in os.listdir(folder):
+            fullpath = os.path.join(folder, f)
+
+            if os.path.isfile(fullpath):
+                if not fullpath.endswith(".yml"):
+                    continue
+
+                label, lang, key = self.get_meta_from_path(fullpath)
+                page_data = self.get_page(label, lang, key)
+                page = page_data["page"]
+                #lang = page.get("language", lang)
+                if lang != language:
+                    continue
+
+
+                node = PageNode(
+                    label,
+                    page.get('url'),
+                    page.get("data", {}),
+                    parent=parent_node,
+                    language=lang,
+                    key=key
+                )
+
+                nodedir = fullpath.replace(".yml", "")
+                if os.path.isdir(nodedir):
+                    nodes = self.process_folder(nodedir, node, language=language, key=key)
+                    node.children = nodes
+
+                out.append(node)
+
+        return out
+
+
+
+
+
+    def get_tree(self, base_path, language=None, key=None):
         """
         Gets a tree of pages, starting from a given PATH
         """
         self.check_paths()
+        if base_path == "/":
+            base_path = ""
         path = self.get_path(base_path, language=language, key=key)
+        out = self.process_folder(path, None, language=language, key=key)
+        return out
 
-        #out = PageTree(slug, page_path is not None)
-        depth = 0
-        nodes = []
-        #topmost nodes will be the output.
-        #the tree can be reconstructed by traversing these nodes via the .children attribute
-        out = []
-        nodes_dict = {}
 
-        current_parent = None
+
 
         for dirname, dirnames, filenames in os.walk(path):
             depth += 1

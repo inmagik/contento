@@ -24,31 +24,32 @@ def serve_page(request, page_url="/"):
     registry = Registry()
     available_urls = registry.content_by_url.keys()
 
-    page_meta = None
+    node = None
     for k in available_urls:
         r = re.compile(k+"/?$")
         m = r.match(page_url)
         if m:
             url_params = m.groupdict()
-            page_meta = registry.content_by_url.get(k)
+            node = registry.content_by_url.get(k)
 
-    if not page_meta:
+    if not node:
         raise Http404
 
     cur_language = translation.get_language()
     cms_backend = get_current_backend()
 
     page = cms_backend.get_page(
-        page_meta["label"],
-        language=page_meta["language"],
-        key=page_meta["key"])
+        node.label,
+        language=node.language,
+        key=node.key
+    )
 
     context = {}
     context.update({"url_data" : url_params })
     context.update(page["content"])
     return render(
         request,
-        page_meta["data"]["template"],
+        page["page"]["data"].get("template"),
         context
     )
 

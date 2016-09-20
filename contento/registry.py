@@ -24,17 +24,16 @@ class Registry(object):
         if not base.endswith("/"):
             base = base + "/"
         url = base + node.get_path()
-        out[url] = node#{ x:node[x] for x in node if x != "children"}
-        #for c in node.children:
-        #    out.update(self.process_node(c, base))
+        out[url] = node    
+        for c in node.children:
+            out.update(self.process_node(c, base))
         return out
 
-    # def build(self):
-    #     tree = self.backend.get_tree("/", language=self.language)
-    #     self.content_tree = tree
-    #     print tree
-    #     urls = {}
-    #     for node in tree:
-    #         o = self.process_node(node, "/")
-    #         urls.update(o)
-    #     self.content_by_url = urls
+    def build(self):
+        tree = self.backend.get_tree("/", language=self.language)
+        self.content_tree = tree
+        urls = {}
+        for node in tree:
+            o = self.process_node(node, "/")
+            urls.update(o)
+        self.content_by_url = urls
