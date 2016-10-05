@@ -6,7 +6,7 @@ import shutil
 from contento import settings
 from contento.page_node import PageNode
 from django.conf import settings as django_settings
-from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
+from contento.exceptions import CmsPageNotFound, CmsPageAlreadyExisting, FlatFilesBaseNotConfigured
 
 
 FILE_REGEX = "(?P<label>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
@@ -33,6 +33,17 @@ class FlatFilesBackend(object):
 
         if not self.FLATFILES_BASE:
             raise FlatFilesBaseNotConfigured("CONTENTO_FLATFILES_BASE must be declared in order to use FlatFilesBackend")
+
+    def ensure_directories(self, path):
+        """
+        ensures that container dirs exist for a file path
+        """
+        if not os.path.exists(os.path.dirname(path)):
+            try:
+                os.makedirs(os.path.dirname(path))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise  OSError
 
     def get_path(self, label, language=None, key=None, for_file=False ):
         """
@@ -155,12 +166,52 @@ class FlatFilesBackend(object):
     WRITE api methods
     """
 
-    def add_page(self, label, page_data, page_content={}, language=None, key=None):
-        raise NotImplementedError
+
+    def _write_page( self, label, url=None,
+                page_data={}, page_content={}, language=None, key=None
+        ):
+        """
+        "private" method used to write a page to fs
+        """
+        path = self.get_page_path(label, language=language, key=key)
+        self.ensure_directories(path)
+        out_stream = {
+            "page" : {
+                "url" : url,
+                "data" : page_data,
+            },
+            "content" : page_content
+        }
+        with open(path, "wb") as outfile:
+            yaml.dump(out_stream, outfile)
+
+        return out_stream
 
 
-    def modify_page(self, label, page_data, page_content, language=None, key=None):
-        raise NotImplementedError
+
+    def add_page(self, label, url=None, page_data={}, page_content={}, language=None, key=None):
+        if url is None:
+            url = label
+        try:
+            page = self.get_page(label, language=language, key=key)
+            raise CmsPageAlreadyExisting
+
+        except CmsPageNotFound:
+            return self._write_page(
+                label, url=url, page_data=page_data, page_content=page_content,
+                language=None, key=None
+            )
+
+
+    def modify_page(self, label, url=None, page_data={}, page_content={}, language=None, key=None):
+        if url is None:
+            url = label
+
+        page = self.get_page(label, language=language, key=key)
+        return self._write_page(
+            label, url=url, page_data=page_data, page_content=page_content,
+            language=None, key=None
+        )
 
 
     def move_page(self, label, new_parent, language=None, key=None):
@@ -178,14 +229,20 @@ class FlatFilesBackend(object):
 
         container = self.get_path(new_parent)
         if not os.path.isdir(container):
-            os.mkdir(container)
+            os.makedirs(container)
 
         shutil.move(old_path, new_path)
 
 
 
     def drop_page(self, label, language=None, key=None):
-        raise NotImplementedError
+        """
+        removes a page from filesystem
+        """
+        page = self.get_page(label, language=language, key=key)
+        page_path = self.get_page_path(label, language=language, key=key)
+        if os.path.exists(page_path):
+            os.remove(page_path)
 
 
     def add_page_fragment(
@@ -194,14 +251,53 @@ class FlatFilesBackend(object):
             language=None, key=None,
             position=None
         ):
-        raise NotImplementedError
+        """
+        adds a fragment to a page, given a region
+        """
+        page = self.get_page(label, language=language, key=key)
+        if region not in page["content"]:
+            page["content"][region] = []
+
+        fragment = {
+            "type" : content_type,
+            "data" : content_data
+        }
+
+        if not position:
+            page["content"][region].append(fragment)
+        else:
+            page["content"][region].insert(position, fragment)
+
+        return self._write_page(
+            label,
+            url=page["page"].get("url", None),
+            page_data=page["page"]["data"],
+            page_content=page["content"],
+            language=language, key=key
+        )
+
+
 
     def modify_page_fragment(
             self, label,
             region, position, content_data,
             language=None, key=None
         ):
-        raise NotImplementedError
+        """
+        This only changes the data of a fragment (fragment must exist)
+        """
+        page = self.get_page(label, language=language, key=key)
+        page["page"]["content"][region][position]["data"] = content_data
+
+        return self._write_page(
+            label,
+            url=page["page"].get("url", None),
+            page_data=page["page"]["data"],
+            page_content=page["page"]["content"],
+            language=language, key=key
+        )
+
+
 
     def move_page_fragment(
             self, label,
@@ -209,7 +305,16 @@ class FlatFilesBackend(object):
             new_region=None, new_position=None,
             language=None, key=None
         ):
-        raise NotImplementedError
+        page = self.get_page(label, language=language, key=key)
+        old_fragment = page["content"][region].pop(position)
+        page["content"][region].insert(new_position, old_fragment)
+        return self._write_page(
+            label,
+            url=page["page"].get("url", None),
+            page_data=page["page"]["data"],
+            page_content=page["content"],
+            language=language, key=key
+        )
 
 
     def drop_page_fragment(
@@ -217,4 +322,13 @@ class FlatFilesBackend(object):
             region, position,
             language=None, key=None
         ):
-        raise NotImplementedError
+        page = self.get_page(label, language=language, key=key)
+        page["content"][region].pop(position)
+
+        return self._write_page(
+            label,
+            url=page["page"].get("url", None),
+            page_data=page["page"]["data"],
+            page_content=page["content"],
+            language=language, key=key
+        )

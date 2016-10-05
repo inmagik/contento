@@ -1,18 +1,23 @@
+"""
+Exceptions
+"""
+
 
 class CmsPageNotFound(Exception):
     """
     """
-    pass
+
+
+class CmsPageAlreadyExisting(Exception):
+    """
+    """
 
 
 class FlatFilesBaseNotConfigured(Exception):
     """
     """
-    pass
 
 
 class RendererConfigError(Exception):
     """
     """
-    pass
-    

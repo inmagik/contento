@@ -1,7 +1,7 @@
 from django.test import TestCase
 import os
 from contento.backends.files import FlatFilesBackend
-from contento.exceptions import CmsPageNotFound, FlatFilesBaseNotConfigured
+from contento.exceptions import CmsPageNotFound, CmsPageAlreadyExisting, FlatFilesBaseNotConfigured
 from contento.settings import CONTENTO_FLATFILES_BASE
 from contento.helpers import get_current_backend
 import tempfile
@@ -106,3 +106,159 @@ class FlatFilesBackendTestCase(TestCase):
 
         backend.move_page("section/contacts", "/")
         page = backend.get_page("contacts")
+
+
+    def test_add_modify_page(self):
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+
+        label = "new-page"
+        url = "new-page"
+        page_data = {
+            "menu_title": "New",
+            "published": True,
+            "template": "simple_page.html"
+        }
+        page_content = {
+            "region_one" : {
+                "type": "Text",
+                "data" : {
+                    "text": "Hi. this is some text from the cms. It's the new page."
+                }
+            }
+        }
+
+        #testing adding
+        page = backend.add_page(label, url, page_data, page_content=page_content, language=None, key=None)
+        page_2 = backend.get_page(label)
+        self.assertEquals(page, page_2)
+
+        def fun():
+            page = backend.add_page(
+                label, url=url, page_data=page_data, page_content=page_content, language=None, key=None
+            )
+        self.assertRaises(CmsPageAlreadyExisting, fun)
+
+        #testing adding nested page (intermediate folder could not exist)
+        label_nested = "nonexisting/new-page"
+        page_nested = backend.add_page(
+            label_nested, url=None, page_data=page_data, page_content=page_content, language=None, key=None
+            )
+
+        #testing modification
+        new_page_content = {
+            "region_one" : {
+                "type": "Text",
+                "data" : {
+                    "text": "Hi. Text is changed."
+                }
+            }
+        }
+
+        page_nested_modified = backend.modify_page(
+            label_nested, url=None, page_data=page_data, page_content=new_page_content, language=None, key=None
+            )
+        page_nested_modifield_loaded = backend.get_page(label_nested, language=None, key=None)
+        self.assertEquals(page_nested_modifield_loaded["content"], new_page_content)
+
+    def test_drop_page(self):
+        """
+        """
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+        page = backend.get_page("contacts")
+        backend.drop_page("contacts")
+
+        def fun():
+            page = backend.get_page("contacts")
+        self.assertRaises(CmsPageNotFound, fun)
+
+        def fun2():
+            backend.drop_page("contacts")
+        self.assertRaises(CmsPageNotFound, fun2)
+
+
+
+    def test_add_page_fragment(self):
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+
+        self.assertEquals(len(region_one_items), 3)
+
+        backend.add_page_fragment(
+            "contacts",
+            "region_one", "Text", { "text" : "some text here"},
+            language=None, key=None,
+            position=None
+        )
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+        self.assertEquals(len(region_one_items), 4)
+
+
+    def test_drop_page_fragment(self):
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+
+        self.assertEquals(len(region_one_items), 3)
+
+        backend.drop_page_fragment(
+            "contacts",
+            "region_one", position=2,
+            language=None, key=None,
+        )
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+        self.assertEquals(len(region_one_items), 2)
+
+
+    def test_move_page_fragment(self):
+        temp_dir = tempfile.gettempdir()
+        try:
+            shutil.rmtree(temp_dir+"/cms_pages")
+        except:
+            pass
+        shutil.copytree(CONTENTO_FLATFILES_BASE, temp_dir+"/cms_pages/")
+        backend = FlatFilesBackend(temp_dir+"/cms_pages")
+
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+        first_item = page["content"]["region_one"][0]
+        second_item = page["content"]["region_one"][1]
+
+
+        backend.move_page_fragment(
+            "contacts",
+            "region_one", position=0, new_position=2,
+            language=None, key=None,
+        )
+        page = backend.get_page("contacts")
+        region_one_items = page["content"]["region_one"]
+        new_first_item = page["content"]["region_one"][0]
+        self.assertEquals(second_item, new_first_item)
