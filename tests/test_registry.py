@@ -14,10 +14,11 @@ class RegistryTestCase(TestCase):
         child_node = PageNode("Child", "child", {}, node)
 
         out = self.registry.process_node(node, "")
-        out = self.registry.process_node(child_node, "")
+        self.assertTrue("/test" in out)
 
-        #self.assertTrue("/test" in out)
-        #self.assertTrue("/test/b" in out)
+        out = self.registry.process_node(child_node, "")
+        self.assertTrue("/test/child" in out)
+
 
     def test_build(self):
         """
@@ -26,6 +27,7 @@ class RegistryTestCase(TestCase):
         child_node = PageNode("Child", "child", {}, node)
 
         reg = Registry(build=False)
+        reg.build()
 
         #TODO: COMPLETE TEST
-        self.assertTrue(True)
+        #self.assertTrue(True)
