@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 
 CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
 CONTENTO_TEMPLATES = [
-    ("Simple page", "simple_page.html"),
+    ("simple_page.html", "Simple page"),
 
 ]
 

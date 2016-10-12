@@ -5,6 +5,7 @@ from .dashboard_views import  (
 
     #form based views.
     DashboardEditPageBaseView,DashboardEditPageDataView,DashboardEditPageContentView,
+    DashboardCreatePage,
 )
 
 from .views import serve_single_fragment
@@ -31,6 +32,10 @@ urlpatterns = [
 
     url(r'edit/(?P<label>[/\w]+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
+
+    url(r'add-page/$', DashboardCreatePage.as_view(), name="dashboard-add-page"),
+
+
 
 
     url(r'preview/(?P<label>.*)', serve_single_fragment, name="contento-cms-preview"),

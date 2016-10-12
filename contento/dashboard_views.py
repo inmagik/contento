@@ -165,3 +165,26 @@ class DashboardEditPageContentView(DashboardEditPageBase):
                 page_data=None, page_content=form.cleaned_data["content"], language=None, key=None)
 
         return super(DashboardEditPageContentView, self).form_valid(form)
+
+
+class DashboardCreatePage(FormView):
+    template_name = "contento/dashboard/dashboard_page_add.html"
+    form_class = PageEditBaseForm
+
+    def __init__(self, *args, **kwargs):
+        self.cms_backend = import_string(CONTENTO_BACKEND)()
+        super(DashboardCreatePage, self).__init__(*args, **kwargs)
+
+
+    def get_success_url(self):
+        return self.request.path
+
+    def form_valid(self, form):
+
+        self.cms_backend.add_page(
+            form.cleaned_data["label"],
+            template=form.cleaned_data["template"],
+            url=form.cleaned_data["url"],
+            page_data={}, page_content={}, language=None, key=None)
+
+        return super(DashboardCreatePage, self).form_valid(form)
