@@ -1,15 +1,7 @@
-url: "users"
-template: simple_page.html
-
-data:
-  menu_title: Users
-  published: True
-
-
 content:
   region_one:
-
-    - type: QuerysetTemplate
-      data:
-        model_name : "django.contrib.auth.models.User"
-        template_name: "users_list.html"
+  - data: {model_name: django.contrib.auth.models.User, template_name: users_list.html}
+    type: QuerysetTemplate
+data: {menu_title: Users, published: true}
+template: simple_page.html
+url: !!python/unicode 'users'

@@ -119,6 +119,7 @@ class FlatFilesBackendTestCase(TestCase):
 
         label = "new-page"
         url = "new-page"
+        template = "simple_page.html"
         page_data = {
             "menu_title": "New",
             "published": True,
@@ -134,20 +135,20 @@ class FlatFilesBackendTestCase(TestCase):
         }
 
         #testing adding
-        page = backend.add_page(label, url, page_data, page_content=page_content, language=None, key=None)
+        page = backend.add_page(label, template, url, page_data, page_content=page_content, language=None, key=None)
         page_2 = backend.get_page(label)
         self.assertEquals(page, page_2)
 
         def fun():
             page = backend.add_page(
-                label, url=url, page_data=page_data, page_content=page_content, language=None, key=None
+                label, template, url=url, page_data=page_data, page_content=page_content, language=None, key=None
             )
         self.assertRaises(CmsPageAlreadyExisting, fun)
 
         #testing adding nested page (intermediate folder could not exist)
         label_nested = "nonexisting/new-page"
         page_nested = backend.add_page(
-            label_nested, url=None, page_data=page_data, page_content=page_content, language=None, key=None
+            label_nested, template, url=None, page_data=page_data, page_content=page_content, language=None, key=None
             )
 
         #testing modification

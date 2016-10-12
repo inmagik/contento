@@ -1,0 +1,32 @@
+{% extends "contento/dashboard/base.html" %}
+
+
+{% block content %}
+<h1 class="page-header">Edit page</h1>
+
+<!-- Nav tabs -->
+ <ul class="nav nav-tabs" role="tablist">
+   <li role="presentation" class="active"><a href="{% url 'dashboard-edit-page-base' label=label %}" aria-controls="home" role="tab">Page</a></li>
+   <li role="presentation"><a href="{% url 'dashboard-edit-page-data' label=label %}" aria-controls="profile" role="tab" >Data</a></li>
+   <li role="presentation"><a href="{% url 'dashboard-edit-page-content' label=label %}" aria-controls="messages" role="tab" >Content</a></li>
+ </ul>
+
+ <!-- Tab panes -->
+ <div class="tab-content" style="padding:20px;">
+
+   <div role="tabpanel" class="tab-pane active" id="home">
+
+     <form class="" action="" method="POST">
+       {% csrf_token %}
+       {{form.as_p}}
+       <button type="submit" name="button" class="btn btn-primary">SAVE</button>
+     </form>
+
+   </div>
+ </div>
+
+
+
+
+
+{% endblock content %}

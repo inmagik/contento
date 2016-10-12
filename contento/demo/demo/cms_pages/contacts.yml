@@ -1,46 +1,31 @@
-url: "contacts"
-template: simple_page.html
-
-data:
-  menu_title: Contacts
-  published: True
-
-
 content:
-  region_one:
-    - type: Text
-      data:
-        text: "Hi. this is a contacts page."
-
-    - type: LeafletMap
-      data:
-        lat: 45.00
-        lon: 8.12
-        wrapper_class: example-map
-
-    - type: LeafletMap
-      data:
-        lat: 45.00
-        lon: 10.12
-        wrapper_class: example-map
-        markers:
-          - lat: 45.00
-            lon: 10.00
-            popup: "Hi. This is a popup"
-          - lat: 45.10
-            lon: 10.20
-            popup: "Hi. This is another one!"
-
-  region_two:
-    - type: Text
-      data:
-        text: "Hello there from region two. contacts"
-
-    - type: Image
-      data:
-        src: "https://amat-mi.it/static/amatstatic/img/logo.png"
-        wrapper_class: "text-center"
-
-    - type: Text
-      data:
-        text: "<p>And more content here </p>"
+  !!python/unicode 'region_one':
+  - !!python/unicode 'data': {!!python/unicode 'text': !!python/unicode 'Hi. this
+        issss a contacts page.'}
+    !!python/unicode 'type': !!python/unicode 'Text'
+  - !!python/unicode 'data': {!!python/unicode 'lat': 45.0, !!python/unicode 'lon': 8.12,
+      !!python/unicode 'wrapper_class': !!python/unicode 'example-map'}
+    !!python/unicode 'type': !!python/unicode 'LeafletMap'
+  - !!python/unicode 'data':
+      !!python/unicode 'lat': 45.0
+      !!python/unicode 'lon': 10.12
+      !!python/unicode 'markers':
+      - {!!python/unicode 'lat': 45.0, !!python/unicode 'lon': 10.0, !!python/unicode 'popup': !!python/unicode 'Hi.
+          This is a popup'}
+      - {!!python/unicode 'lat': 45.1, !!python/unicode 'lon': 10.2, !!python/unicode 'popup': !!python/unicode 'Hi.
+          This is another one!'}
+      !!python/unicode 'wrapper_class': !!python/unicode 'example-map'
+    !!python/unicode 'type': !!python/unicode 'LeafletMap'
+  !!python/unicode 'region_two':
+  - !!python/unicode 'data': {!!python/unicode 'text': !!python/unicode 'Hello there
+        from region two. contacts'}
+    !!python/unicode 'type': !!python/unicode 'Text'
+  - !!python/unicode 'data': {!!python/unicode 'src': !!python/unicode 'https://amat-mi.it/static/amatstatic/img/logo.png',
+      !!python/unicode 'wrapper_class': !!python/unicode 'text-center'}
+    !!python/unicode 'type': !!python/unicode 'Image'
+  - !!python/unicode 'data': {!!python/unicode 'text': !!python/unicode '<p>And more
+        content here </p>'}
+    !!python/unicode 'type': !!python/unicode 'Text'
+data: {menu_title: Contacts, published: true}
+template: simple_page.html
+url: contacts

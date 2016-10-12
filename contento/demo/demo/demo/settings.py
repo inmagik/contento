@@ -123,6 +123,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
+CONTENTO_TEMPLATES = [
+    ("Simple page", "simple_page.html"),
+
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
