@@ -13,14 +13,14 @@ class Page(models.Model):
     key = models.CharField(max_length=200, null=True, blank=True)
 
     template = models.CharField(max_length=200)
-    url = models.CharField(max_length=200, default="")
+    url = models.CharField(blank=True, max_length=200, default="")
 
-    data = JSONField(default={})
+    data = JSONField(blank=True, default={})
 
     #relationships modelling:parent is a weak reference
-    parent = models.CharField(max_length=200, null=True)
-    order = models.PositiveIntegerField(default=0)
-    content = JSONField(default={})
+    parent = models.CharField(max_length=200, blank=True, null=True)
+    order = models.PositiveIntegerField(blank=True, default=0)
+    content = JSONField(blank=True, default={})
 
     class Meta:
         unique_together=["label", "language", "key"]
