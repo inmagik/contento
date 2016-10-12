@@ -16,6 +16,7 @@ class Page(models.Model):
     url = models.CharField(max_length=200, default="")
 
     data = JSONField(default={})
+
     #relationships modelling:parent is a weak reference
     parent = models.CharField(max_length=200, null=True)
     order = models.PositiveIntegerField(default=0)

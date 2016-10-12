@@ -10,11 +10,9 @@ class SQLBackend(object):
         )
         out = {
             "url" : page.url,
-            "data" : {
-                "published" : True,
-                "template" : page.template
-            },
-            "content" : {}
+            "template" : page.template
+            "data" : page.data
+            "content" : page.content
         }
         return out
 
