@@ -1,9 +1,10 @@
-page:
-  url: "section"
-  data:
-    menu_title: Section
-    published: True
-    template: simple_page.html
+url: "section"
+template: simple_page.html
+
+data:
+  menu_title: Section
+  published: True
+
 
 content:
   region_one:

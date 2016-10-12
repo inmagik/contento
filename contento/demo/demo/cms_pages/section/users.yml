@@ -1,9 +1,10 @@
-page:
-  url: "users"
-  data:
-    menu_title: Users
-    published: True
-    template: simple_page.html
+url: "users"
+template: simple_page.html
+
+data:
+  menu_title: Users
+  published: True
+
 
 content:
   region_one:

@@ -39,8 +39,8 @@ class DashboardEditPageView(View):
         page = self.cms_backend.get_page(label, language=language, key=key)
 
         try:
-            page_meta = page.get("page").get("data")
-            tpl_name = page_meta.get("template")
+            page_meta = page.get("data")
+            tpl_name = page.get("template")
             tpl = loader.get_template(tpl_name)
             region_names = get_regions_from_template(tpl.template.source)
         except:

@@ -46,10 +46,10 @@ def serve_page(request, page_url="/"):
 
     context = {}
     context.update({"url_data" : url_params })
-    context.update(page["content"])
+    context.update(page.get("content", {}))
     return render(
         request,
-        page["page"]["data"].get("template"),
+        page.get("template"),
         context
     )
 

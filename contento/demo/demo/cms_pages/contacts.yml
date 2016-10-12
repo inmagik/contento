@@ -1,9 +1,10 @@
-page:
-  url: "contacts"
-  data:
-    menu_title: Contacts
-    published: True
-    template: simple_page.html
+url: "contacts"
+template: simple_page.html
+
+data:
+  menu_title: Contacts
+  published: True
+
 
 content:
   region_one:

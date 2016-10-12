@@ -1,8 +1,9 @@
-page:
-  url: user/(?P<user_id>\w+)
-  data:
-    published: True
-    template: simple_page.html
+url: user/(?P<user_id>\w+)
+template: simple_page.html
+
+data:
+  published: True
+
 
 content:
   region_one:

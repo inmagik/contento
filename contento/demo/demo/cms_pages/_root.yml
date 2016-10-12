@@ -1,10 +1,10 @@
-page:
-  url: ""
+url: ""
+template: simple_page.html
 
-  data:
-    menu_title: "Home"
-    published: True
-    template: simple_page.html
+data:
+  menu_title: "Home"
+  published: True
+
 
 content:
   region_one:

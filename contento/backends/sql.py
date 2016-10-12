@@ -9,11 +9,7 @@ class SQLBackend(object):
             key = key
         )
         out = {
-            "label" : label,
-            "language" : language,
-            "key" : key,
             "url" : page.url,
-            "parent" : page.parent,
             "data" : {
                 "published" : True,
                 "template" : page.template

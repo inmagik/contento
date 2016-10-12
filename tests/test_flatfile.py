@@ -23,21 +23,21 @@ class FlatFilesBackendTestCase(TestCase):
         """
         """
         page_data = self.backend.get_page("/")
-        self.assertTrue('page' in page_data)
+        self.assertTrue('data' in page_data)
         self.assertTrue('content' in page_data)
         self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
 
         page_data = self.backend.get_page("")
-        self.assertTrue('page' in page_data)
+        self.assertTrue('data' in page_data)
         self.assertTrue('content' in page_data)
         self.assertEquals(page_data["content"]["region_one"][0]["type"], "Text")
 
         page_data = self.backend.get_page("/contacts")
-        self.assertTrue('page' in page_data)
+        self.assertTrue('data' in page_data)
         self.assertTrue('content' in page_data)
 
         page_data = self.backend.get_page("contacts")
-        self.assertTrue('page' in page_data)
+        self.assertTrue('data' in page_data)
         self.assertTrue('content' in page_data)
 
 

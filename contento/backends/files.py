@@ -123,7 +123,6 @@ class FlatFilesBackend(object):
 
                 label, lang, key = self.get_meta_from_path(fullpath)
                 page_data = self.get_page(label, lang, key)
-                page = page_data["page"]
                 #lang = page.get("language", lang)
                 if lang != language:
                     continue
@@ -131,8 +130,8 @@ class FlatFilesBackend(object):
 
                 node = PageNode(
                     label,
-                    page.get('url'),
-                    page.get("data", {}),
+                    page_data.get('url'),
+                    page_data.get("data", {}),
                     parent=parent_node,
                     language=lang,
                     key=key
@@ -176,10 +175,8 @@ class FlatFilesBackend(object):
         path = self.get_page_path(label, language=language, key=key)
         self.ensure_directories(path)
         out_stream = {
-            "page" : {
-                "url" : url,
-                "data" : page_data,
-            },
+            "url" : url,
+            "data" : page_data,
             "content" : page_content
         }
         with open(path, "wb") as outfile:
@@ -270,8 +267,8 @@ class FlatFilesBackend(object):
 
         return self._write_page(
             label,
-            url=page["page"].get("url", None),
-            page_data=page["page"]["data"],
+            url=page.get("url", None),
+            page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
         )
@@ -291,9 +288,9 @@ class FlatFilesBackend(object):
 
         return self._write_page(
             label,
-            url=page["page"].get("url", None),
-            page_data=page["page"]["data"],
-            page_content=page["page"]["content"],
+            url=page.get("url", None),
+            page_data=page["data"],
+            page_content=page["content"],
             language=language, key=key
         )
 
@@ -310,8 +307,8 @@ class FlatFilesBackend(object):
         page["content"][region].insert(new_position, old_fragment)
         return self._write_page(
             label,
-            url=page["page"].get("url", None),
-            page_data=page["page"]["data"],
+            url=page.get("url", None),
+            page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
         )
@@ -327,8 +324,8 @@ class FlatFilesBackend(object):
 
         return self._write_page(
             label,
-            url=page["page"].get("url", None),
-            page_data=page["page"]["data"],
+            url=page.get("url", None),
+            page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
         )
