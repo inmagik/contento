@@ -64,21 +64,7 @@ class FlatFilesBackend(object):
         path = os.path.join(self.FLATFILES_BASE, label)
         return path
 
-    def get_meta_from_path(self, path):
-        """
-        Reverse label, lang and key from path
-        """
-        path = path.replace(self.FLATFILES_BASE, "")
-
-        search_result = file_regex.search(path)
-        label = search_result.group('label')
-        lang = search_result.group('lang')
-        key = search_result.group('key')
-
-        label = label.replace("_root", "")
-        label = label or "/"
-
-        return label, lang, key
+    
 
 
     def get_page_path(self, label, language=None, key=None ):
@@ -148,15 +134,12 @@ class FlatFilesBackend(object):
         return out
 
 
-
-
-
     def get_tree(self, base_path, language=None, key=None):
         """
         Gets a tree of pages, starting from a given PATH
         """
         self.check_paths()
-        if base_path == "/":
+        if base_path == "/" or base_path is None:
             base_path = ""
         path = self.get_path(base_path, language=language, key=key)
         out = self.process_folder(path, None, language=language, key=key)
@@ -293,7 +276,7 @@ class FlatFilesBackend(object):
         This only changes the data of a fragment (fragment must exist)
         """
         page = self.get_page(label, language=language, key=key)
-        page["page"]["content"][region][position]["data"] = content_data
+        page["content"][region][position]["data"] = content_data
 
         return self._write_page(
             label,

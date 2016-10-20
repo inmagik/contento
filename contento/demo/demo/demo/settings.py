@@ -122,11 +122,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
 CONTENTO_TEMPLATES = [
     ("simple_page.html", "Simple page"),
-
 ]
+
+#CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
+CONTENTO_BACKEND = 'contento.backends.sql.SQLBackend'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (

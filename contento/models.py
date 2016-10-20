@@ -28,7 +28,7 @@ class Page(models.Model):
     def save(self, *args, **kwargs):
         paths = [self.url]
         if self.parent:
-            paths.insert(self.parent.url)
+            paths.insert(0, self.parent.url)
 
         out = "/".join(paths)
         if not out.startswith("/"):

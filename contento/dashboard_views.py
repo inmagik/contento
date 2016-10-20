@@ -20,7 +20,7 @@ class DashboardPagesView(TemplateView):
         context_data = super(DashboardPagesView, self).get_context_data()
         cms_backend = import_string(CONTENTO_BACKEND)()
         #TODO: lang here....
-        tree = cms_backend.get_tree("/")
+        tree = cms_backend.get_tree(None)
         context_data["pages_tree"] = tree
         return context_data
 
