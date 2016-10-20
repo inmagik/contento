@@ -22,6 +22,19 @@ class Page(models.Model):
     parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
     order = models.PositiveIntegerField(blank=True, default=0)
 
+    ##persisting full path
+    fullpath = models.CharField(blank=True, max_length=200, default="")
+
+    def save(self, *args, **kwargs):
+        paths = [self.url]
+        if self.parent:
+            paths.insert(self.parent.url)
+
+        out = "/".join(paths)
+        if not out.startswith("/"):
+            out = "/" + out
+        return out
+
 
     class Meta:
         unique_together=["label", "language", "key"]
