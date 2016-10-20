@@ -19,7 +19,7 @@ class Page(models.Model):
     content = JSONField(blank=True, default={})
 
     #relationships modelling:parent is a weak reference
-    parent = models.CharField(max_length=200, blank=True, null=True)
+    parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
     order = models.PositiveIntegerField(blank=True, default=0)
 
 

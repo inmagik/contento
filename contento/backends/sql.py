@@ -1,4 +1,5 @@
 from contento.models import Page
+from contento.page_node import PageNode
 
 class SQLBackend(object):
 
@@ -17,4 +18,7 @@ class SQLBackend(object):
         return out
 
     def get_tree(self, base_path, language=None, key=None):
-        raise NotImplementedError
+        out = []
+
+
+        return out
