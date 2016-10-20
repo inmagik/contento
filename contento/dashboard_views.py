@@ -8,7 +8,7 @@ from django.utils.module_loading import import_string
 from django.shortcuts import render
 from django.template import loader
 from contento.settings import CONTENTO_BACKEND
-from contento.render_helpers import get_regions_from_template
+from contento.meta import get_regions_from_template, get_contento_renderers_schemas
 
 class DashboardIndexView(TemplateView):
     template_name = "contento/dashboard/dashboard_index.html"
@@ -153,6 +153,14 @@ class DashboardEditPageContentView(DashboardEditPageBase):
     def get_initial(self):
         kwargs = super(DashboardEditPageContentView, self).get_initial()
         kwargs['content'] = self.page.get("content")
+        return kwargs
+
+    def get_form_kwargs(self):
+        kwargs = super(DashboardEditPageContentView, self).get_form_kwargs()
+        region_names = get_regions_from_template(self.page.get("template"), load=True)
+        kwargs['region_names'] = region_names
+        fragments_schemas = get_contento_renderers_schemas()
+        kwargs['fragments_schemas'] = fragments_schemas
         return kwargs
 
     def form_valid(self, form):

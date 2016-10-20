@@ -1,7 +1,9 @@
 import re
 import json
 from django.utils.module_loading import import_string
-from contento.settings import CONTENTO_TEXT_PROCESSORS
+from contento.settings import CONTENTO_TEXT_PROCESSORS, CONTENTO_RENDERERS
+from django.template import loader
+
 
 
 def load_renderer(content_type):
@@ -37,15 +39,6 @@ def apply_text_processors(text):
 def render_error(content_type, content_data, msg):
     return "<div class='alert alert-danger'>Cannot render content <b>%s</b>:<pre>%s</pre>Error:<pre>%s</pre></div>" % (content_type, content_data, msg)
 
-
-def get_regions_from_template(template):
-    exp = '{%\s+region\s+"(?P<region_name>\w+)"\s%}'
-    reg = re.compile(exp)
-    out = []
-    for match in reg.finditer(template):
-        out.append(match.group('region_name'))
-    out = list(set(out))
-    return out
 
 
 def get_inline_renderer_config(inline_definition):

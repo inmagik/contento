@@ -113,6 +113,7 @@ class FlatFilesBackend(object):
 
 
     def process_folder(self, folder, parent_node, language=None, key=None):
+        #TODO: !order
         out = []
         for f in os.listdir(folder):
             fullpath = os.path.join(folder, f)

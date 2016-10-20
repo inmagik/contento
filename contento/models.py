@@ -33,7 +33,9 @@ class Page(models.Model):
         out = "/".join(paths)
         if not out.startswith("/"):
             out = "/" + out
-        return out
+        self.fullpath = out
+
+        return super(Page, self).save(*args, **kwargs)
 
 
     class Meta:

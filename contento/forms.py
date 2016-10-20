@@ -1,3 +1,4 @@
+import json
 from django import forms
 from django.db import connection
 
@@ -27,4 +28,16 @@ class PageEditDataForm(forms.Form):
 class PageEditContentForm(forms.Form):
     """
     """
-    content = FormJSONField()
+
+    def __init__(self, *args, **kwargs):
+        self.region_names = kwargs.pop("region_names")
+        self.fragments_schemas = kwargs.pop("fragments_schemas")
+
+        super(PageEditContentForm, self).__init__(*args, **kwargs)
+
+        self.fields['content'].widget.attrs["data-render"] = "contentEditor"
+        self.fields['content'].widget.attrs["data-contenteditor-regions"] = json.dumps(self.region_names)
+        self.fields['content'].widget.attrs["data-contenteditor-fragments-schemas"] = json.dumps(self.fragments_schemas)
+
+
+    content = FormJSONField(widget=forms.Textarea)
