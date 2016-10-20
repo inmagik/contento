@@ -1,5 +1,5 @@
 {% extends "contento/dashboard/base.html" %}
-
+{% load static %}
 
 {% block content %}
 <h1 class="page-header">Edit page</h1>
@@ -26,7 +26,9 @@
  </div>
 
 
-
-
-
 {% endblock content %}
+
+{% block body_bottom %}
+<script src="{% static "contento/dashboard/widgets/boostrap-widgets.js" %}"></script>
+<script src="{% static "contento/dashboard/widgets/widgets.js" %}"></script>
+{% endblock body_bottom %}
