@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import JsHook from './jshook'
 import ContentEditor from './components/ContentEditor'
+import Form from "react-jsonschema-form"
 import uuid from 'node-uuid'
 
 JsHook.register('content-editor', (element) => {
@@ -29,6 +30,32 @@ JsHook.register('content-editor', (element) => {
     />,
     reactContainer
   )
+})
+
+
+JsHook.register('textarea-jsonschema', (element) => {
+  const value = JSON.parse(element.value || '{}');
+  const schema = JSON.parse(element.getAttribute('data-textarea-jsonschema') || '{}')
+
+
+  const reactContainer = document.createElement('div')
+  element.parentNode.insertBefore(reactContainer, element)
+  // element.style.visibility = 'hidden'
+
+  const handleChange = ({formData}) => {
+    element.value = JSON.stringify(formData);
+  }
+
+  ReactDOM.render(
+    <Form schema={schema} formData={value} onChange={handleChange}>
+      <div/>
+    </Form>,
+
+    reactContainer
+  )
+
+
+
 })
 
 module.exports = JsHook

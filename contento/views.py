@@ -15,6 +15,7 @@ def serve_page(request, page_url="/"):
     """
     Main view for serving cms pages.
     """
+
     page_url = page_url or "/"
     if not page_url.startswith("/"):
         page_url = "/" + page_url

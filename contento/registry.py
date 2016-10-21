@@ -29,7 +29,7 @@ class Registry(object):
         return out
 
     def build(self):
-        tree = self.backend.get_tree("/", language=self.language)
+        tree = self.backend.get_tree(None, language=self.language)
         self.content_tree = tree
         urls = {}
         for node in tree:
