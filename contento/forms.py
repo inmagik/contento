@@ -16,8 +16,9 @@ class PageEditBaseForm(forms.Form):
     label = forms.CharField()
     template = forms.ChoiceField(choices=CONTENTO_TEMPLATES)
     url = forms.CharField(required=False)
+    parent = forms.CharField(required=False)
 
-
+    
 
 class PageEditDataForm(forms.Form):
     """

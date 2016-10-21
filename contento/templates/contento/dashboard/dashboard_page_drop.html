@@ -1,0 +1,20 @@
+{% extends "contento/dashboard/base.html" %}
+
+
+{% block content %}
+<h1 class="page-header">Delete page</h1>
+
+<!-- Nav tabs -->
+ <p class="alert alert-danger">
+   Are you sure?
+   <form class="" method="POST">
+     {% csrf_token %}
+     <button type="submit" class="btn btn-danger">Yep</button>
+
+   </form>
+ </p>
+
+
+
+
+{% endblock content %}

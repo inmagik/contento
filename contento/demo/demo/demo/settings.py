@@ -39,16 +39,19 @@ INSTALLED_APPS = [
     'contento',
     'examplerenderers',
     'sekizai',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'demo.urls'
@@ -126,8 +129,8 @@ CONTENTO_TEMPLATES = [
     ("simple_page.html", "Simple page"),
 ]
 
-CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
-#CONTENTO_BACKEND = 'contento.backends.sql.SQLBackend'
+#CONTENTO_FLATFILES_BASE = os.path.join(BASE_DIR, 'cms_pages')
+CONTENTO_BACKEND = 'contento.backends.sql.SQLBackend'
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
@@ -137,3 +140,5 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     )
 }
+
+INTERNAL_IPS = ['127.0.0.1']

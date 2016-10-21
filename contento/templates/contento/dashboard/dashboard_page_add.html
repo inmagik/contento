@@ -4,6 +4,9 @@
 {% block content %}
 <h1 class="page-header">ADD page</h1>
 
+  {% if parent %}
+  <b>Parent:</b> {{parent.label}} : {{parent.get_path }}
+  {% endif %}
 
  <form class="" action="" method="POST">
    {% csrf_token %}

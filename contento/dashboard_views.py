@@ -2,13 +2,16 @@
 Dashboard views
 """
 import json
-from django.views.generic import TemplateView, View, FormView
-from django.http import HttpResponse
+from django.views.generic import TemplateView, View, FormView, DeleteView
+from django.views.generic.edit import DeletionMixin
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.module_loading import import_string
 from django.shortcuts import render
 from django.template import loader
 from contento.settings import CONTENTO_BACKEND
 from contento.meta import get_regions_from_template, get_contento_renderers_schemas
+from contento.backends.helpers import get_meta_from_path
 
 class DashboardIndexView(TemplateView):
     template_name = "contento/dashboard/dashboard_index.html"
@@ -181,18 +184,59 @@ class DashboardCreatePage(FormView):
 
     def __init__(self, *args, **kwargs):
         self.cms_backend = import_string(CONTENTO_BACKEND)()
+        self.parent = None
         super(DashboardCreatePage, self).__init__(*args, **kwargs)
 
+    def dispatch(self, *args, **kwargs):
+        if self.kwargs.get('parent'):
+            self.parent_meta = get_meta_from_path( self.kwargs.get('parent'))
+            self.parent = self.cms_backend.get_page(*self.parent_meta)
+            self.parent_label = self.parent["label"]
+
+        return super(DashboardCreatePage, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(DashboardCreatePage, self).get_context_data(**kwargs)
+        if self.kwargs.get('parent'):
+            ctx['parent'] = self.parent
+        return ctx
+
+    def get_initial(self):
+        kwargs = super(DashboardCreatePage, self).get_initial()
+        if self.parent:
+            kwargs['parent'] = self.parent_label
+        return kwargs
 
     def get_success_url(self):
-        return self.request.path
+        return reverse("dashboard-pages")
 
     def form_valid(self, form):
-
+        url = form.cleaned_data["url"] or form.cleaned_data["label"]
         self.cms_backend.add_page(
             form.cleaned_data["label"],
             template=form.cleaned_data["template"],
-            url=form.cleaned_data["url"],
+            url=url,
+            parent_label=form.cleaned_data["parent"],
             page_data={}, page_content={}, language=None, key=None)
 
         return super(DashboardCreatePage, self).form_valid(form)
+
+
+class DashboardDropPageView(DeletionMixin, TemplateView):
+    template_name = "contento/dashboard/dashboard_page_drop.html"
+
+    def dispatch(self, *args, **kwargs):
+        label = self.kwargs.get('label')
+        language = self.kwargs.get('language', None)
+        key = self.kwargs.get('key', None)
+        self.cms_backend = import_string(CONTENTO_BACKEND)()
+        self.page = self.cms_backend.get_page(label, language=language, key=key)
+        return super(DashboardDropPageView, self).dispatch(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse("dashboard-pages")
+
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        self.cms_backend.drop_page(self.page.get("label"), self.page.get("language"), self.page.get("key"))
+        return HttpResponseRedirect(success_url)

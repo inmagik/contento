@@ -6,6 +6,7 @@ from .dashboard_views import  (
     #form based views.
     DashboardEditPageBaseView,DashboardEditPageDataView,DashboardEditPageContentView,
     DashboardCreatePage,
+    DashboardDropPageView,
 )
 
 from .views import serve_single_fragment
@@ -30,10 +31,15 @@ urlpatterns = [
     url(r'edit/(?P<label>[/\w]+)/content/$',     DashboardEditPageContentView.as_view(), name="dashboard-edit-page-content"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/content/$',  DashboardEditPageContentView.as_view(), name="dashboard-edit-page-content"),
 
+    url(r'delete/(?P<label>[/\w]+)/content/$',     DashboardDropPageView.as_view(), name="dashboard-drop-page"),
+    url(r'delete/(?P<label>[/\w]+)---(?P<key>\w+)/content/$',  DashboardDropPageView.as_view(), name="dashboard-drop-page"),
+
     url(r'edit/(?P<label>[/\w]+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
 
+    url(r'add-page/(?P<parent>[-_\w]+)/$', DashboardCreatePage.as_view(), name="dashboard-add-page-with-parent"),
     url(r'add-page/$', DashboardCreatePage.as_view(), name="dashboard-add-page"),
+
 
 
 
