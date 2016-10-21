@@ -63,16 +63,9 @@ export default class ContentEditor extends Component {
     }, this.save)
   }
 
-  getFragmenTypes() {
-    const { fragmentsSchemas } = this.props
-    return Object.keys(fragmentsSchemas).map(name => (
-      { name, title: fragmentsSchemas[name].title }
-    ))
-  }
-
   render() {
     const { regions } = this.state
-    const fragmentsTypes = this.getFragmenTypes()
+    const { fragmentsSchemas } = this.props
 
     return (
       <div>
@@ -81,7 +74,7 @@ export default class ContentEditor extends Component {
             key={name}
             name={name}
             fragments={regions[name]}
-            fragmentsTypes={fragmentsTypes}
+            fragmentsSchemas={fragmentsSchemas}
             updateFragment={(i, frag) => this.updateFragment(name, i, frag)}
             updateFragments={(frags) => this.updateFragments(name, frags)}
             removeFragment={(i) => this.removeFragment(name, i)}

@@ -21,6 +21,13 @@ export default class Region extends Component {
     }
   }
 
+  getFragmenTypes() {
+    const { fragmentsSchemas } = this.props
+    return Object.keys(fragmentsSchemas).map(name => (
+      { name, title: fragmentsSchemas[name].title }
+    ))
+  }
+
   render() {
     const {
       name,
@@ -29,15 +36,18 @@ export default class Region extends Component {
       addFragment,
       fragments,
       fragmentTypes,
+      fragmentsSchemas,
     } = this.props;
     // console.log(name, 'RENDER!', fragments)
+
+    const fragmentsTypes = this.getFragmenTypes()
 
     return (
       <div>
           <h1>{name}</h1>
           <div>
             <select ref={(ref) => this.select = ref}>
-              {this.props.fragmentsTypes.map(({ title, name }) => (
+              {fragmentsTypes.map(({ title, name }) => (
                 <option key={name} value={name}>{title}</option>
               ))}
             </select>
@@ -56,6 +66,7 @@ export default class Region extends Component {
                 outline="list"
                 childProps={{
                   index: fragment.uuid,
+                  schema: fragmentsSchemas[fragment.type],
                   fragment,
                   updateFragment: (frag) => updateFragment(index, frag),
                   removeFragment: () => removeFragment(index)

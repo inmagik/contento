@@ -17,6 +17,7 @@
     "node-uuid": "^1.4.7",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-jsonschema-form": "^0.40.0",
     "react-sortable": "^1.1.0"
   }
 }

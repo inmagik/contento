@@ -2,15 +2,24 @@
   "region_one":
   - "data": {}
     "type": "contento.renderers.Text"
-    "uuid": "dda4b0ae-3380-40b3-9fff-3ea65b7cce3e"
+    "uuid": "4a94270b-89e9-4e85-97e9-71f724da56c0"
   - "data":
-      "text": "CIao"
+      "text": "AHahahahaah"
     "type": "contento.renderers.Text"
-    "uuid": "e38bf7b9-8362-4683-b147-3e58c6c7e5b6"
+    "uuid": "720a7437-12fb-4783-8949-07d124a53575"
   - "data":
-      "text": "Hello!"
+      "text": "hello world!"
     "type": "contento.renderers.Text"
-    "uuid": "a6eb0fe5-11c2-499d-a787-3a9bfeaac48d"
+    "uuid": "a017dc23-9835-46e0-a66f-786b09a1786a"
+  - "data": {}
+    "type": "contento.renderers.Text"
+    "uuid": "a342d594-1692-4cec-bda7-6914180cbc9a"
+  - "data":
+      "class": "ahahah"
+      "src": "ahahah"
+      "wrapper_class": "ahahah"
+    "type": "contento.renderers.Image"
+    "uuid": "d8b01f9d-22ba-4dba-9038-216c29bde4f7"
   "region_two": []
 "data":
   "menu_title": "Home"

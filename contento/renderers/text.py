@@ -10,7 +10,7 @@ class Text(BaseRenderer):
     	"properties": {
     		"text": {
     			"type": "string",
-                 "format": "html"
+                #  "format": "html"
     		}
     	},
     	"required": ["text"]
