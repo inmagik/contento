@@ -36,7 +36,7 @@ class PageEditContentForm(forms.Form):
 
         super(PageEditContentForm, self).__init__(*args, **kwargs)
 
-        self.fields['content'].widget.attrs["data-render"] = "contentEditor"
+        self.fields['content'].widget.attrs["data-jshook"] = "content-editor"
         self.fields['content'].widget.attrs["data-contenteditor-regions"] = json.dumps(self.region_names)
         self.fields['content'].widget.attrs["data-contenteditor-fragments-schemas"] = json.dumps(self.fragments_schemas)
 

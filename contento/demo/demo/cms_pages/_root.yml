@@ -2,7 +2,7 @@
   "region_one":
   - "data":
       "text": "Hi. this is somex text from the cms. We ares in the index page. Try\
-        \ and navigate to a section: <br/> <a href=\"contento://section\">Section</a>"
+        \ AND navigate to a section: <br/> <a href=\"contento://section\">Section</a>"
     "type": "Text"
 "data":
   "menu_title": "Home"
