@@ -26,17 +26,17 @@ class Fragment extends Component {
 
   // Filter only sortable props to pass down to div...
   sortableProps() {
-    return (({ fragment, removeFragment, updateFragment, ...props }) => props)(this.props)
+    return (({ fragment, index, removeFragment, updateFragment, ...props }) => props)(this.props)
   }
 
   render() {
-    const { fragment, removeFragment } = this.props;
+    const { fragment, removeFragment, index } = this.props;
     const { dataRaw } = this.state;
 
     return (
       <div {...this.sortableProps()}>
-        <h2>{fragment.type}</h2>
-        <button onClick={removeFragment}>Remove</button>
+        <h2>{fragment.type}{index}</h2>
+        <button type="button" onClick={removeFragment}>Remove</button>
         <textarea
           style={{width:'100%'}}
           value={dataRaw}

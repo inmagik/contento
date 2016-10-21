@@ -14,6 +14,7 @@
     "webpack": "^1.13.2"
   },
   "dependencies": {
+    "node-uuid": "^1.4.7",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-sortable": "^1.1.0"

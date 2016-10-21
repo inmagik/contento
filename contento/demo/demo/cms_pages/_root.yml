@@ -1,9 +1,17 @@
 "content":
   "region_one":
+  - "data": {}
+    "type": "contento.renderers.Text"
+    "uuid": "dda4b0ae-3380-40b3-9fff-3ea65b7cce3e"
   - "data":
-      "text": "Hi. this is somex text from the cms. We ares in the index page. Try\
-        \ AND navigate to a section: <br/> <a href=\"contento://section\">Section</a>"
-    "type": "Text"
+      "text": "CIao"
+    "type": "contento.renderers.Text"
+    "uuid": "e38bf7b9-8362-4683-b147-3e58c6c7e5b6"
+  - "data":
+      "text": "Hello!"
+    "type": "contento.renderers.Text"
+    "uuid": "a6eb0fe5-11c2-499d-a787-3a9bfeaac48d"
+  "region_two": []
 "data":
   "menu_title": "Home"
   "published": !!bool "true"

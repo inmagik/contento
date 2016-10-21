@@ -1,7 +1,14 @@
-content:
-  region_one:
-  - data: {model_name: django.contrib.auth.models.User, template_name: users_list.html}
-    type: QuerysetTemplate
-data: {menu_title: Users, published: true}
-template: simple_page.html
-url: !!python/unicode 'users'
+"content":
+  "region_one":
+  - "data":
+      "model_name": "django.contrib.auth.models.User"
+      "template_name": "users_list.html"
+    "type": "QuerysetTemplate"
+  - "data": {}
+    "type": "contento.renderers.Text"
+  "region_two": []
+"data":
+  "menu_title": "Users"
+  "published": !!bool "true"
+"template": "simple_page.html"
+"url": "users"
