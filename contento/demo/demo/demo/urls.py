@@ -26,3 +26,10 @@ urlpatterns = [
 cms_router = CMSRouter()
 cms_urls = cms_router.mount(r'cms/')
 urlpatterns += cms_urls
+
+from django.conf import settings
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]

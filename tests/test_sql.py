@@ -80,7 +80,7 @@ class SQLTest(TestCase):
         }
 
         #testing adding
-        page = self.backend.add_page(label, template, url, page_data, page_content=page_content, language=None, key=None)
+        page = self.backend.add_page(label, template, url, page_data=page_data, page_content=page_content, language=None, key=None)
         page_2 = self.backend.get_page(label)
         self.assertEquals(page, page_2)
 

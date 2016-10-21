@@ -22,6 +22,23 @@
           View
         </a>
 
+        <a
+          class="btn btn-sm btn-primary"
+          href="{% url "dashboard-add-page-with-parent" parent=page.get_meta_path %}">
+          Add child
+        </a>
+
+        <a
+          class="btn btn-sm btn-danger"
+          {% if page.key %}
+          href="{% url "dashboard-drop-page" label=page.label key=page.key %}"
+          {% else %}
+          href="{% url "dashboard-drop-page" label=page.label %}"
+          {% endif %}
+          >
+          Drop
+        </a>
+
       </div>
       <div class="clearfix"></div>
     </div>

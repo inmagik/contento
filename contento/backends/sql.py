@@ -25,7 +25,7 @@ class SQLBackend(object):
         out.append(node)
 
         return out
-    
+
 
     """
     READ API METHODS
@@ -75,7 +75,8 @@ class SQLBackend(object):
     WRITE api methods
     """
 
-    def add_page(self, label, template, url=None, page_data={}, page_content={}, language=None, key=None):
+    def add_page(self, label, template, url=None, parent_label=None,
+        page_data={}, page_content={}, language=None, key=None):
         if url is None:
             url = label
         try:
@@ -83,7 +84,12 @@ class SQLBackend(object):
             raise CmsPageAlreadyExisting
 
         except CmsPageNotFound:
+            parent_page = None
+            if parent_label:
+                parent_page = Page.objects.get(label=parent_label, language=language, key=key)
+                
             Page.objects.create(label=label, template=template, url=url,
+                parent=parent_page,
                 data=page_data, content=page_content,
                 language=language, key=key)
 

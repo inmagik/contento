@@ -9,6 +9,7 @@ from django.conf import settings as django_settings
 from contento.exceptions import CmsPageNotFound, CmsPageAlreadyExisting, FlatFilesBaseNotConfigured
 
 
+
 FILE_REGEX = "(?P<label>(_)?[^(__)^(---)]*)(__(?P<lang>\w+))?(---(?P<key>\w+))?\.yml"
 file_regex = re.compile(FILE_REGEX)
 
@@ -168,12 +169,14 @@ class FlatFilesBackend(object):
     """
 
 
-    def _write_page( self, label, template, url=None,
+    def _write_page( self, label, template, url=None, parent_label=None,
                 page_data={}, page_content={}, language=None, key=None
         ):
         """
         "private" method used to write a page to fs
         """
+        if parent_label:
+            label = "%s/%s" % (parent_label, label)
         path = self.get_page_path(label, language=language, key=key)
         self.ensure_directories(path)
         out_stream = {
@@ -212,7 +215,8 @@ class FlatFilesBackend(object):
         page_content = page_content or page.get("content")
 
         return self._write_page(
-            label, template, url=url, page_data=page_data, page_content=page_content,
+            label, template, url=url, parent_label=None,
+            page_data=page_data, page_content=page_content,
             language=None, key=None
         )
 
@@ -277,7 +281,7 @@ class FlatFilesBackend(object):
         return self._write_page(
             label,
             template,
-            url=page.get("url", None),
+            url=page.get("url", None), parent_label=None,
             page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
@@ -298,7 +302,7 @@ class FlatFilesBackend(object):
 
         return self._write_page(
             label,
-            url=page.get("url", None),
+            url=page.get("url", None), parent_label=None,
             page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
@@ -319,7 +323,7 @@ class FlatFilesBackend(object):
         return self._write_page(
             label,
             template,
-            url=page.get("url", None),
+            url=page.get("url", None), parent_label=None,
             page_data=page["data"],
             page_content=page["content"],
             language=language, key=key
@@ -338,7 +342,7 @@ class FlatFilesBackend(object):
         return self._write_page(
             label,
             template,
-            url=page.get("url", None),
+            url=page.get("url", None), parent_label=None,
             page_data=page["data"],
             page_content=page["content"],
             language=language, key=key

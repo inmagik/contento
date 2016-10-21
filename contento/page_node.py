@@ -1,3 +1,5 @@
+from contento.backends.helpers import get_path_from_meta
+
 class PageNode(object):
 
     def __init__(self, label, url, data=None, parent=None, order=0, language=None, key=None):
@@ -18,3 +20,6 @@ class PageNode(object):
 
     def add_child(self, child):
         self.children.append(child)
+
+    def get_meta_path(self):
+        return get_path_from_meta(self.label, self.language, self.key)
