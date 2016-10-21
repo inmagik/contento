@@ -64,7 +64,25 @@ class FlatFilesBackend(object):
         path = os.path.join(self.FLATFILES_BASE, label)
         return path
 
-    
+    def get_meta_from_path(self, path):
+        """
+        Reverse label, lang and key from path
+        """
+        path = path.replace(self.FLATFILES_BASE, "")
+
+        search_result = file_regex.search(path)
+        label = search_result.group('label')
+        lang = search_result.group('lang')
+        key = search_result.group('key')
+
+        label = label.replace("_root", "")
+        label = label or "/"
+
+        return label, lang, key
+
+
+    def get_path_from_meta(label, language="", key=""):
+        return "%s__%s---%s" % (label, language, key)
 
 
     def get_page_path(self, label, language=None, key=None ):
