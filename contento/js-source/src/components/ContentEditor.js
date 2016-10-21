@@ -10,7 +10,8 @@ export default class ContentEditor extends Component {
     this.updateFragment = this.updateFragment.bind(this)
     this.updateFragments = this.updateFragments.bind(this)
     this.removeFragment = this.removeFragment.bind(this)
-    this.save= this.save.bind(this)
+    this.addFragment = this.addFragment.bind(this)
+    this.save = this.save.bind(this)
   }
 
   save() {
@@ -52,8 +53,27 @@ export default class ContentEditor extends Component {
     }, this.save)
   }
 
+  addFragment(name, fragment) {
+    const { regions } = this.state
+    this.setState({
+      regions: {
+        ...regions,
+        [name]: [...regions[name], fragment]
+      }
+    }, this.save)
+  }
+
+  getFragmenTypes() {
+    const { fragmentsSchemas } = this.props
+    return Object.keys(fragmentsSchemas).map(name => (
+      { name, title: fragmentsSchemas[name].title }
+    ))
+  }
+
   render() {
     const { regions } = this.state
+    const fragmentsTypes = this.getFragmenTypes()
+
     return (
       <div>
         {Object.keys(regions).map(name => (
@@ -61,9 +81,11 @@ export default class ContentEditor extends Component {
             key={name}
             name={name}
             fragments={regions[name]}
+            fragmentsTypes={fragmentsTypes}
             updateFragment={(i, frag) => this.updateFragment(name, i, frag)}
             updateFragments={(frags) => this.updateFragments(name, frags)}
             removeFragment={(i) => this.removeFragment(name, i)}
+            addFragment={(frag) => this.addFragment(name, frag)}
           />
         ))}
       </div>
