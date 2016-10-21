@@ -1,3 +1,3 @@
 module.exports = {
-  boot: () => console.log('I am from Webpack!!!'),
+  boot: () => console.log('I am from Webpack!'),
 }
