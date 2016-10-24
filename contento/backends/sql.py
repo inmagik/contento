@@ -61,9 +61,8 @@ class SQLBackend(object):
                 return self.process_page(root_page)
             else:
                 root_pages = Page.objects.filter(
-                    parent=None,language=language, key=key
+                    parent=None, language=language, key=key
                 ).order_by('order')
-                print root_pages
                 out = []
                 for p in root_pages:
                     out.extend(self.process_page(p))

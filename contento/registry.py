@@ -22,7 +22,10 @@ class Registry(object):
         out = {}
         if not base.endswith("/"):
             base = base + "/"
-        url = base + node.get_path()
+        node_path = node.get_path()
+        if node_path == "/":
+            node_path = ""
+        url = base + node_path
         out[url] = node
         for c in node.children:
             out.update(self.process_node(c, base))
