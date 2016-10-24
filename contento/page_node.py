@@ -1,4 +1,5 @@
 from contento.backends.helpers import get_path_from_meta
+from django.urls import reverse
 
 class PageNode(object):
 
@@ -31,7 +32,22 @@ class PageNode(object):
             "key" : self.key,
             "order" : self.order,
             "url" : self.url,
-            "viewUrl" : self.get_path(),
+            "viewUrl" : reverse(
+                "contento-cms",
+                kwargs = {"page_url" : self.get_path() }
+            ),
+            "editUrl" : reverse(
+                "dashboard-edit-page-base",
+                kwargs = {"label" : self.label, "key":self.key }
+            ),
+            "dropUrl" : reverse(
+                "dashboard-drop-page",
+                kwargs = {"label" : self.label, "key":self.key }
+            ),
+            "addChildUrl" : reverse(
+                "dashboard-add-page-with-parent",
+                kwargs = {"parent" : self.get_meta_path()  }
+            ),
             "data" : self.data,
             "children" : [x.serialize() for x in self.children]
         }
