@@ -31,6 +31,7 @@ class PageNode(object):
             "key" : self.key,
             "order" : self.order,
             "url" : self.url,
+            "viewUrl" : self.get_path(),
             "data" : self.data,
             "children" : [x.serialize() for x in self.children]
         }
