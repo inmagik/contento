@@ -31,6 +31,7 @@ class SQLBackend(object):
     READ API METHODS
     """
     def get_page(self, label, language=None, key=None):
+        language = language or None
         try:
             page = Page.objects.get(
                 label=label,
@@ -62,6 +63,7 @@ class SQLBackend(object):
                 root_pages = Page.objects.filter(
                     parent=None,language=language, key=key
                 ).order_by('order')
+                print root_pages
                 out = []
                 for p in root_pages:
                     out.extend(self.process_page(p))

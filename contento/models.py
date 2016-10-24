@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models, connection
 
+from .fields import NullCharField
+
 if connection.vendor == 'postgresql':
     from django.contrib.postgres.fields import JSONField
 else:
@@ -9,8 +11,8 @@ else:
 class Page(models.Model):
 
     label = models.CharField(max_length=200)
-    language = models.CharField(max_length=200, null=True, blank=True)
-    key = models.CharField(max_length=200, null=True, blank=True)
+    language = NullCharField(max_length=200)
+    key = NullCharField(max_length=200)
 
     template = models.CharField(max_length=200)
     url = models.CharField(blank=True, max_length=200, default="")
@@ -36,6 +38,9 @@ class Page(models.Model):
         self.fullpath = out
 
         return super(Page, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return u'%s' % self.label
 
 
     class Meta:

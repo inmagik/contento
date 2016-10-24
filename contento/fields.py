@@ -42,3 +42,39 @@ class JSONField(forms.CharField):
         if isinstance(value, InvalidJSONInput):
             return value
         return json.dumps(value)
+
+
+# -*- coding: utf-8 -*-
+from django.db import models
+
+
+class NullCharField(models.CharField):
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('blank', True)
+        kwargs.setdefault('null', True)
+        super(NullCharField, self).__init__(*args, **kwargs)
+
+    def pre_save(self, model_instance, add):
+        attr = getattr(model_instance, self.attname)
+        if attr == '':
+            setattr(model_instance, self.attname, None)
+            return None
+        return attr
+
+
+
+
+class NullTextField(models.TextField):
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('blank', True)
+        kwargs.setdefault('null', True)
+        super(NullTextField, self).__init__(*args, **kwargs)
+
+    def pre_save(self, model_instance, add):
+        attr = getattr(model_instance, self.attname)
+        if attr == '':
+            setattr(model_instance, self.attname, None)
+            return None
+        return attr
