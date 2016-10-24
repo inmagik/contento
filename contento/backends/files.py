@@ -114,7 +114,22 @@ class FlatFilesBackend(object):
         except IOError:
             raise CmsPageNotFound("Page %s not found" % label)
 
-        return data
+
+        node = PageNode(
+            label,
+            data.get("url"),
+            data = data.get("data", {}),
+            template = data.get("template"),
+            content = data.get("content", {}),
+            order = data.get("order", 0),
+            language=language,
+            key = key
+
+        )
+
+        return node
+
+
 
 
     def process_folder(self, folder, parent_node, language=None, key=None):
@@ -132,21 +147,14 @@ class FlatFilesBackend(object):
                 if lang != language:
                     continue
 
-                node = PageNode(
-                    label,
-                    page_data.get('url'),
-                    page_data.get("data", {}),
-                    parent=parent_node,
-                    language=lang,
-                    key=key
-                )
+                node = page_data
 
                 nodedir = fullpath.replace(".yml", "")
                 if os.path.isdir(nodedir):
                     nodes = self.process_folder(nodedir, node, language=language, key=key)
                     node.children = nodes
 
-                out.append((page_data.get('order', 0), node))
+                out.append((node.order, node))
 
         out = sorted(out, key= lambda node: node[0])
         out = [x[1] for x in out]
@@ -170,6 +178,7 @@ class FlatFilesBackend(object):
 
 
     def _write_page( self, label, template, url=None, parent_label=None,
+                order=0,
                 page_data={}, page_content={}, language=None, key=None
         ):
         """
@@ -183,7 +192,8 @@ class FlatFilesBackend(object):
             "url" : url,
             "template" : template,
             "data" : page_data,
-            "content" : page_content
+            "content" : page_content,
+            "order" : order
         }
         with open(path, "wb") as outfile:
             yaml.safe_dump(out_stream, outfile, encoding='utf-8', allow_unicode=True, default_style='"')
@@ -192,9 +202,12 @@ class FlatFilesBackend(object):
 
 
 
-    def add_page(self, label, template, url=None, page_data={}, page_content={}, language=None, key=None):
+    def add_page(self, label, template, url=None, page_data={}, page_content={},
+        parent_label=None, language=None, key=None):
         if url is None:
             url = label
+        if url == "/":
+            url = ""
         try:
             page = self.get_page(label, language=language, key=key)
             raise CmsPageAlreadyExisting
@@ -202,22 +215,26 @@ class FlatFilesBackend(object):
         except CmsPageNotFound:
             return self._write_page(
                 label, template, url=url, page_data=page_data, page_content=page_content,
-                language=None, key=None
+                language=None, key=None, parent_label=parent_label
             )
 
 
     def modify_page(self, label, template=None, url=None, page_data=None, page_content=None, language=None, key=None):
 
         page = self.get_page(label, language=language, key=key)
-        template = template or page.get("template")
-        url = url or page.get("url")
-        page_data = page_data or page.get("data")
-        page_content = page_content or page.get("content")
+        template = template or page.template
+        url = url or page.url
+        if url == "/":
+            url = ""
+
+        page_data = page_data or page.data
+        page_content = page_content or page.content
+        order = page.order or 0
 
         return self._write_page(
             label, template, url=url, parent_label=None,
             page_data=page_data, page_content=page_content,
-            language=None, key=None
+            language=None, key=None, order=order
         )
 
 
@@ -241,6 +258,16 @@ class FlatFilesBackend(object):
 
         shutil.move(old_path, new_path)
 
+    def reorder_page(self, label, new_order, language=None, key=None):
+        page = self.get_page(label, language=language, key=key)
+        return self._write_page(
+            label, page.template, url=page.url, parent_label=None,
+            page_data=page.data, page_content=page.content,
+            order=new_order,
+            language=None, key=None
+        )
+
+
 
 
     def drop_page(self, label, language=None, key=None):
@@ -263,10 +290,10 @@ class FlatFilesBackend(object):
         adds a fragment to a page, given a region
         """
         page = self.get_page(label, language=language, key=key)
-        template = page.get("template")
+        template = page.template
 
-        if region not in page["content"]:
-            page["content"][region] = []
+        if region not in page.content:
+            page.content[region] = []
 
         fragment = {
             "type" : content_type,
@@ -274,16 +301,16 @@ class FlatFilesBackend(object):
         }
 
         if not position:
-            page["content"][region].append(fragment)
+            page.content[region].append(fragment)
         else:
-            page["content"][region].insert(position, fragment)
+            page.content[region].insert(position, fragment)
 
         return self._write_page(
             label,
             template,
             url=page.get("url", None), parent_label=None,
-            page_data=page["data"],
-            page_content=page["content"],
+            page_data=page.data,
+            page_content=page.content,
             language=language, key=key
         )
 
@@ -298,13 +325,13 @@ class FlatFilesBackend(object):
         This only changes the data of a fragment (fragment must exist)
         """
         page = self.get_page(label, language=language, key=key)
-        page["content"][region][position]["data"] = content_data
+        page.content[region][position]["data"] = content_data
 
         return self._write_page(
             label,
-            url=page.get("url", None), parent_label=None,
-            page_data=page["data"],
-            page_content=page["content"],
+            url=page.url, parent_label=None,
+            page_data=page.data,
+            page_content=page.content,
             language=language, key=key
         )
 
@@ -317,15 +344,15 @@ class FlatFilesBackend(object):
             language=None, key=None
         ):
         page = self.get_page(label, language=language, key=key)
-        template = page.get("template")
-        old_fragment = page["content"][region].pop(position)
-        page["content"][region].insert(new_position, old_fragment)
+        template = page.template
+        old_fragment = page.content[region].pop(position)
+        page.content[region].insert(new_position, old_fragment)
         return self._write_page(
             label,
             template,
-            url=page.get("url", None), parent_label=None,
-            page_data=page["data"],
-            page_content=page["content"],
+            url=page.url, parent_label=None,
+            page_data=page.data,
+            page_content=page.content,
             language=language, key=key
         )
 
@@ -336,14 +363,14 @@ class FlatFilesBackend(object):
             language=None, key=None
         ):
         page = self.get_page(label, language=language, key=key)
-        template = page.get("template")
-        page["content"][region].pop(position)
+        template = page.template
+        page.content[region].pop(position)
 
         return self._write_page(
             label,
             template,
-            url=page.get("url", None), parent_label=None,
-            page_data=page["data"],
-            page_content=page["content"],
+            url=page.url, parent_label=None,
+            page_data=page.data,
+            page_content=page.content,
             language=language, key=key
         )

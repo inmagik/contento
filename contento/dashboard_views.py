@@ -92,8 +92,8 @@ class DashboardEditPageView(View):
         page = self.cms_backend.get_page(label, language=language, key=key)
 
         try:
-            page_meta = page.get("data")
-            tpl_name = page.get("template")
+            page_meta = page.data
+            tpl_name = page.template
             tpl = loader.get_template(tpl_name)
             region_names = get_regions_from_template(tpl.template.source)
         except:
@@ -155,8 +155,8 @@ class DashboardEditPageBaseView(DashboardEditPageBase):
     def get_initial(self):
         kwargs = super(DashboardEditPageBaseView, self).get_initial()
         kwargs['label'] = self.label
-        kwargs['template'] = self.page.get("template")
-        kwargs['url'] = self.page.get("url", "/")
+        kwargs['template'] = self.page.template
+        kwargs['url'] = self.page.url or "/"
         return kwargs
 
     def form_valid(self, form):
@@ -183,7 +183,7 @@ class DashboardEditPageDataView(DashboardEditPageBase):
 
     def get_initial(self):
         kwargs = super(DashboardEditPageDataView, self).get_initial()
-        kwargs['data'] = self.page.get("data")
+        kwargs['data'] = self.page.data
         return kwargs
 
     def form_valid(self, form):
@@ -204,12 +204,12 @@ class DashboardEditPageContentView(DashboardEditPageBase):
 
     def get_initial(self):
         kwargs = super(DashboardEditPageContentView, self).get_initial()
-        kwargs['content'] = self.page.get("content")
+        kwargs['content'] = self.page.content
         return kwargs
 
     def get_form_kwargs(self):
         kwargs = super(DashboardEditPageContentView, self).get_form_kwargs()
-        region_names = get_regions_from_template(self.page.get("template"), load=True)
+        region_names = get_regions_from_template(self.page.template, load=True)
         kwargs['region_names'] = region_names
         fragments_schemas = get_contento_renderers_schemas()
         kwargs['fragments_schemas'] = fragments_schemas
@@ -287,5 +287,6 @@ class DashboardDropPageView(DeletionMixin, TemplateView):
 
     def delete(self, request, *args, **kwargs):
         success_url = self.get_success_url()
-        self.cms_backend.drop_page(self.page.get("label"), self.page.get("language"), self.page.get("key"))
+        self.cms_backend.drop_page(self.page.label, self.page.language,
+            self.page.key)
         return HttpResponseRedirect(success_url)

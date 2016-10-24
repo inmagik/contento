@@ -24,7 +24,8 @@ def serve_page(request, page_url="/"):
     #we create a new one instead
     registry = Registry()
     available_urls = registry.content_by_url.keys()
-    
+    print available_urls
+
     node = None
     for k in available_urls:
         r = re.compile(k+"/?$")
@@ -47,10 +48,10 @@ def serve_page(request, page_url="/"):
 
     context = {}
     context.update({"url_data" : url_params })
-    context.update(page.get("content", {}))
+    context.update(page.content or {})
     return render(
         request,
-        page.get("template"),
+        page.template,
         context
     )
 

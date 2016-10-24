@@ -5,7 +5,7 @@ from contento.exceptions import CmsPageNotFound, CmsPageAlreadyExisting
 class SQLBackend(object):
     """
     """
-    def process_page(self, page, language=None, key=None, parent_node=None):
+    def process_page_for_tree(self, page, language=None, key=None, parent_node=None):
         out = []
         node = PageNode(
             page.label,
@@ -19,7 +19,7 @@ class SQLBackend(object):
 
         node.children = []
         for child in page.children.filter(language=language, key=key).order_by('order'):
-            child_nodes = self.process_page(child, language, key, parent_node=node)
+            child_nodes = self.process_page_for_tree(child, language, key, parent_node=node)
             node.children.extend(child_nodes)
 
         out.append(node)
@@ -41,14 +41,20 @@ class SQLBackend(object):
         except:
             raise CmsPageNotFound
 
-        out = {
-            "label" : page.label,
-            "url" : page.url,
-            "template" : page.template,
-            "data" : page.data,
-            "content" : page.content
-        }
-        return out
+        node = PageNode(
+            page.label,
+            page.url,
+            page.data,
+            content = page.content,
+            template = page.template,
+            parent=page.parent,
+            language=language,
+            order=page.order,
+            key=key
+        )
+
+
+        return node
 
 
 
@@ -58,14 +64,14 @@ class SQLBackend(object):
                 root_page = Page.objects.get(
                     fullpath=base_path,language=language, key=key
                 )
-                return self.process_page(root_page)
+                return self.process_page_for_tree(root_page)
             else:
                 root_pages = Page.objects.filter(
                     parent=None, language=language, key=key
                 ).order_by('order')
                 out = []
                 for p in root_pages:
-                    out.extend(self.process_page(p))
+                    out.extend(self.process_page_for_tree(p))
                 return out
 
 

@@ -4,7 +4,8 @@ from django.template import Context, Template, loader
 from .base import BaseRenderer
 
 def render_param(param, context):
-    if type(param) == str:
+
+    if type(param) == str or type(param) == unicode:
         template = Template(param)
         context = Context(context)
         return template.render(context)

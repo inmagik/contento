@@ -3,7 +3,8 @@ from django.urls import reverse
 
 class PageNode(object):
 
-    def __init__(self, label, url, data=None, parent=None, order=0, language=None, key=None):
+    def __init__(self, label, url, data=None, parent=None,
+        template=None, content=None, order=0, language=None, key=None):
         self.label = label
         self.url = url
         self.data = data
@@ -11,6 +12,8 @@ class PageNode(object):
         self.order = order
         self.language = language
         self.key = key
+        self.content = content
+        self.template=template
 
         self.children = []
 
@@ -29,14 +32,14 @@ class PageNode(object):
     def get_meta_path(self):
         return get_path_from_meta(self.label, self.language, self.key)
 
-    def serialize(self):
+    def serialize(self, with_content=False):
         labelKeyKwargs = {
             "label" : self.label
         }
         if self.key:
             labelKeyKwargs["key"] = self.key
 
-        return {
+        out = {
             "label" : self.label,
             "language" : self.language,
             "key" : self.key,
@@ -61,3 +64,9 @@ class PageNode(object):
             "data" : self.data,
             "children" : [x.serialize() for x in self.children]
         }
+
+        if with_content:
+            out["content"] = self.content
+            out["template"] = self.template
+
+        return out
