@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import JsHook from './jshook'
 import ContentEditor from './components/ContentEditor'
 import Form from "react-jsonschema-form"
+import SortablePages from './components/SortablePages'
 import uuid from 'node-uuid'
 
 JsHook.register('content-editor', (element) => {
@@ -32,7 +33,6 @@ JsHook.register('content-editor', (element) => {
   )
 })
 
-
 JsHook.register('textarea-jsonschema', (element) => {
   const value = JSON.parse(element.value || '{}');
   const schema = JSON.parse(element.getAttribute('data-textarea-jsonschema') || '{}')
@@ -54,7 +54,23 @@ JsHook.register('textarea-jsonschema', (element) => {
     reactContainer
   )
 
+})
 
+JsHook.register('pages-sortable', (element) => {
+  const pages = JSON.parse(element.value || '[]')
+  console.log(pages)
+
+  const reactContainer = document.createElement('div')
+  element.parentNode.insertBefore(reactContainer, element)
+  // element.style.visibility = 'hidden'
+
+  ReactDOM.render(
+    <SortablePages
+      pages={pages}
+      savePages={(pages) => element.value = JSON.stringify(pages)}
+    />,
+    reactContainer
+  )
 
 })
 
