@@ -63,3 +63,11 @@ class PageEditContentForm(forms.Form):
 
 
     content = FormJSONField(widget=forms.Textarea)
+
+
+class PagesSortableForm(forms.Form):
+    data = FormJSONField(widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super(PagesSortableForm, self).__init__(*args, **kwargs)
+        self.fields['data'].widget.attrs["data-jshook"] = "pages-sortable"

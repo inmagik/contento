@@ -8,14 +8,24 @@
     class="btn btn-sm btn-primary pull-right">Add new page</a>
 </h1>
 
-
+{% comment %}
 {% for page in pages_tree %}
 {% include "contento/dashboard/page_for_list.html" %}
 {% endfor %}
+{% endcomment %}
 
 
+
+<form class="" action="" method="POST">
+  {% csrf_token %}
+  {{form.as_p}}
+  <button type="submit" name="button" class="btn btn-primary">SAVE</button>
+</form>
+<!--
 <pre>
   {{ pages_tree }}
 </pre>
+-->
+
 
 {% endblock content %}

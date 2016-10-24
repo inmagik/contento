@@ -12,12 +12,15 @@ from django.template import loader
 from contento.settings import CONTENTO_BACKEND
 from contento.meta import get_regions_from_template, get_contento_renderers_schemas
 from contento.backends.helpers import get_meta_from_path
+from .forms import PageEditBaseForm, PageEditDataForm, PageEditContentForm, PagesSortableForm
+
 
 class DashboardIndexView(TemplateView):
     template_name = "contento/dashboard/dashboard_index.html"
 
-class DashboardPagesView(TemplateView):
+class DashboardPagesView(FormView):
     template_name = "contento/dashboard/dashboard_pages.html"
+    form_class = PagesSortableForm
 
     def get_context_data(self):
         context_data = super(DashboardPagesView, self).get_context_data()
@@ -26,6 +29,29 @@ class DashboardPagesView(TemplateView):
         tree = cms_backend.get_tree(None)
         context_data["pages_tree"] = tree
         return context_data
+
+    def serialize_tree(self, tree):
+        out = []
+        for node in tree:
+            out.append(node.serialize())
+        return out
+
+    def get_initial(self):
+        kwargs = super(DashboardPagesView, self).get_initial()
+        cms_backend = import_string(CONTENTO_BACKEND)()
+        tree = cms_backend.get_tree(None)
+        kwargs['data'] = self.serialize_tree(tree)
+
+        return kwargs
+
+    def form_valid(self, form):
+        #DO the diff and act
+        print form.cleaned_data
+        return super(DashboardPagesView, self).form_valid(form)
+
+
+    def get_success_url(self):
+        return self.request.path
 
 class DashboardSettingsView(TemplateView):
     template_name = "contento/dashboard/dashboard_settings.html"
@@ -67,7 +93,6 @@ class DashboardEditPageView(View):
             content_type=None, status=None, using=None
         )
 
-from .forms import PageEditBaseForm, PageEditDataForm, PageEditContentForm
 
 
 class DashboardEditPageBase(FormView):

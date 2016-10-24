@@ -23,3 +23,14 @@ class PageNode(object):
 
     def get_meta_path(self):
         return get_path_from_meta(self.label, self.language, self.key)
+
+    def serialize(self):
+        return {
+            "label" : self.label,
+            "language" : self.language,
+            "key" : self.key,
+            "order" : self.order,
+            "url" : self.url,
+            "data" : self.data,
+            "children" : [x.serialize() for x in self.children]
+        }
