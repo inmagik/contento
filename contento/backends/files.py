@@ -118,7 +118,6 @@ class FlatFilesBackend(object):
 
 
     def process_folder(self, folder, parent_node, language=None, key=None):
-        #TODO: !order
         out = []
         for f in os.listdir(folder):
             fullpath = os.path.join(folder, f)
@@ -132,7 +131,6 @@ class FlatFilesBackend(object):
                 #lang = page.get("language", lang)
                 if lang != language:
                     continue
-
 
                 node = PageNode(
                     label,
@@ -148,8 +146,10 @@ class FlatFilesBackend(object):
                     nodes = self.process_folder(nodedir, node, language=language, key=key)
                     node.children = nodes
 
-                out.append(node)
+                out.append((page_data.get('order', 0), node))
 
+        out = sorted(out, key= lambda node: node[0])
+        out = [x[1] for x in out]
         return out
 
 

@@ -16,9 +16,8 @@ class SQLBackend(object):
             key=key
         )
 
-        #TODO: !order
         node.children = []
-        for child in page.children.filter(language=language, key=key):
+        for child in page.children.filter(language=language, key=key).order_by('order'):
             child_nodes = self.process_page(child, language, key, parent_node=node)
             node.children.extend(child_nodes)
 
@@ -61,7 +60,7 @@ class SQLBackend(object):
             else:
                 root_pages = Page.objects.filter(
                     parent=None,language=language, key=key
-                )
+                ).order_by('order')
                 out = []
                 for p in root_pages:
                     out.extend(self.process_page(p))
@@ -87,7 +86,7 @@ class SQLBackend(object):
             parent_page = None
             if parent_label:
                 parent_page = Page.objects.get(label=parent_label, language=language, key=key)
-                
+
             Page.objects.create(label=label, template=template, url=url,
                 parent=parent_page,
                 data=page_data, content=page_content,

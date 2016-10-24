@@ -26,6 +26,12 @@ class PageNode(object):
         return get_path_from_meta(self.label, self.language, self.key)
 
     def serialize(self):
+        labelKeyKwargs = {
+            "label" : self.label
+        }
+        if self.key:
+            labelKeyKwargs["key"] = self.key
+
         return {
             "label" : self.label,
             "language" : self.language,
@@ -38,11 +44,11 @@ class PageNode(object):
             ),
             "editUrl" : reverse(
                 "dashboard-edit-page-base",
-                kwargs = {"label" : self.label, "key":self.key }
+                kwargs = labelKeyKwargs
             ),
             "dropUrl" : reverse(
                 "dashboard-drop-page",
-                kwargs = {"label" : self.label, "key":self.key }
+                kwargs = labelKeyKwargs
             ),
             "addChildUrl" : reverse(
                 "dashboard-add-page-with-parent",

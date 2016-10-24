@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.module_loading import import_string
 from django.shortcuts import render
 from django.template import loader
+from deepdiff import DeepDiff
 from contento.settings import CONTENTO_BACKEND
 from contento.meta import get_regions_from_template, get_contento_renderers_schemas
 from contento.backends.helpers import get_meta_from_path
@@ -22,31 +23,35 @@ class DashboardPagesView(FormView):
     template_name = "contento/dashboard/dashboard_pages.html"
     form_class = PagesSortableForm
 
+
+    def dispatch(self, *args, **kwargs):
+        self.cms_backend = import_string(CONTENTO_BACKEND)()
+        self.tree = self.cms_backend.get_tree(None)
+        self.serialized_tree =  self.serialize_tree(self.tree)
+        return super(DashboardPagesView, self).dispatch(*args, **kwargs)
+
     def get_context_data(self):
         context_data = super(DashboardPagesView, self).get_context_data()
-        cms_backend = import_string(CONTENTO_BACKEND)()
         #TODO: lang here....
-        tree = cms_backend.get_tree(None)
-        context_data["pages_tree"] = tree
+        context_data["pages_tree"] = self.tree
         return context_data
 
     def serialize_tree(self, tree):
         out = []
-        for node in tree:
+        for node in self.tree:
             out.append(node.serialize())
         return out
 
     def get_initial(self):
         kwargs = super(DashboardPagesView, self).get_initial()
-        cms_backend = import_string(CONTENTO_BACKEND)()
-        tree = cms_backend.get_tree(None)
-        kwargs['data'] = self.serialize_tree(tree)
-
+        kwargs['data'] = self.serialized_tree
         return kwargs
 
     def form_valid(self, form):
-        #DO the diff and act
-        print form.cleaned_data
+        #DO the diff and act accordingly
+        diff_obj = form.cleaned_data["data"]
+        diff_data = DeepDiff(diff_obj, self.serialized_tree)
+        print diff_data
         return super(DashboardPagesView, self).form_valid(form)
 
 
