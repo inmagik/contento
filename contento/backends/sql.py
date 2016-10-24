@@ -13,6 +13,7 @@ class SQLBackend(object):
             page.data,
             parent=parent_node,
             language=language,
+            order=page.order,
             key=key
         )
 
@@ -130,6 +131,15 @@ class SQLBackend(object):
                 key = key
             )
         page.parent = new_parent
+        page.save()
+
+    def reorder_page(self, label, new_order, language=None, key=None):
+        page = Page.objects.get(
+            label=label,
+            language=language,
+            key = key
+        )
+        page.order=new_order
         page.save()
 
     def drop_page(self, label, language=None, key=None):

@@ -9,11 +9,21 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.module_loading import import_string
 from django.shortcuts import render
 from django.template import loader
+from django.db import transaction
 from deepdiff import DeepDiff
 from contento.settings import CONTENTO_BACKEND
 from contento.meta import get_regions_from_template, get_contento_renderers_schemas
 from contento.backends.helpers import get_meta_from_path
 from .forms import PageEditBaseForm, PageEditDataForm, PageEditContentForm, PagesSortableForm
+
+
+def simplify_node(node):
+    new_node = { x : node[x] for x in ["label", "language", "key", "order"]}
+    new_node["children"] = simplify_tree(node["children"])
+    return new_node
+
+def simplify_tree(tree):
+    return map(simplify_node, tree)
 
 
 class DashboardIndexView(TemplateView):
@@ -47,11 +57,20 @@ class DashboardPagesView(FormView):
         kwargs['data'] = self.serialized_tree
         return kwargs
 
+    @transaction.atomic
+    def perform_ordering(self, data):
+        for i, item in enumerate(data):
+            if item.get("order", 0) != i:
+                self.cms_backend.reorder_page(
+                item["label"], new_order=i, language=item["language"], key=item["key"]
+            )
+            self.perform_ordering(item.get("children",[]))
+
     def form_valid(self, form):
         #DO the diff and act accordingly
-        diff_obj = form.cleaned_data["data"]
-        diff_data = DeepDiff(diff_obj, self.serialized_tree)
-        print diff_data
+        sorted_data = form.cleaned_data["data"]
+
+        self.perform_ordering(sorted_data)
         return super(DashboardPagesView, self).form_valid(form)
 
 
