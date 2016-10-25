@@ -10,10 +10,8 @@ from .dashboard_views import  (
 )
 
 from .views import serve_single_fragment
-from .api_views import RenderersMetaView
-
-#from rest_framework.routers import SimpleRouter
-#router = SimpleRouter()
+#NOT USED RIGHT NOW
+#from .api_views import RenderersMetaView
 
 
 urlpatterns = [
@@ -41,10 +39,8 @@ urlpatterns = [
     url(r'add-page/$', DashboardCreatePage.as_view(), name="dashboard-add-page"),
 
 
-
-
-
     url(r'preview/(?P<label>.*)', serve_single_fragment, name="contento-cms-preview"),
-    url(r'api/renderers-meta/$', RenderersMetaView.as_view(), name="contento-renderers-meta"),
+
+    #url(r'api/renderers-meta/$', RenderersMetaView.as_view(), name="contento-renderers-meta"),
 
 ]
