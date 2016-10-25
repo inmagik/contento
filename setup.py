@@ -29,7 +29,7 @@ INSTALL_REQUIREMENTS = [
     'django-sekizai==0.9.0',
     'jsonfield==1.0.3',
     #'djangorestframework==3.4.3',
-    'deepdiff==2.5.1',
+    #'deepdiff==2.5.1',
 ]
 
 setup(

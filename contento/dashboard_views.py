@@ -10,7 +10,6 @@ from django.utils.module_loading import import_string
 from django.shortcuts import render
 from django.template import loader
 from django.db import transaction
-from deepdiff import DeepDiff
 from contento.settings import CONTENTO_BACKEND
 from contento.meta import get_regions_from_template, get_contento_renderers_schemas
 from contento.backends.helpers import get_meta_from_path
