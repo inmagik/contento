@@ -140,7 +140,6 @@ class FlatFilesBackend(object):
             if os.path.isfile(fullpath):
                 if not fullpath.endswith(".yml"):
                     continue
-
                 label, lang, key = self.get_meta_from_path(fullpath)
                 page_data = self.get_page(label, lang, key)
                 #lang = page.get("language", lang)

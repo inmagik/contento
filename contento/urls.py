@@ -20,8 +20,8 @@ urlpatterns = [
     url(r'settings', DashboardSettingsView.as_view(), name="dashboard-settings"),
 
 
-    url(r'edit/(?P<label>[/\w]+)/base/$',     DashboardEditPageBaseView.as_view(), name="dashboard-edit-page-base"),
-    url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/base/$',  DashboardEditPageBaseView.as_view(), name="dashboard-edit-page-base"),
+    url(r'edit/(?P<label>.+)/base/$',     DashboardEditPageBaseView.as_view(), name="dashboard-edit-page-base"),
+    url(r'edit/(?P<label>.+)---(?P<key>\w+)/base/$',  DashboardEditPageBaseView.as_view(), name="dashboard-edit-page-base"),
 
     url(r'edit/(?P<label>[/\w]+)/data/$',     DashboardEditPageDataView.as_view(), name="dashboard-edit-page-data"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/data/$',  DashboardEditPageDataView.as_view(), name="dashboard-edit-page-data"),
@@ -29,13 +29,13 @@ urlpatterns = [
     url(r'edit/(?P<label>[/\w]+)/content/$',     DashboardEditPageContentView.as_view(), name="dashboard-edit-page-content"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/content/$',  DashboardEditPageContentView.as_view(), name="dashboard-edit-page-content"),
 
-    url(r'delete/(?P<label>[/\w]+)/$',     DashboardDropPageView.as_view(), name="dashboard-drop-page"),
-    url(r'delete/(?P<label>[/\w]+)---(?P<key>\w+)/$',  DashboardDropPageView.as_view(), name="dashboard-drop-page"),
+    url(r'delete/(?P<label>.+)/$',     DashboardDropPageView.as_view(), name="dashboard-drop-page"),
+    url(r'delete/(?P<label>.+)---(?P<key>\w+)/$',  DashboardDropPageView.as_view(), name="dashboard-drop-page"),
 
     url(r'edit/(?P<label>[/\w]+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
     url(r'edit/(?P<label>[/\w]+)---(?P<key>\w+)/$', DashboardEditPageView.as_view(), name="dashboard-edit-page"),
 
-    url(r'add-page/(?P<parent>[-_/\w]+)/$', DashboardCreatePage.as_view(), name="dashboard-add-page-with-parent"),
+    url(r'add-page/(?P<parent>.+)/$', DashboardCreatePage.as_view(), name="dashboard-add-page-with-parent"),
     url(r'add-page/$', DashboardCreatePage.as_view(), name="dashboard-add-page"),
 
 

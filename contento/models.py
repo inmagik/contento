@@ -4,7 +4,11 @@ from django.db import models, connection
 from .fields import NullCharField
 
 if connection.vendor == 'postgresql':
-    from django.contrib.postgres.fields import JSONField
+    try:
+        from django.contrib.postgres.fields import JSONField
+    except:
+        from jsonfield import JSONField
+
 else:
     from jsonfield import JSONField
 
