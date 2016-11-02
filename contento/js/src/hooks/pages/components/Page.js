@@ -1,56 +1,80 @@
 import React, {PropTypes} from 'react';
 import Pages from './Pages'
-import { Sortable } from 'react-sortable'
+import { SortableHandle, SortableElement } from 'react-sortable-hoc'
 
-const Page = ({ page, hierarchyKey, togglePage, updatePages, ...sortableProps }) => (
-  <div className="" {...sortableProps}>
+const DragHandle = SortableHandle(() => (
+  <div style={{
+    cursor: 'move',
+    borderBottomLeftRadius: '4px',
+    borderTopLeftRadius: '4px',
+    border: '1px solid transparent',
+    margin: '-16px',
+    lineHeight: '80px',
+    color: '#31708f',
+    textAlign: 'center',
+    height: '80px',
+    background: '#bce8f1',
+    width: '12px'
+  }}>
+   <span>{' '}</span>
+   {/* <i className="glyphicon glyphicon-option-vertical" /> */}
+  </div>
+))
+
+const Page = ({ page, hierarchyKey, togglePage, updatePages }) => (
+  <div className="">
     <div className="alert alert-info">
       <div className="pull-left">
-        <div className="pull-left" style={{ paddingRight: '5px' }}>
-          {(page.children.length > 0) && (
-            <i
-              onClick={() => togglePage(hierarchyKey, page)}
-              style={{ cursor: 'pointer' }}
-              className={`glyphicon glyphicon-chevron-${page.toggled ? 'down' : 'right'}`}
-            />
-          )}
-          {(page.children.length === 0) && (
-            <i className="glyphicon glyphicon glyphicon-file" />
-          )}
-        </div>
+        <DragHandle />
+      </div>
+      <div>
         <div className="pull-left">
-          {page.label}<br />
-          <span className="text-muted">{page.url}</span>
+          <div className="pull-left" style={{ paddingRight: '5px' }}>
+            {!!page.children.length && (
+              <i
+                onClick={() => togglePage(hierarchyKey, page)}
+                style={{ cursor: 'pointer' }}
+                className={`glyphicon glyphicon-chevron-${page.toggled ? 'down' : 'right'}`}
+              />
+            )}
+            {!page.children.length && (
+              <i className="glyphicon glyphicon glyphicon-file" />
+            )}
+          </div>
+          <div className="pull-left">
+            {page.label}<br />
+            <span className="text-muted">{page.url}</span>
+          </div>
         </div>
+        <div className="pull-right">
+          <a
+            className="btn btn-sm btn-primary"
+            href={page.editUrl}
+          >
+            Edit
+          </a>
+          {' '}
+          <a className="btn btn-sm btn-primary"
+            href={page.viewUrl}>
+            View
+          </a>
+          {' '}
+          <a
+            className="btn btn-sm btn-primary"
+            href={page.addChildUrl}>
+            Add child
+          </a>
+          {' '}
+          <a
+            className="btn btn-sm btn-danger"
+            href={page.dropUrl}>
+            Drop
+          </a>
+        </div>
+        <div className="clearfix"></div>
       </div>
-      <div className="pull-right">
-        <a
-          className="btn btn-sm btn-primary"
-          href={page.editUrl}
-        >
-          Edit
-        </a>
-        {' '}
-        <a className="btn btn-sm btn-primary"
-          href={page.viewUrl}>
-          View
-        </a>
-        {' '}
-        <a
-          className="btn btn-sm btn-primary"
-          href={page.addChildUrl}>
-          Add child
-        </a>
-        {' '}
-        <a
-          className="btn btn-sm btn-danger"
-          href={page.dropUrl}>
-          Drop
-        </a>
-      </div>
-      <div className="clearfix"></div>
     </div>
-    {page.toggled && (
+    {page.toggled && page.children.length && (
       <div style={{marginLeft: '2em'}}>
         <Pages
           hierarchyKey={[...hierarchyKey, page.viewUrl]}
@@ -60,8 +84,7 @@ const Page = ({ page, hierarchyKey, togglePage, updatePages, ...sortableProps })
         />
       </div>
     )}
-</div>
+  </div>
 )
 
-const SortablePage = Sortable(Page)
-export default SortablePage
+export default SortableElement(Page)
