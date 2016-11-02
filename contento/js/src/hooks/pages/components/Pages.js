@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React, { Component } from 'react';
 import Page from './Page'
 
-export default class Pages extends React.Component {
+export default class Pages extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -32,8 +32,9 @@ export default class Pages extends React.Component {
             sortId={index}
             outline="list"
             childProps={{
-              hierarchyKey: [...this.props.hierarchyKey, page.viewUrl],
+              hierarchyKey: this.props.hierarchyKey,
               updatePages: this.props.updatePages,
+              togglePage: this.props.togglePage,
               page: page
             }}
           />

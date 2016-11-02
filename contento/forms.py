@@ -70,4 +70,4 @@ class PagesSortableForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(PagesSortableForm, self).__init__(*args, **kwargs)
-        self.fields['data'].widget.attrs["data-jshook"] = "pages-sortable"
+        self.fields['data'].widget.attrs["data-jshook"] = "pages"

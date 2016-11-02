@@ -6,9 +6,7 @@ module.exports = {
   entry: './src/index.js',
 	output: {
 		path: path.join(__dirname, '../static/contento/dashboard/js'),
-    filename: 'jshook.js',
-		library: 'JsHook',
-		libraryTarget: 'umd',
+    filename: 'contento.js',
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),

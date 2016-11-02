@@ -8,9 +8,7 @@ module.exports = {
   ],
 	output: {
 		path: path.join(__dirname, '../static/contento/dashboard/js'),
-    filename: 'jshook.js',
-		library: 'JsHook',
-		libraryTarget: 'umd',
+    filename: 'contento.js',
     publicPath: '/static/contento/dashboard/js/'
   },
   plugins: [
