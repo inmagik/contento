@@ -8,6 +8,7 @@ export default class ContentEditor extends Component {
       regions: props.regions,
     }
     this.updateFragment = this.updateFragment.bind(this)
+    this.updateFragmentData = this.updateFragmentData.bind(this)
     this.updateFragments = this.updateFragments.bind(this)
     this.removeFragment = this.removeFragment.bind(this)
     this.addFragment = this.addFragment.bind(this)
@@ -15,7 +16,7 @@ export default class ContentEditor extends Component {
   }
 
   save() {
-    this.props.saveRegions(this.state.regions)
+    this.props.save(this.state.regions)
   }
 
   updateFragment(name, fragmentIndex, newFragment) {
@@ -25,6 +26,18 @@ export default class ContentEditor extends Component {
         ...regions,
         [name]: regions[name].map((fragment, index) => (
           index === fragmentIndex ? newFragment : fragment
+        ))
+      }
+    }, this.save)
+  }
+
+  updateFragmentData(name, fragmentIndex, data) {
+    const { regions } = this.state;
+    this.setState({
+      regions: {
+        ...regions,
+        [name]: regions[name].map((fragment, index) => (
+          index === fragmentIndex ? { ...fragment, data } : fragment
         ))
       }
     }, this.save)
@@ -58,7 +71,7 @@ export default class ContentEditor extends Component {
     this.setState({
       regions: {
         ...regions,
-        [name]: [...regions[name], fragment]
+        [name]: [fragment, ...regions[name]]
       }
     }, this.save)
   }
@@ -75,8 +88,9 @@ export default class ContentEditor extends Component {
             name={name}
             fragments={regions[name]}
             fragmentsSchemas={fragmentsSchemas}
-            updateFragment={(i, frag) => this.updateFragment(name, i, frag)}
             updateFragments={(frags) => this.updateFragments(name, frags)}
+            updateFragment={(i, frag) => this.updateFragment(name, i, frag)}
+            updateFragmentData={(i, data) => this.updateFragmentData(name, i, data)}
             removeFragment={(i) => this.removeFragment(name, i)}
             addFragment={(frag) => this.addFragment(name, frag)}
           />
