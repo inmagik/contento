@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { SortableHandle, SortableElement } from 'react-sortable-hoc'
 import Form from 'react-jsonschema-form'
+import MarkdownEditorWidget from '../../../widgets/MarkdownEditorWidget'
 
 const DragHandle = SortableHandle(() => (
   <div style={{
@@ -20,8 +21,25 @@ class Fragment extends Component {
     this.props.updateFragmentData(formData)
   }
 
+  getJsonSchema() {
+    const jsonSchema = { ...this.props.schema, type: 'object', title: null }
+    delete jsonSchema['__ui__']
+    return jsonSchema
+  }
+
+  getUiSchema() {
+    const jsonSchema = { ...this.props.schema }
+    return jsonSchema['__ui__'] || {}
+  }
+
   render() {
-    const { fragment, fragmentTitle, removeFragment, schema, index } = this.props;
+    const { fragment, fragmentTitle, removeFragment, index } = this.props;
+
+    const schema = this.getJsonSchema()
+    const uiSchema = this.getUiSchema()
+    const widgets = {
+      markdownEditorWidget: MarkdownEditorWidget
+    }
 
     return (
       <div style={{
@@ -37,14 +55,16 @@ class Fragment extends Component {
           </div>
           <div className="pull-left"><DragHandle /></div>
         </div>
-        <div className="clearfix" />
+        <div className="clearfix"></div>
         <h2 style={{ marginTop: '10px' }}>{fragmentTitle}</h2>
         <div style={{ paddingLeft: '1em' }}>
           <Form
-            schema={{ ...schema, type: 'object', title: null }}
+            schema={schema}
+            uiSchema={uiSchema}
+            widgets={widgets}
             formData={fragment.data}
             onChange={this.handleDataChange}>
-            <div />
+            <div></div>
           </Form>
         </div>
       </div>

@@ -6,6 +6,12 @@ import markdown
 class Text(BaseRenderer):
     required_fields = ["text"]
     json_schema = {
+        # uiSchema for https://github.com/mozilla-services/react-jsonschema-form
+        "__ui__": {
+            "text": {
+                "ui:widget": "markdownEditorWidget"
+            }
+        },
 
         "title": "Text",
     	#"type": "object",
