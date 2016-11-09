@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models, connection
+from django.core.cache import cache
 
 from .fields import NullCharField
 
@@ -40,7 +41,8 @@ class Page(models.Model):
         if not out.startswith("/"):
             out = "/" + out
         self.fullpath = out
-
+        cached_key = "contento.pagetree-%s-%s-%s" % (self.fullpath, self.language, self.key) 
+        cache.delete(cached_key)
         return super(Page, self).save(*args, **kwargs)
 
     def __unicode__(self):

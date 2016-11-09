@@ -1,6 +1,7 @@
 from contento.models import Page
 from contento.page_node import PageNode
 from contento.exceptions import CmsPageNotFound, CmsPageAlreadyExisting
+from django.core.cache import cache
 
 class SQLBackend(object):
     """
@@ -59,12 +60,18 @@ class SQLBackend(object):
 
 
     def get_tree(self, base_path, language=None, key=None):
+        cached_tree = cache.get("contento.pagetree-%s-%s-%s" % (base_path, language, key) )
+        if cached_tree:
+            return cached_tree
+            
         try:
             if base_path:
                 root_page = Page.objects.get(
                     fullpath=base_path,language=language, key=key
                 )
-                return self.process_page_for_tree(root_page)
+                out = self.process_page_for_tree(root_page)
+                cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
+                return out
             else:
                 root_pages = Page.objects.filter(
                     parent=None, language=language, key=key
@@ -72,6 +79,7 @@ class SQLBackend(object):
                 out = []
                 for p in root_pages:
                     out.extend(self.process_page_for_tree(p))
+                cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
                 return out
 
 

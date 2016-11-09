@@ -1,4 +1,4 @@
-from contento.render_helpers import apply_text_processors
+from contento.render_helpers import apply_text_processors, render_inlines
 from .base import BaseRenderer
 import markdown
 
@@ -26,5 +26,5 @@ class Text(BaseRenderer):
 
     def render(self, content, context={}):
         required_data = self.get_required_fields(content)
-        text = markdown.markdown(required_data.get("text"))
+        text = markdown.markdown(render_inlines(required_data.get("text")))
         return apply_text_processors(text)

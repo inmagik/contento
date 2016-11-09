@@ -3,6 +3,10 @@ import json
 from django.utils.module_loading import import_string
 from contento.settings import CONTENTO_TEXT_PROCESSORS, CONTENTO_RENDERERS
 from django.template import loader
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger('x')
 
 
 
@@ -17,6 +21,8 @@ def load_renderer(content_type):
 def render(content_type, content_data, page_context={}):
     """
     """
+    logger.debug('Rendering %s' % content_type)
+
     try:
         renderer = load_renderer(content_type)
         return renderer.render(content_data, context=page_context)
@@ -65,8 +71,6 @@ def render_inlines(text, page_context={}):
     Some text here (: Text|{ "text" : "hello" }  :) with a plugin in the middle.
     And one at the end (: Text|{ "text" : "bye!" } :)
     """
-    inline_definitions = []
-    inline_configurations = []
     regex_exp = re.compile("\(:(?P<inline_def>.+?):\)")
     def replacer(match):
         definition = match.group('inline_def')
@@ -75,6 +79,5 @@ def render_inlines(text, page_context={}):
         return rendered_content
 
     new_text = regex_exp.sub(replacer, text)
-
 
     return new_text

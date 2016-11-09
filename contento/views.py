@@ -24,7 +24,7 @@ def serve_page(request, page_url="/"):
     #we create a new one instead
     registry = Registry()
     available_urls = registry.content_by_url.keys()
-    print available_urls
+    #print available_urls
 
     node = None
     for k in available_urls:
