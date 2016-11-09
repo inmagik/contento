@@ -33,8 +33,7 @@ def pages_tree(context, base_path, template_name, depth=None, current_page=None,
     template = get_template(template_name)
     cms_backend = import_string(CONTENTO_BACKEND)()
     tree = cms_backend.get_tree(base_path)
-
-    return template.render({"nodes":tree})
+    return template.render({"nodes":tree, "page_context":context})
 
 
 @register.simple_tag(takes_context=True)
