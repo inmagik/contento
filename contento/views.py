@@ -46,9 +46,11 @@ def serve_page(request, page_url="/"):
         key=node.key
     )
 
-    context = {}
+    context = { "page" : page }
     context.update({"url_data" : url_params })
-    context.update(page.content or {})
+    if page.content:
+        context.update(page.content)
+
     return render(
         request,
         page.template,
