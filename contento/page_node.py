@@ -20,12 +20,15 @@ class PageNode(object):
     def get_path(self):
         if not self.parent:
             return self.url
+
         parent_path = self.parent.get_path()
         if not parent_path or parent_path == "/":
             return "%s" % (self.url)
 
         return "%s/%s" % (self.parent.get_path(), self.url)
 
+
+    
     def add_child(self, child):
         self.children.append(child)
 

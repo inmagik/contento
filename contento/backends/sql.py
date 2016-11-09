@@ -20,7 +20,7 @@ class SQLBackend(object):
 
         node.children = []
         for child in page.children.filter(language=language, key=key).order_by('order'):
-            child_nodes = self.process_page_for_tree(child, language, key, parent_node=node)
+            child_nodes = self.process_page_for_tree(child, language=language, key=key, parent_node=node)
             node.children.extend(child_nodes)
 
         out.append(node)
@@ -31,6 +31,26 @@ class SQLBackend(object):
     """
     READ API METHODS
     """
+
+    def to_node(self, page):
+        if page.parent:
+            parent_node = self.to_node(page.parent)
+        else:
+            parent_node = None
+
+        node = PageNode(
+            page.label,
+            page.url,
+            page.data,
+            content = page.content,
+            template = page.template,
+            parent=parent_node,
+            language=page.language,
+            order=page.order,
+            key=page.key
+        )
+        return node
+
     def get_page(self, label, language=None, key=None):
         language = language or None
         try:
@@ -42,20 +62,7 @@ class SQLBackend(object):
         except:
             raise CmsPageNotFound
 
-        node = PageNode(
-            page.label,
-            page.url,
-            page.data,
-            content = page.content,
-            template = page.template,
-            parent=page.parent,
-            language=language,
-            order=page.order,
-            key=key
-        )
-
-
-        return node
+        return self.to_node(page)
 
 
 
@@ -63,15 +70,17 @@ class SQLBackend(object):
         cached_tree = cache.get("contento.pagetree-%s-%s-%s" % (base_path, language, key) )
         if cached_tree:
             return cached_tree
-            
         try:
             if base_path:
+                if not base_path.startswith("/"):
+                    base_path = "/" + base_path
                 root_page = Page.objects.get(
-                    fullpath=base_path,language=language, key=key
+                    fullpath=base_path, language=language, key=key
                 )
                 out = self.process_page_for_tree(root_page)
                 cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
                 return out
+
             else:
                 root_pages = Page.objects.filter(
                     parent=None, language=language, key=key
@@ -82,9 +91,11 @@ class SQLBackend(object):
                 cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
                 return out
 
-
         except Page.DoesNotExist:
             return []
+
+
+
 
     """
     WRITE api methods
