@@ -4,7 +4,7 @@ from django.urls import reverse
 class PageNode(object):
 
     def __init__(self, label, url, data=None, parent=None,
-        template=None, content=None, order=0, language=None, key=None):
+        template=None, content=None, order=0, language=None, key=None, level=0):
         self.label = label
         self.url = url
         self.data = data
@@ -13,7 +13,8 @@ class PageNode(object):
         self.language = language
         self.key = key
         self.content = content
-        self.template=template
+        self.template = template
+        self.level = level
 
         self.children = []
 
@@ -28,7 +29,7 @@ class PageNode(object):
         return "%s/%s" % (self.parent.get_path(), self.url)
 
 
-    
+
     def add_child(self, child):
         self.children.append(child)
 
@@ -36,11 +37,11 @@ class PageNode(object):
         return get_path_from_meta(self.label, self.language, self.key)
 
     def serialize(self, with_content=False):
-        labelKeyKwargs = {
+        label_key_kwargs = {
             "label" : self.label
         }
         if self.key:
-            labelKeyKwargs["key"] = self.key
+            label_key_kwargs["key"] = self.key
 
         out = {
             "label" : self.label,
@@ -54,11 +55,11 @@ class PageNode(object):
             ),
             "editUrl" : reverse(
                 "dashboard-edit-page-base",
-                kwargs = labelKeyKwargs
+                kwargs = label_key_kwargs
             ),
             "dropUrl" : reverse(
                 "dashboard-drop-page",
-                kwargs = labelKeyKwargs
+                kwargs = label_key_kwargs
             ),
             "addChildUrl" : reverse(
                 "dashboard-add-page-with-parent",

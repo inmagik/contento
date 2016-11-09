@@ -8,6 +8,11 @@ class SQLBackend(object):
     """
     def process_page_for_tree(self, page, language=None, key=None, parent_node=None):
         out = []
+        if parent_node:
+            level=parent_node.level+1
+        else:
+            level=0
+
         node = PageNode(
             page.label,
             page.url,
@@ -15,7 +20,8 @@ class SQLBackend(object):
             parent=parent_node,
             language=language,
             order=page.order,
-            key=key
+            key=key,
+            level=level
         )
 
         node.children = []
@@ -32,7 +38,7 @@ class SQLBackend(object):
     READ API METHODS
     """
 
-    def to_node(self, page):
+    def to_node(self, page, level=0):
         if page.parent:
             parent_node = self.to_node(page.parent)
         else:
@@ -47,7 +53,8 @@ class SQLBackend(object):
             parent=parent_node,
             language=page.language,
             order=page.order,
-            key=page.key
+            key=page.key,
+            level=level
         )
         return node
 
@@ -69,30 +76,32 @@ class SQLBackend(object):
     def get_tree(self, base_path, language=None, key=None):
         cached_tree = cache.get("contento.pagetree-%s-%s-%s" % (base_path, language, key) )
         if cached_tree:
-            return cached_tree
-        try:
-            if base_path:
-                if not base_path.startswith("/"):
-                    base_path = "/" + base_path
-                root_page = Page.objects.get(
-                    fullpath=base_path, language=language, key=key
-                )
-                out = self.process_page_for_tree(root_page)
-                cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
-                return out
+            out, root_node = cached_tree
+        else:
+            try:
+                if base_path:
+                    if not base_path.startswith("/"):
+                        base_path = "/" + base_path
+                    root_page = Page.objects.get(
+                        fullpath=base_path, language=language, key=key
+                    )
+                    root_node = self.to_node(root_page)
+                else:
+                    root_node = None
 
-            else:
                 root_pages = Page.objects.filter(
                     parent=None, language=language, key=key
                 ).order_by('order')
                 out = []
                 for p in root_pages:
                     out.extend(self.process_page_for_tree(p))
-                cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), out)
-                return out
+                cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), (out, root_node))
 
-        except Page.DoesNotExist:
-            return []
+            except Page.DoesNotExist:
+                return [], None
+
+
+        return out, root_node
 
 
 

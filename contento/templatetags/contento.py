@@ -28,12 +28,19 @@ def region(context, region_name):
 
 
 @register.simple_tag(takes_context=True)
-def pages_tree(context, base_path, template_name, depth=None, current_page=None,
+def pages_tree(context, base_path, template_name, start_level=0, current_page=None,
     language=None):
     template = get_template(template_name)
     cms_backend = import_string(CONTENTO_BACKEND)()
-    tree = cms_backend.get_tree(base_path)
-    return template.render({"nodes":tree, "page_context":context})
+    tree, current_node = cms_backend.get_tree(base_path)
+
+    #TODO: find the right branch and cut it
+    print type(current_node)
+    if start_level:
+        for node in tree:
+            pass
+
+    return template.render({"nodes":tree, "current_node" : current_node, "page_context":context})
 
 
 @register.simple_tag(takes_context=True)
