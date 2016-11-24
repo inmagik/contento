@@ -35,7 +35,7 @@ class DashboardPagesView(FormView):
 
     def dispatch(self, *args, **kwargs):
         self.cms_backend = import_string(CONTENTO_BACKEND)()
-        self.tree = self.cms_backend.get_tree(None)
+        self.tree, root_page = self.cms_backend.get_tree(None)
         self.serialized_tree =  self.serialize_tree(self.tree)
         return super(DashboardPagesView, self).dispatch(*args, **kwargs)
 
@@ -47,7 +47,7 @@ class DashboardPagesView(FormView):
 
     def serialize_tree(self, tree):
         out = []
-        for node in self.tree:
+        for node in tree:
             out.append(node.serialize())
         return out
 
@@ -239,7 +239,7 @@ class DashboardCreatePage(FormView):
         if self.kwargs.get('parent'):
             self.parent_meta = get_meta_from_path( self.kwargs.get('parent'))
             self.parent = self.cms_backend.get_page(*self.parent_meta)
-            self.parent_label = self.parent["label"]
+            self.parent_label = self.parent.label
 
         return super(DashboardCreatePage, self).dispatch(*args, **kwargs)
 
