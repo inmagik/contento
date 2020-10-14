@@ -1,0 +1,36 @@
+{% load sekizai_tags %}
+
+{% addtoblock "contento_css" %}
+<link rel="stylesheet" href="https://cdn.plyr.io/2.0.9/plyr.css">
+{% endaddtoblock %}
+
+{% addtoblock "contento_css" %}
+<style>
+  .{{video_context.wrapper_id}} {
+    height: {{video_context.height}}px !important;
+    width: {{video_context.width}}px !important;
+  }
+</style>
+{% endaddtoblock %}
+
+{% addtoblock "contento_js" %}
+<script src="https://cdn.plyr.io/2.0.9/plyr.js"></script>
+<script>plyr.setup();</script>
+{% endaddtoblock %}
+
+{% if video_context.youtube_id %}
+<div
+  class="{{video_context.wrapper_id}}">
+    <div data-type="youtube"
+    data-video-id="{{video_context.youtube_id}}">
+    </div>
+</div>
+{% endif  %}
+
+{% if video_context.vimeo_id %}
+<div class="{{video_context.wrapper_id}}">
+    <div data-type="vimeo"
+    data-video-id="{{video_context.vimeo_id}}">
+    </div>
+</div>
+{% endif  %}

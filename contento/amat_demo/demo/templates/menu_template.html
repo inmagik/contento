@@ -1,0 +1,28 @@
+{% comment %}
+<ul class="nav nav-pills nav-stacked" {% if sub %}style="padding-left:20px;"{% endif %}>
+  {% for node in nodes %}
+  {% if node.data.menu_title %}
+  <li class="">
+    <a href="{% url "contento-cms" page_url=node.get_path %}">{{node.data.menu_title}}</a>
+    {% if node.children %}
+    {% with nodes=node.children sub=True %}
+      {% include "menu_template.html" %}
+    {% endwith %}
+    {% endif %}
+  </li>
+  {% endif%}
+  {% endfor %}
+</ul>
+{% endcomment %}
+
+{% for node in nodes %}
+
+{% if node.data.menu_title %}
+<li class="{% if node.selected %}active{% endif %}{% if node.ancestor %}active{% endif %}{% if node.sibling %}sibling{% endif %}{% if node.descendant %}descendant{% endif %}">
+
+	<a href="{% url "contento-cms" page_url=node.get_path %}">{{ node.data.menu_title }}</a>
+
+</li>
+{% endif %}
+
+{% endfor %}

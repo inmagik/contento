@@ -35,7 +35,8 @@ def pages_tree(context, base_path, template_name, start_level=0, current_page=No
     tree, current_node = cms_backend.get_tree(base_path)
 
     #TODO: find the right branch and cut it
-    print type(current_node)
+    if current_node:
+        print type(current_node), dir(current_node), current_node.children
     if start_level:
         for node in tree:
             pass

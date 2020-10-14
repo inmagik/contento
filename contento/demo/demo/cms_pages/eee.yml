@@ -1,0 +1,12 @@
+"content":
+  "region_one":
+  - "data":
+      "text": "coooome on!"
+    "type": "contento.renderers.Text"
+    "uuid": "8920d01e-bb99-4290-b1c7-eca28352b9b3"
+  "region_two": []
+"data":
+  "menu_title": "eee"
+"order": !!int "0"
+"template": "simple_page.html"
+"url": "eee"

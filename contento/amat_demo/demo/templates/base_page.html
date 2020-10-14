@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load contento sekizai_tags %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Agenzia Mobilità Ambiente Territorio</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% render_block "css" %}
+    {% block css2 %}
+    {% endblock %}
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/static/amatstatic/js/excanvas.compiled.js"></script><![endif]-->
+
+    <script src="/static/amatstatic/js/modernizer.js"></script>
+
+    <!-- Le styles -->
+    <link href="/static/bootstrap/css/bootstrap2.0.4.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/responsive.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/datepicker.css" rel="stylesheet">
+    <link href="/static/amatstatic/css/amat.css" rel="stylesheet">
+
+    <style>
+      body {
+
+        /* padding-top: 20px; */
+        /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/static/amatstatic/img/favicon.ico">
+    <link rel="icon" href="/static/amatstatic/img/favicon.ico" type="image/x-icon">
+
+    <script src="/static/bootstrap/js/jquery.js"></script>
+
+    <script>
+    window.cookieconsent_options = {
+        message : 'Navigando in questo sito accetti la nostra politica di utilizzo dei cookie',
+        dismiss : 'OK',
+        theme : '/static/amatstatic/css/cookieconsent.css',
+        learnMore: 'Maggiori informazioni',
+        link: 'http://www.amat-mi.it/it/cookies-policy/',
+        expiryDays : 1
+    };
+    </script>
+    <script src="/static/amatstatic/js/cookieconsent2-1.0.3/cookieconsent.js"></script>
+
+
+  </head>
+
+  <body>
+    <div class="bodywrapped">
+
+    <div class="header-bar">
+      <div class="container">
+          <div class="row">
+          <div class="span12">
+                <div class="amat-logo">
+                </div>
+
+                <div class="not-shown">
+                <h1>Agenzia Mobilità Ambiente e Territorio</h1>
+                </div>
+
+          </div>
+        </div>
+    </div>
+
+    </div> <!-- /container -->
+    <div class="container main-navbar">
+    <div class="navbar">
+      <div class="navbar-inner navbar-inner-amat">
+        <div class="container">
+          <!--a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a-->
+          <!--<a class="brand" href="#">AMAT</a>-->
+          <div><!-- class="nav-collapse" -->
+            <ul class="nav">
+              {% pages_tree "" "menu_template.html" %}
+              {% comment %}
+              {% show_menu 0 100 100 100 "menu_templates/menu_single_level.html" %}
+              {% endcomment %}
+            </ul>
+            <ul class="nav pull-right">
+                {% comment %}
+                <li class="navbar-text amat-navbar-text {% if request.get_full_path|slice:':8' == '/account' %}active{% endif %}" >
+                    {% if user.is_authenticated %}
+                    <a href="{% url "registration_edit" %}" class="navbar-text amat-navbar-text">{{ user.email }}</a>
+                    {% else %}
+                    <a href="{% url "auth_login" %}">Accedi</a>
+                    {% endif %}
+                </li>
+                {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url "auth_logout" %}">Logout</a>
+                </li>
+                {% endif %}
+                {% endcomment %}
+            </ul>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="container main-container">
+
+        <ul class="breadcrumb amat-breadcrumb">
+         {% comment %}
+         {% show_breadcrumb 1 "menu_templates/breadcrumb.html" %}
+         {% endcomment %}
+        </ul>
+
+        {% block content %}{% endblock %}
+        {% block main%}{% endblock %}
+
+    </div>
+
+
+    <div class="footer">
+
+        <p class="footer-line">Agenzia Mobilità Ambiente e Territorio s.r.l. - Via Tommaso Pini 1 Milano - P.IVA 12908910156 - <a href="/note-legali">Note legali</a>&nbsp;|&nbsp;<a href="/privacy">Privacy</a>&nbsp;|&nbsp;<a href="/cookies-policy">Cookies policy</a></p>
+
+    </div>
+
+
+  </div> <!-- bodywrapped -->
+
+  <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/bootstrap/js/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-button.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="/static/bootstrap/js/bootstrap-datepicker.js"></script>
+    <script src="/static/amatstatic/js/moment/moment.js"></script>
+    <script src="/static/amatstatic/js/jquery-url/jquery.url.js"></script>
+    <script src="/static/amatstatic/js/pubsub.js"></script>
+    <script src="/static/amatstatic/js/underscore-min.js"></script>
+
+    <script>
+        //$('.datepicker').datepicker({'weekStart' : 1, 'format' : 'yyyy-mm-dd'});
+    </script>
+
+
+    {% render_block "js" %}
+    {% block js2 %}
+    {% endblock %}
+
+  </body>
+</html>

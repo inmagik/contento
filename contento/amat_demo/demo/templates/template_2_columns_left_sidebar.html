@@ -1,0 +1,25 @@
+{% extends "base_page.html" %}
+{% load contento %}
+
+{% block content %}
+<div class="row">
+    <div class="span3">
+    {% pages_tree page.get_root_path "submenu.html" start_level=1 %}
+    {% block left_column %}
+    {% endblock %}
+    {% region "column_1" %}
+    </div>
+    <div class="span9">
+    {% block page_content %}
+    {% endblock %}
+    {% region "column_2" %}
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="span12">
+    {% region "bottom" %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load contento %}
+
+<ul class="submenu-container nav nav-tabs nav-stacked">
+     <li class="top-selected menu-item-level-1">
+        <a href="{{ current_node.get_path }}">
+          {{ current_node.data.menu_title }}
+        </a>
+    </li>
+
+    {% for subnode in nodes %}
+    {% if subnode.data.menu_title %}
+    <li>
+      <a href="{{subnode.get_path }}">{{subnode.data.menu_title}}</a>
+    </li>
+    {% endif %}
+    {% comment %}
+    <li class="{% if child.sibling %}sibling{% endif %}{% if child.descendant %}descendant{% endif %} menu-item-level-{{ child.level }}">
+        <a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+    </li>
+    {% endcomment %}
+
+    {% endfor %}
+
+
+</ul>

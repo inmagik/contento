@@ -28,6 +28,12 @@ class PageNode(object):
 
         return "%s/%s" % (self.parent.get_path(), self.url)
 
+    def get_root_path(self):
+        pg = self
+        while pg.parent:
+            pg = pg.parent
+        return pg.get_path()
+
 
 
     def add_child(self, child):

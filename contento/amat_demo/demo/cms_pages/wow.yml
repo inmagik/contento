@@ -1,0 +1,7 @@
+"content": {}
+"data":
+  "menu_title": "wow"
+  "published": !!bool "true"
+"order": !!int "1"
+"template": "simple_page.html"
+"url": "wow"

@@ -1,0 +1,10 @@
+<h2>Users list</h2>
+{% for user in objects %}
+<div class="nav">
+    Email: {{ user.email}}
+    <br>
+    {% with user.pk|stringformat:"s" as pk %}
+    <a href="{% url "contento-cms" page_url="/section/user/"|add:pk %}">go</a>
+    {% endwith %}
+</div>
+{% endfor %}

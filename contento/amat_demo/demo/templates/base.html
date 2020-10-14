@@ -1,0 +1,37 @@
+{% load contento %}
+{% load sekizai_tags %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <style media="screen">
+      .region-one{
+        padding: 20px;
+        background-color: deepskyblue;
+        color: white;
+      }
+      .region-two{
+        padding: 20px;
+        background-color: hotpink;
+        color: white;
+      }
+
+      .example-map {
+        border:solid white 3px;
+        margin: 14px;
+      }
+    </style>
+    {% render_block "contento_css" %}
+  </head>
+  <body>
+    {% block content %}
+    {% endblock content %}
+
+
+  {% render_block "contento_js" %}
+
+  </body>
+</html>

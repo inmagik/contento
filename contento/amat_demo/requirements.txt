@@ -1,0 +1,6 @@
+Django==1.10
+wheel==0.26.0
+django-classy-tags==0.7.2
+django-sekizai==0.9.0
+#djangorestframework==3.4.3
+#deepdiff==2.5.1

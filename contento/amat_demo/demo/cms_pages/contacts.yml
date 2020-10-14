@@ -1,0 +1,38 @@
+"content":
+  "region_one":
+  - "data":
+      "lat": !!int "45"
+      "lon": !!float "8.12"
+      "wrapper_class": "example-map"
+    "type": "LeafletMap"
+  - "data":
+      "text": "Hi. this issss a contacts page."
+    "type": "Text"
+  - "data":
+      "lat": !!int "45"
+      "lon": !!float "10.12"
+      "markers":
+      - "lat": !!int "45"
+        "lon": !!int "10"
+        "popup": "Hi. This is a popup"
+      - "lat": !!float "45.1"
+        "lon": !!float "10.2"
+        "popup": "Hi. This is another one!"
+      "wrapper_class": "example-map"
+    "type": "LeafletMap"
+  "region_two":
+  - "data":
+      "src": "https://amat-mi.it/static/amatstatic/img/logo.png"
+      "wrapper_class": "text-center"
+    "type": "Image"
+  - "data":
+      "text": "Hello there from region two. contacts"
+    "type": "Text"
+  - "data":
+      "text": "<p>And more content here </p>"
+    "type": "Text"
+"data":
+  "menu_title": "Contacts"
+  "published": !!bool "true"
+"template": "simple_page.html"
+"url": "contacts"

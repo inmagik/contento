@@ -1,0 +1,74 @@
+{% load contento %}
+{% load sekizai_tags %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <style media="screen">
+      .region-one{
+        padding: 20px;
+        background-color: deepskyblue;
+        color: white;
+      }
+      .region-two{
+        padding: 20px;
+        background-color: hotpink;
+        color: white;
+      }
+
+      .example-map {
+        border:solid white 3px;
+        margin: 14px;
+      }
+    </style>
+    {% render_block "contento_css" %}
+  </head>
+  <body>
+    <div class="container">
+      <h2>
+      Simple page here. (this title is fixed)
+      </h2>
+      <div class="row">
+        <div class="col col-sm-2">
+
+          <div class="well">
+            <h4>Menu</h4>
+            {% pages_tree "" "menu_template.html" %}
+
+          </div>
+        </div>
+        <div class="col col-sm-5">
+          <div class="region-one">
+              {% region "region_one" %}
+          </div>
+        </div>
+
+        <div class="col col-sm-5">
+          <div class="region-two">
+              {% if region_two %}
+                {% region "region_two" %}
+              {% else %}
+                No data for this page in this region!
+              {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="">
+        <h4>Url data</h4>
+        {{ url_data }}
+      </div>
+
+
+    </div>
+
+
+  {% render_block "contento_js" %}
+
+  </body>
+</html>

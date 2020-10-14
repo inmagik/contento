@@ -1,0 +1,22 @@
+url: user/(?P<user_id>\w+)
+template: simple_page.html
+
+data:
+  published: True
+
+
+content:
+  region_one:
+    - type: ModelInstanceTemplate
+      data:
+        model_name : "django.contrib.auth.models.User"
+        template_name: "user_detail.html"
+        model_pk: "{{ url_data.user_id }}"
+
+  region_two:
+    - type: QuerysetTemplate
+      data:
+        model_name : "django.contrib.auth.models.User"
+        template_name: "users_list.html"
+        filters:
+          is_staff : True

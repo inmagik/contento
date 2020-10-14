@@ -1,0 +1,70 @@
+{% extends "base_page.html" %}
+{% load contento %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="span4">
+            {% region "row_1_col_left" %}
+        </div>
+        <div class="span8">
+            {% region "row_1_col_right" %}
+        </div>
+    </div>
+    <div class="row">
+        {% region "row_1" %}
+    </div>
+    <div class="row">
+        <div class="span8">
+            {% region "row_2_col_left" %}
+        </div>
+        <div class="span4">
+            {% region "row_2_col_right" %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% region "row_2" %}
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            {% region "row_3_col_left" %}
+        </div>
+        <div class="span8">
+            {% region "row_3_col_right" %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% region "row_3" %}
+    </div>
+
+    <div class="row">
+        <div class="span8">
+            {% region "row_4_col_left" %}
+        </div>
+        <div class="span4">
+            {% region "row_4_col_right" %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% region "row_4" %}
+    </div>
+
+        <div class="row">
+        <div class="span4">
+            {% region "row_5_col_left" %}
+        </div>
+        <div class="span8">
+            {% region "row_5_col_right" %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% region "row_5" %}
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,297 @@
+.not-shown{ display:none; height:0px;}
+
+/* Campi obbligatori; TODO */
+.required {
+    background-color: #FFAAAA;
+  }
+
+/* html, body{height:100%;margin:0;padding:0;} */
+.bodywrapper {min-height:100%; position:relative;}
+
+.main-container {
+    padding-bottom:60px; 
+    min-height:460px;
+}
+.main-navbar { margin-top:-27px;}
+
+.header-bar { 
+     background-color: white; 
+     background-image: url(/static/amatstatic/img/sfondo.jpg);
+     background-repeat: no-repeat;
+     background-position: center top;
+
+     width: 100%;
+     height: 169px;
+}
+
+.amat-logo{
+    float:left;
+    width:243px;
+    background:url(/static/amatstatic/img/logo.png) no-repeat;
+    height:132px;
+    margin:0;
+
+}
+
+
+a {
+    color: #0996A0;
+    text-decoration: none;
+}
+
+
+
+/*
+.footer *{color: #999999;}
+*/
+
+.footer {
+  padding: 7px 14px;
+
+  background: #055157;
+  color: rgb(155,187,189);
+  /* width:100%; */
+
+
+ 
+  /*
+  padding-top:10px;padding-bottom:10px; height:140px;
+    margin: 0;
+      position:absolute;
+        bottom:0;
+  */
+}
+
+.footer-line{text-align:center; line-height:140px;}
+.footer-content{text-align:center;}
+
+h1{margin-bottom:0.4em;}
+h2{margin-bottom:0.35em;}
+
+.well {
+    background:#9bbbbd;
+    color:white;
+    margin-top:36px;
+}
+.well h1,.well h2,.well h3,.well h4{ color:white;}
+
+
+/*pagination*/
+.amat-pagination {}
+
+/*nav bar */
+.navbar-inner-amat {background:#cd202d; overflow:hide; min-height:38px;}
+.navbar-inner-amat .nav > li > a {color:white;}
+.login-bar{padding-right:24px; margin:0;}
+
+.navbar .amat-navbar-text {
+    color:white;
+}
+
+/*trying to fix explorer bugs*/
+.navbar-inner { filter:none;}
+
+/*icons*/
+
+.first_level_icon { 
+    margin-right:0px;
+    margin-left:4px;
+}
+
+
+.aicon{
+     height:40px; 
+     width:28px;
+     margin:0;
+     margin-top:-12px; 
+     vertical-align:text-top; 
+     z-index:2;
+
+}
+
+.aicon.active{
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.aicon-for-{ 
+    background: url(/static/amatstatic/img/home.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+
+}
+.aicon-for-amat{ 
+    background: url(/static/amatstatic/img/amat.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+}
+.aicon-for-mobilita{ 
+    background: url(/static/amatstatic/img/mobilita.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+}
+.aicon-for-ambiente{ 
+    background: url(/static/amatstatic/img/ambiente.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+}
+.aicon-for-territorio{ 
+    background: url(/static/amatstatic/img/territorio.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+}
+
+.aicon-for-documenti{ 
+    background: url(/static/amatstatic/img/documenti.png);
+    background-position: top right;
+    background-repeat:no-repeat;
+    display: inline-block;
+}
+
+
+
+
+
+/*breadcrumbs */
+.breadcrumb {filter:none;} 
+.amat-breadcrumb { text-align:right; border: none; background:white;  margin:0 0 8px; margin-top:-8px;}
+
+
+/*menu stuff */
+
+
+.nav-tabs.nav-stacked.submenu-container {
+    border: 1px solid #DDD;
+      -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow:3px 3px 6px #ccc;-moz-box-shadow:3px 3px 6px #ccc;box-shadow:3px 3px 6px #ccc;
+
+
+}
+
+.nav-tabs.nav-stacked > li > a {
+    border:none;
+    /* border-bottom: 1px solid #DDD; */
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+color: white;
+text-decoration: none;
+
+background-color: #222;
+background-color: rgba(0, 0, 0, 0.5);
+/* background-color:transparent; */
+}
+
+.submenu-container.nav-tabs > .active > a, .submenu-container.nav-tabs > .active > a:hover {
+border: none;
+background: #cd202d;
+color:white;
+cursor: default;
+}
+
+
+.navbar .nav > li > a {
+float: none;
+padding: 10px 10px 11px 10px;
+
+
+}
+
+/* .nav>li>a:hover{text-decoration:none;background-color:#9bbbbd; color:white; border:none;} */
+
+
+.submenu-level-1{ margin-bottom: 0;}
+.submenu-level-2{ margin-bottom: 4px;}
+.submenu-level-3 li a{ margin-bottom: 0;}
+
+.menu-item-level-1{}
+.menu-item-level-1.top-selected>a {background:#9bbbbd; color: white;}
+.menu-item-level-1.active>a,.menu-item-level-1.selected>a {background:#cd202d; color: white;}
+
+
+.menu-item-level-2{ padding-left:20px;}
+.menu-item-level-2.active>a,.menu-item-level-2.selected>a { color : #cd202d;border:none;}
+.nav-tabs.nav-stacked > li.menu-item-level-2 > a {border:none;}
+
+.menu-item-level-3{ padding-left:30px;}
+.menu-item-level-3.active>a,.menu-item-level-3.selected>a { color : #cd202d;border:none;}
+.nav-tabs.nav-stacked > li.menu-item-level-3 > a {border:none;}
+
+
+/*amatbadges stuff */
+.amatbadge-header {
+
+    background:#9bbbbd;
+    color:white;
+    margin-top:0px;
+    padding:4px;
+    padding-left:10px;
+    font-weight:normal;
+}
+
+.amatbadge-header h3{
+    font-weight:normal;
+}
+
+
+.amatbadge-header h4{
+    font-weight:normal;
+}
+
+
+.amatbadge-body{
+    padding:10px;
+}
+
+.amatbadge{
+    background: white;
+    min-height:150px;
+    color:black;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow:3px 3px 6px #ccc;-moz-box-shadow:3px 3px 6px #ccc;box-shadow:3px 3px 6px #ccc;
+    margin-bottom:20px;
+}
+
+.padded10{ padding:10px; margin-bottom:10px; clear:both;}
+.margintop20{margin-top:20px;}
+
+.form-preamble{margin-bottom:20px;}
+.amat-delete-checkbox{
+    font-weight:bold;
+
+}
+.amat-disabled-label{ color : #bbb;}
+
+
+/* news stuff */
+.amat-news-image { float: left; margin:0 5px 5px 0; }
+
+
+/*quaria */
+.qariatable{margin-bottom:40px;}
+
+
+/* bandi */
+.qr_qr {
+    font-weight : bolder;
+    color : black;
+}
+
+.qr_q {
+    font-style : italic;
+    color : black;
+}
+
+.qr_r {
+    color : #505050;
+    
+}

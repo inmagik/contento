@@ -86,15 +86,17 @@ class SQLBackend(object):
                         fullpath=base_path, language=language, key=key
                     )
                     root_node = self.to_node(root_page)
+
                 else:
                     root_node = None
+                    root_page = None
 
                 root_pages = Page.objects.filter(
-                    parent=None, language=language, key=key
+                    parent=root_page, language=language, key=key
                 ).order_by('order')
                 out = []
                 for p in root_pages:
-                    out.extend(self.process_page_for_tree(p))
+                    out.extend(self.process_page_for_tree(p, parent_node=root_node))
                 cache.set("contento.pagetree-%s-%s-%s" % (base_path, language, key), (out, root_node))
 
             except Page.DoesNotExist:

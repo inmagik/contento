@@ -1,0 +1,47 @@
+start_level, end_level, extra_inactive, extra_active, namespace, root_id.
+
+
+STRATEGIA:
+- costruisco albero completo partendo da root -> metto in cache
+
+dato un nodo attivo: annoto l'albero completo attraversandolo ricorsivamente:
+per ogni livello: se il nodo attivo è nel livello: marco tutti i figli come attivi
+marco tutti i parent come attivi
+marco tutti i sibling
+
+per ogni nodo:
+se non ha figli is_leaf= true 
+
+
+
+Properties of Navigation Nodes in templates
+http://docs.django-cms.org/en/release-3.4.x/reference/navigation.html#properties-of-navigation-nodes-in-templates
+
+{{ node.is_leaf_node }}
+Is it the last in the tree? If true it doesn’t have any children.
+
+{{ node.level }}
+The level of the node. Starts at 0.
+
+{{ node.menu_level }}
+The level of the node from the root node of the menu. Starts at 0. If your menu starts at level 1 or you have a “soft root” (described in the next section) the first node would still have 0 as its menu_level.
+
+{{ node.get_absolute_url }}
+The absolute URL of the node, without any protocol, domain or port.
+
+{{ node.title }}
+The title in the current language of the node.
+
+{{ node.selected }}
+If true this node is the current one selected/active at this URL.
+
+{{ node.ancestor }}
+If true this node is an ancestor of the current selected node.
+
+{{ node.sibling }}
+If true this node is a sibling of the current selected node.
+
+{{ node.descendant }}
+If true this node is a descendant of the current selected node.
+
+{{ node.soft_root }}

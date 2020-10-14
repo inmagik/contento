@@ -1,0 +1,28 @@
+"content":
+  "region_one":
+  - "data": {}
+    "type": "contento.renderers.Text"
+    "uuid": "4a94270b-89e9-4e85-97e9-71f724da56c0"
+  - "data":
+      "text": "AHahahahaah"
+    "type": "contento.renderers.Text"
+    "uuid": "720a7437-12fb-4783-8949-07d124a53575"
+  - "data":
+      "text": "hello world!"
+    "type": "contento.renderers.Text"
+    "uuid": "a017dc23-9835-46e0-a66f-786b09a1786a"
+  - "data": {}
+    "type": "contento.renderers.Text"
+    "uuid": "a342d594-1692-4cec-bda7-6914180cbc9a"
+  - "data":
+      "class": "ahahah"
+      "src": "ahahah"
+      "wrapper_class": "ahahah"
+    "type": "contento.renderers.Image"
+    "uuid": "d8b01f9d-22ba-4dba-9038-216c29bde4f7"
+  "region_two": []
+"data":
+  "menu_title": "Home"
+  "published": !!bool "true"
+"template": "simple_page.html"
+"url": ""
